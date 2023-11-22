@@ -21,17 +21,17 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => options.S
                 .AddEntityFrameworkStores<AppDev2DbContext>();
 
 
-// builder.Services.Configure<IdentityOptions>(options =>{
-//     //Password settings
-//     options.Password.RequiredLength = 6;
-//     //Lockout settings
-//     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-//     //User settings
-//     options.User.RequireUniqueEmail = true;
-//     //SignIn options
-//     options.SignIn.RequireConfirmedEmail = false;
+builder.Services.Configure<IdentityOptions>(options =>{
+    //Password settings
+    options.Password.RequiredLength = 6;
+    //Lockout settings
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    //User settings
+    options.User.RequireUniqueEmail = false;
+    //SignIn options
+    options.SignIn.RequireConfirmedEmail = false;
     
-// });
+});
 
 // builder.Services.ConfigureApplicationCookie(options => {
 //     //Cookie settings
