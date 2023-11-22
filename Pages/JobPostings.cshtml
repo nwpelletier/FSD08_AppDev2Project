@@ -1,0 +1,20 @@
+﻿@page
+@model FSD08_AppDev2Project.Pages.JobPostingsModel
+@{
+    ViewData["Title"] = "Job Postings";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<ul>
+    @foreach (var job in Model.Jobs)
+    {
+        <li>
+            <strong>@job.JobTitle</strong>
+            <p>Category: @job.JobCategory</p>
+            <p>Description: @job.JobDescription</p>
+            <p>Start Date: @job.StartDate</p>
+            <p>End Date: @job.EndDate</p>
+        </li>
+    }
+</ul>
