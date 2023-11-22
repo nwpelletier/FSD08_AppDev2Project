@@ -22,6 +22,23 @@ namespace FSD08_AppDev2Project.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("FSD08_AppDev2Project.Models.ApplicationRoles", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ApplicationRoles");
+                });
+
             modelBuilder.Entity("FSD08_AppDev2Project.Models.AppliedJob", b =>
                 {
                     b.Property<int>("Id")
