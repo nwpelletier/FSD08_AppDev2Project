@@ -48,41 +48,46 @@ Wednesday, Nov 22
 NICK
 
 What I did yesterday:
--
+- Basic user profile (hard-coded data for now until login persist)
+- basic job posting (displays data)
 
 What I'm doing today:
--
+- Hiring Manager/Company profile
+- Post a job form (for hiring manager)
 
 What I didn't finish:
--
+- Company profile
+- RichText implementation
 
 Needs help with:
--
+- Login, can help/needs help
 
 MIRAL
 What I did yesterday:
--
+-Created entity classes
+-Created data in database
 
 What I'm doing today:
--
+-Will create blob methods for uploading and downloading
 
 What I didn't finish:
 -
 
 Needs help with:
--
+-will try some tutorial for rich text
 
 PEJMAN
 What I did yesterday:
--
+- Registration for applicants
 
 What I'm doing today:
--
+- Registration for hiring managers
+- Login page
 
 What I didn't finish:
--
+- Registration for hiring managers
 
 Needs help with:
--
+- Login page
 
 ============================
