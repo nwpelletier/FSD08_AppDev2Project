@@ -1,4 +1,40 @@
 ﻿@page
 @model FSD08_AppDev2Project.Pages.UserProfileModel
 @{
+    ViewData["Title"] = "Your Profile";
 }
+
+<h1>@ViewData["Title"]</h1>
+
+@* TODO: Uncomment this once login persists *@
+@* <div class="user-profile">
+    <div class="profile-header">
+        <div class="profile-name">@Model.ApplicationUser.UserName</div>
+    </div>
+
+    <div class="contact-info">
+        <h2>Contact Information</h2>
+        <div>Email: @Model.ApplicationUser.Email</div>
+        <div>Phone: @Model.ApplicationUser.PhoneNumber</div>
+        <div>City: @Model.ApplicationUser.City</div>
+        <div>State: @Model.ApplicationUser.State</div>
+        <div>Country: @Model.ApplicationUser.Country</div>
+        <div>Zipcode: @Model.ApplicationUser.Zipcode</div>
+    </div>
+</div> *@
+
+<div class="user-profile">
+    <div class="profile-header">
+        <div class="profile-name">John Doe</div>
+    </div>
+
+    <div class="contact-info">
+        <h2>Contact Information</h2>
+        <div>Email: john.doe@example.com</div>
+        <div>Phone: (123) 456-7890</div>
+        <div>City: Anytown</div>
+        <div>State: CA</div>
+        <div>Country: USA</div>
+        <div>Zipcode: 12345</div>
+    </div>
+</div>
