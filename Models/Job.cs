@@ -12,7 +12,7 @@ namespace FSD08_AppDev2Project.Models
     public class Job
     {
         public int Id { get; set; }
-        public Company JobCompany { get; set; }
+        public int JobCompanyId { get; set; }
         public string JobCategory { get; set; }
         public string JobDescription { get; set; }
         public string JobTitle { get; set; }

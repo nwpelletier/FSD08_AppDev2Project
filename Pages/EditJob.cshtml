@@ -11,6 +11,7 @@
         <div asp-validation-summary="All" class="text-danger"></div>
 
         <input type="hidden" asp-for="Job.Id" />
+        <input type="hidden" asp-for="Job.JobCompanyId" />
 
         <div class="form-group">
             <label asp-for="Job.JobTitle"></label>
@@ -22,13 +23,6 @@
             <label asp-for="Job.JobCategory"></label>
             <input asp-for="Job.JobCategory" class="form-control" />
             <span asp-validation-for="Job.JobCategory" class="text-danger"></span>
-        </div>
-
-@* Getting validation error for this *@
-        <div class="form-group">
-            <label asp-for="Job.JobCompany"></label>
-            <input asp-for="Job.JobCompany" class="form-control" style="display:none;" />
-            <span asp-validation-for="Job.JobCompany" class="text-danger"></span>
         </div>
 
         <div class="form-group">

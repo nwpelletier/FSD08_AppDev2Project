@@ -30,7 +30,7 @@
     <div class="row mt-3">
         <div class="offset-2 col-8">
             <h3>Job Postings</h3>
-            @foreach (var job in Model.Jobs)
+            @foreach (var job in Model.Jobs.Where(j => j.JobCompanyId == Model.Company.Id))
             {
                 <div class="profile-panel container d-flex justify-content-between align-items-center mb-3">
                     <div class="mx-3">

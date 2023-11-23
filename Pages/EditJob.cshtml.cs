@@ -32,7 +32,7 @@ namespace FSD08_AppDev2Project.Pages
             }
 
             Job = _db.Jobs
-                .Where(j => j.Id == jobId && j.JobCompany.Id == companyId)
+                .Where(j => j.Id == jobId && j.JobCompanyId == companyId)
                 .FirstOrDefault();
 
             if (Job == null)
@@ -41,12 +41,8 @@ namespace FSD08_AppDev2Project.Pages
                 return NotFound();
             }
 
-            Job.JobCompany = company;
-
             return Page();
         }
-
-
 
         public IActionResult OnPost()
         {
@@ -60,6 +56,8 @@ namespace FSD08_AppDev2Project.Pages
 
             if (job != null)
             {
+                job.JobTitle = Job.JobTitle;
+                job.JobCategory = Job.JobCategory;
                 job.JobDescription = Job.JobDescription;
                 _db.SaveChanges();
 
@@ -71,7 +69,7 @@ namespace FSD08_AppDev2Project.Pages
                 return NotFound();
             }
 
-            return RedirectToPage("/CompanyProfile", new { companyId = job.JobCompany.Id });
+            return RedirectToPage("/CompanyProfile", new { companyId = job.JobCompanyId });
         }
     }
 }
