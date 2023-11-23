@@ -15,10 +15,10 @@ namespace FSD08_AppDev2Project.Pages
     {
         [BindProperty]
         public InputModel Input { get; set; }
-        private readonly SignInManager<IdentityUser> signInManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
         private readonly ILogger<LoginModel> logger;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger) {
+        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger) {
             this.signInManager = signInManager;
             this.logger = logger;
         }
