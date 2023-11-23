@@ -1,4 +1,51 @@
 ﻿@page
 @model FSD08_AppDev2Project.Pages.CompanyProfileModel
 @{
+    ViewData["Title"] = "Company Profile";
 }
+
+<div class="company-profile">
+    <nav class="navbar navbar-light bg-light">
+        <div class="container">
+            <span class="navbar-brand mb-0 h1">@Model.Company.Name</span>
+        </div>
+    </nav>
+
+    <div class="row mt-3">
+        <div class="offset-2 col-8">
+            <div class="profile-header">
+                <div class="container d-flex justify-content-between align-items-center">
+                    <div class="profile-name">@Model.Company.Name</div>
+                    <div class="profile-image" style="font-size:18px">Logo</div>
+                </div>
+            </div>
+            <div class="contact-info-user my-3">
+                <div class="contact-info">
+                    <div><b>Location:</b> @Model.Company.City, @Model.Company.State, @Model.Company.Country</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="offset-2 col-8">
+            <h3>Job Postings</h3>
+            @foreach (var job in Model.Jobs)
+            {
+                <div class="profile-panel container d-flex justify-content-between align-items-center mb-3">
+                    <div class="mx-3">
+                        <div>@job.JobTitle (link to job posting)</div>
+                        <div>Category: @job.JobCategory</div>
+                        <div>Start Date: @job.StartDate.ToShortDateString()</div>
+                        <div>End Date: @job.EndDate.ToShortDateString()</div>
+                        <hr>
+                        <div>Description: @job.JobDescription</div>
+                    </div>
+                    <div>
+                        <a asp-page="/EditJob" asp-route-jobId="@job.Id" asp-route-companyId="@Model.Company.Id">Edit</a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

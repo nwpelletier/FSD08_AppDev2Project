@@ -1,0 +1,42 @@
+﻿@page
+@model FSD08_AppDev2Project.Pages.EditJobModel
+@{
+    ViewData["Title"] = "Edit Job";
+}
+
+<h1>Edit Job</h1>
+
+<div>
+    <form method="post">
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <input type="hidden" asp-for="Job.Id" />
+
+        <div class="form-group">
+            <label asp-for="Job.JobTitle"></label>
+            <input asp-for="Job.JobTitle" class="form-control" />
+            <span asp-validation-for="Job.JobTitle" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Job.JobCategory"></label>
+            <input asp-for="Job.JobCategory" class="form-control" />
+            <span asp-validation-for="Job.JobCategory" class="text-danger"></span>
+        </div>
+
+@* Getting validation error for this *@
+        <div class="form-group">
+            <label asp-for="Job.JobCompany"></label>
+            <input asp-for="Job.JobCompany" class="form-control" style="display:none;" />
+            <span asp-validation-for="Job.JobCompany" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Job.JobDescription"></label>
+            <textarea asp-for="Job.JobDescription" class="form-control"></textarea>
+            <span asp-validation-for="Job.JobDescription" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+</div>
