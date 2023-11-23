@@ -91,3 +91,96 @@ Needs help with:
 - Login page
 
 ============================
+Thursday, Nov 23
+
+NICK
+What I did yesterday:
+- Post a job form
+- Work on user profile page
+- Work on company profile page (not pushed)
+
+What I'm doing today:
+- Resume/Photo upload for user
+- Applied jobs for user
+- Same setup for company
+- Posted jobs for company
+- Maybe registration
+
+What I didn't finish:
+- Didn't push company page
+
+Needs help with:
+- Methods for company icons/logos
+
+MIRAL
+What I did yesterday:
+-Created blob methods
+-Added one more field in job table
+
+What I'm doing today:
+-Will work on rich text plugin
+
+What I didn't finish:
+
+
+Needs help with:
+-Need to see some tutorials for rich text
+
+PEJMAN
+What I did yesterday:
+- Registration page
+- Starting Login page
+
+What I'm doing today:
+- Authentication
+- Finishing Login page
+- CompanyReviews page(indeed.ca as reference)
+
+What I didn't finish:
+- Authentication
+- Login page
+
+Needs help with:
+- Authentication
+
+============================
+Friday, Nov 24
+
+NICK
+What I did yesterday:
+-
+
+What I'm doing today:
+-
+
+What I didn't finish:
+-
+
+Needs help with:
+-
+
+MIRAL
+What I did yesterday:
+-
+
+What I'm doing today:
+-W
+
+What I didn't finish:
+-
+
+Needs help with:
+-
+
+PEJMAN
+What I did yesterday:
+-
+
+What I'm doing today:
+-
+
+What I didn't finish:
+-
+
+Needs help with:
+-
