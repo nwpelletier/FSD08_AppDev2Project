@@ -65,7 +65,7 @@ namespace FSD08_AppDev2Project.Pages
 
             [Required(ErrorMessage = "The Phone number field is required.")]
             [Display(Name = "PhoneNumber")]
-            public string PhoneNumber { get; set; }            
+            public string PhoneNumber { get; set; }
         }
 
         public void OnGet(string returnUrl = null)
