@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FSD08_AppDev2Project.Data.Migrations
 {
     [DbContext(typeof(AppDev2DbContext))]
-    [Migration("20231121233646_CreateDatabase")]
-    partial class CreateDatabase
+    [Migration("20231123040016_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,23 @@ namespace FSD08_AppDev2Project.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("FSD08_AppDev2Project.Models.ApplicationRoles", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ApplicationRoles");
+                });
 
             modelBuilder.Entity("FSD08_AppDev2Project.Models.AppliedJob", b =>
                 {
@@ -95,6 +112,9 @@ namespace FSD08_AppDev2Project.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("JobCompanyId")
+                        .HasColumnType("int");
+
                     b.Property<string>("JobDescription")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -107,6 +127,8 @@ namespace FSD08_AppDev2Project.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("JobCompanyId");
 
                     b.ToTable("Jobs");
                 });
@@ -389,6 +411,17 @@ namespace FSD08_AppDev2Project.Data.Migrations
                     b.Navigation("Applicant");
 
                     b.Navigation("Job");
+                });
+
+            modelBuilder.Entity("FSD08_AppDev2Project.Models.Job", b =>
+                {
+                    b.HasOne("FSD08_AppDev2Project.Models.Company", "JobCompany")
+                        .WithMany()
+                        .HasForeignKey("JobCompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("JobCompany");
                 });
 
             modelBuilder.Entity("FSD08_AppDev2Project.Models.Review", b =>
