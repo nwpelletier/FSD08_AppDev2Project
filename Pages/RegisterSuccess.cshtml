@@ -1,0 +1,12 @@
+﻿@page
+@model FSD08_AppDev2Project.Pages.RegisterSuccessModel
+@{
+    ViewData["Title"] = "Register confirmation";
+}
+
+<h1>@ViewData["Title"]</h1>
+@{
+    <p>Registration succeeded with email @Model.email.
+        <a href="/Login">Click here to login</a>
+    </p>
+}

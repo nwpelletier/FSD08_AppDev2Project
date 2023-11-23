@@ -19,7 +19,7 @@ namespace FSD08_AppDev2Project.Data
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Company> Companys { get; set; }
         public DbSet<AppliedJob> AppliedJobs { get; set; }
-        public DbSet<ApplicationRoles> ApplicationRoles { get; set; }
+        // public DbSet<ApplicationRoles> ApplicationRoles { get; set; }
         
     }
 }

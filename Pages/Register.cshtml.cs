@@ -46,6 +46,26 @@ namespace FSD08_AppDev2Project.Pages
             [DataType(DataType.Password)]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [Required(ErrorMessage = "The Country field is required.")]
+            [Display(Name = "Country")]
+            public string Country { get; set; }
+
+            [Required(ErrorMessage = "The State field is required.")]
+            [Display(Name = "State")]
+            public string State { get; set; }
+
+            [Required(ErrorMessage = "The City field is required.")]
+            [Display(Name = "City")]
+            public string City { get; set; }
+
+            [Required(ErrorMessage = "The Zipcode field is required.")]
+            [Display(Name = "Zipcode")]
+            public string ZipCode { get; set; }
+
+            [Required(ErrorMessage = "The Phone number field is required.")]
+            [Display(Name = "PhoneNumber")]
+            public string PhoneNumber { get; set; }            
         }
 
         public void OnGet(string returnUrl = null)
@@ -58,11 +78,19 @@ namespace FSD08_AppDev2Project.Pages
                 // var user = new ApplicationUser {UserName = "miral1", Email = "miral@sample.com", PhoneNumber = "123-456-4444", City ="Montreal", Country="Canada", State ="Quebec", Active = true, Zipcode = "P4W 2A5" };
                 // var result = await userManager.CreateAsync(user, "Test@2023");
 
-                var user = new ApplicationUser {UserName = Input.UserName, Email = Input.Email};
+                var user = new ApplicationUser {UserName = Input.UserName,
+                                                Email = Input.Email,
+                                                Country = Input.Country,
+                                                State = Input.State,
+                                                City = Input.City,
+                                                Zipcode = Input.ZipCode,
+                                                PhoneNumber = Input.PhoneNumber,
+                                                Active = true
+                                                };
                 var result = await userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded){
                     logger.LogInformation($"User {Input.Email} create a new account with password");
-                    return RedirectToPage("/Account/RegisterSuccess", new { email = Input.Email });
+                    return RedirectToPage("RegisterSuccess", new { email = Input.Email });
                 }
                 foreach(var error in result.Errors){
                     ModelState.AddModelError(string.Empty, error.Description);
