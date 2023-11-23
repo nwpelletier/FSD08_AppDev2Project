@@ -13,10 +13,69 @@ html {
 }
 
 html {
+  background-color:rgb(255, 253, 235);
   position: relative;
   min-height: 100%;
 }
 
 body {
+  
   margin-bottom: 60px;
+}
+
+/* test styles for formatting PROFILE */
+
+.profile-header {
+
+}
+
+.profile-panel {
+  padding:20px;
+  border: 1px solid grey;
+  border-radius: 8px;
+}
+
+.profile-name {
+  font-size:36px;
+  font-weight:bolder;
+}
+
+.contact-info-user {
+  border-radius:10px;
+  padding:20px;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  color:#555555;
+  background-color:#f0f0f0;
+}
+
+.contact-info-user:hover {
+  box-shadow:1px 1px 2px #b1b1b1;
+}
+
+.profile-image {
+  width: 80px; /* Set the width and height as needed */
+  height: 80px;
+  border-radius: 50%; /* This will make it a circle */
+  background-color: #2b2727; /* Placeholder background color */
+  font-size:36px;
+  color:rgb(233, 233, 233);
+  font-weight:bolder;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; /* Ensure the image won't overflow the circle */
+}
+
+.pdf-icon {
+  width: 50px; /* Set the width and height as needed */
+  height: 60px;
+  border-radius: 3px; /* This will make it a circle */
+  background-color: rgb(95, 104, 112); /* Placeholder background color */
+  font-size:14px;
+  color:azure;
+  font-weight:bolder;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; /* Ensure the image won't overflow the circle */
 }
