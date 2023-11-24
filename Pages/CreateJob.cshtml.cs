@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FSD08_AppDev2Project.Pages
 {
+    [Authorize]
     public class CreateJobModel : PageModel
     {
         private readonly AppDev2DbContext _db;

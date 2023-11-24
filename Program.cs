@@ -33,14 +33,14 @@ builder.Services.Configure<IdentityOptions>(options =>{
     
 });
 
-// builder.Services.ConfigureApplicationCookie(options => {
-//     //Cookie settings
-//     options.Cookie.HttpOnly = true;
-//     options.ExpireTimeSpan = TimeSpan.FromMinutes(25);
+builder.Services.ConfigureApplicationCookie(options => {
+    //Cookie settings
+    options.Cookie.HttpOnly = true;
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(25);
 
-//     options.LoginPath = "/Login";
-//     options.AccessDeniedPath = "/AccessDenied";
-// });
+    options.LoginPath = "/Login";
+    options.AccessDeniedPath = "/AccessDenied";
+});
 
 var app = builder.Build();
 

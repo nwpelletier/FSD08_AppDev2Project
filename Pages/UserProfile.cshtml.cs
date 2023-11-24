@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using FSD08_AppDev2Project.Data;
 using FSD08_AppDev2Project.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FSD08_AppDev2Project.Pages
 {
+    [Authorize]
     public class UserProfileModel : PageModel
     {
         private readonly AppDev2DbContext _db;
