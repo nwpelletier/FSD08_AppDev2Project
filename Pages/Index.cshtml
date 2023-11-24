@@ -5,13 +5,37 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome Guys</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Welcome to Icarus Jobs</h1>
+    <br>
+    <h3 class="display-6">Companies can advertise their openings</h3>
+    <br>
+    <h3 class="display-6">And we help job seekers find their perfect career </h3>
 
-    <form method="post" enctype="multipart/form-data">
-        <label for="fileInput">Choose a file:</label>
-        <input type="file" name="fileInput" id="fileInput" />
-        <br />
-        <button type="submit">Upload File</button>
+    <div class="row">
+        <div class="col-md-5 offset-md-1 index-page-panel d-flex flex-column">
+            <p class="flex-grow-1">Discover a diverse range of employment opportunities, connect with leading companies,
+                and take the leap towards a fulfilling career journey. Your next career move starts here at Icarus Job
+                Board.</p>
+            <a asp-page="/Register" class="btn btn-outline-primary mt-auto">Register Now</a>
+        </div>
+        <div class="col-md-5 index-page-panel ms-2 d-flex flex-column">
+            <p class="flex-grow-1">Feel the excitement of endless possibilities as you explore a myriad of job
+                opportunities on Icarus Job
+                Board. Your next career move awaits –
+                if you feel like browsing first before creating an account, feel free to view our job postings here.</p>
+            <a asp-page="/JobPostings" class="btn btn-outline-primary mt-auto">View Jobs</a>
+        </div>
+    </div>
+
+
+
+
+
+
+    <br><br><br><br><br><br><br <form method="post" enctype="multipart/form-data">
+    <label for="fileInput">Choose a file:</label>
+    <input type="file" name="fileInput" id="fileInput" />
+    <br />
+    <button type="submit">Upload File</button>
     </form>
 </div>
