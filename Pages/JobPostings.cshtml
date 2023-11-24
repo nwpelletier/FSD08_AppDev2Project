@@ -12,7 +12,7 @@
         <li>
             <strong>@job.JobTitle</strong>
             <p>Category: @job.JobCategory</p>
-            <p>Description: @job.JobDescription</p>
+            <p>Description: @Html.Raw(@job.JobDescription)</p>
             <p>Start Date: @job.StartDate</p>
             <p>End Date: @job.EndDate</p>
         </li>
