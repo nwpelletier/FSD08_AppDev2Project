@@ -148,39 +148,45 @@ Friday, Nov 24
 
 NICK
 What I did yesterday:
--
+- Home page + Navbar update layout
+- Company profile + job listings
 
 What I'm doing today:
--
+- Troubleshooting + Page formatting
 
 What I didn't finish:
--
+- Profile image upload user
 
 Needs help with:
--
+- Authentication on pages
 
 MIRAL
 What I did yesterday:
--
+-Created rich text code
 
 What I'm doing today:
--W
+-Still working on rich text
 
 What I didn't finish:
--
+-N/A
 
 Needs help with:
--
+-N/A
 
 PEJMAN
 What I did yesterday:
--
+- Login page
+- Logout button
+- Authorization (access to users who have logged in)
 
 What I'm doing today:
--
+- Authorization (creating roles)
+- Hide/unhide buttons in specific situations
+- CompanyReviews page
 
 What I didn't finish:
--
+- CompanyReviews page
 
 Needs help with:
--
+- Authorization (creating roles)
+- Hide/unhide buttons in specific situations
