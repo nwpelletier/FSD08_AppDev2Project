@@ -17,9 +17,18 @@ builder.Services.AddDbContext<AppDev2DbContext>(options =>
 //         builder.Configuration.GetConnectionString("DefaultConnection"))
 //         .EnableRetryOnFailure());
 
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
-                .AddEntityFrameworkStores<AppDev2DbContext>();
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<AppDev2DbContext>()
+                .AddDefaultTokenProviders();
+                //.AddDefaultUI();
 
+
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Role",
+         policy => policy.RequireRole("Applicant"));
+});
 
 builder.Services.Configure<IdentityOptions>(options =>{
     //Password settings
@@ -44,6 +53,27 @@ builder.Services.ConfigureApplicationCookie(options => {
 
 var app = builder.Build();
 
+// using (var scope = app.Services.CreateScope())
+// {
+//     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+//     var roles = new[] { "Admin", "HiringManager", "Applicant" };
+ 
+//     foreach (var role in roles)
+//     {
+//         if (!await roleManager.RoleExistsAsync(role))
+//         {
+//             await roleManager.CreateAsync(new IdentityRole(role));
+//         }
+//     }
+// }
+
+// builder.Services.AddAuthorization(options =>
+// {
+//     options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
+//     options.AddPolicy("HiringManager", policy => policy.RequireRole("HiringManager"));
+//     options.AddPolicy("Applicant", policy => policy.RequireRole("Applicant"));
+// });
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -62,3 +92,4 @@ app.UseAuthorization();
 app.MapRazorPages();
 
 app.Run();
+

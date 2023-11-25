@@ -9,13 +9,9 @@
         <h2>@ViewData["Title"]</h2>
         
         <form method="post">
-            <div class="form-group">
-                Register as:
-                <select>
-                    <option>Applicant</option>
-                    <option>Hiring Manager</option>
+            <select asp-for="role" asp-items="Model.roles">
+
             </select>
-            </div>
             <div asp-validation-summary="All" class="text-danger"></div>
             <input type="hidden" asp-route-returnUrl="ReturnUrl" />
 

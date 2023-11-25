@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace FSD08_AppDev2Project.Pages
 {
     // [Authorize]
+    [Authorize(Roles = "Admin")]
     public class CreateJobModel : PageModel
     {
         private readonly AppDev2DbContext _db;
