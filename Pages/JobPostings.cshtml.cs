@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization; // Add this using directive
 
 namespace FSD08_AppDev2Project.Pages
 {
-    //[Authorize]
+    [Authorize]
     public class JobPostingsModel : PageModel
     {
         private readonly AppDev2DbContext _db; // Make sure AppDev2DbContext is accessible

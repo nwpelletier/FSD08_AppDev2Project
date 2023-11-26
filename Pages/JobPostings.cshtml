@@ -12,7 +12,6 @@
             @TempData["JobMessage"]
         </div>
     </div>
-
 }
 
 <div class="row">
@@ -20,21 +19,11 @@
         <ul>
             @foreach (var job in Model.Jobs)
             {
-                @* <li>
-            <strong>@job.JobTitle</strong>
-            <p>Category: @job.JobCategory</p>
-            <p>Description: @Html.Raw(@job.JobDescription)</p>
-            <p>Start Date: @job.StartDate</p>
-            <p>End Date: @job.EndDate</p>
-            </li> *@
-
-
                 <div class="card text-dark bg-light mb-3 customborder" style="max-width: 30rem;"
                     onclick="showJobDetails(@job.Id)">
                     <div class="card-header">@job.JobTitle</div>
                     <div class="card-body">
                         <h5 class="card-title">@job.JobCategory</h5>
-                        @* <p class="card-text">@Html.Raw(@job.JobDescription)</p> *@
                     </div>
                     <div class="card-footer bg-transparent border-light">Posted on: @job.StartDate</div>
                 </div>
