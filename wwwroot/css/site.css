@@ -90,3 +90,28 @@ body {
 .btn-info {
   background-color:grey;
 }
+
+.customborder:hover{
+  border: 1px solid #258cfb;
+}
+
+
+.jobmessage-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.jobmessage {
+  background-color: #555555;
+  color: white;
+  padding: 20px;
+  border: 1px solid #2b2727;
+  border-radius: 5px;
+  margin: 10px; /* Adjust the margin as needed */
+  display: inline-block;
+}
+
+    

@@ -22,7 +22,14 @@
                 <span asp-validation-for="Input.JobCategory" class="text-danger"></span>
             </div>
 
-            
+        <div class="form-group">
+            <label for="companyDropdown">Select a Company:</label>
+            <select id="companyDropdown" asp-for="SelectedCompanyId" class="form-control"
+                asp-items="new SelectList(Model.Companys, nameof(FSD08_AppDev2Project.Models.Company.Id), nameof(FSD08_AppDev2Project.Models.Company.Name))">
+                <option value="">Select Company</option>
+            </select>
+            </div>
+
 
             @* element for rich text textarea *@
             <div class="form-group">

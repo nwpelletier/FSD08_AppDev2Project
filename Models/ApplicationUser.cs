@@ -17,5 +17,12 @@ namespace FSD08_AppDev2Project.Models
         public string State { get; set; }
         public string Country { get; set; }
         public string Zipcode { get; set; }
+        public Role Role { get; set; }
+    }
+
+    public enum Role {
+        Admin,
+        Applicant,
+        HiringManager
     }
 }

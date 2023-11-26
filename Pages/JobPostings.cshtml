@@ -5,16 +5,111 @@
 }
 
 <h1>@ViewData["Title"]</h1>
+@if (TempData.ContainsKey("JobMessage"))
+{
+    <div id="jobmessageContainer" class="jobmessage-container text-center">
+        <div class="jobmessage">
+            @TempData["JobMessage"]
+        </div>
+    </div>
 
-<ul>
-    @foreach (var job in Model.Jobs)
-    {
-        <li>
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <ul>
+            @foreach (var job in Model.Jobs)
+            {
+                @* <li>
             <strong>@job.JobTitle</strong>
             <p>Category: @job.JobCategory</p>
             <p>Description: @Html.Raw(@job.JobDescription)</p>
             <p>Start Date: @job.StartDate</p>
             <p>End Date: @job.EndDate</p>
-        </li>
+            </li> *@
+
+
+                <div class="card text-dark bg-light mb-3 customborder" style="max-width: 30rem;"
+                    onclick="showJobDetails(@job.Id)">
+                    <div class="card-header">@job.JobTitle</div>
+                    <div class="card-body">
+                        <h5 class="card-title">@job.JobCategory</h5>
+                        @* <p class="card-text">@Html.Raw(@job.JobDescription)</p> *@
+                    </div>
+                    <div class="card-footer bg-transparent border-light">Posted on: @job.StartDate</div>
+                </div>
+
+            }
+        </ul>
+    </div>
+
+    <div class="col-md-6" id="detailsContainer" style="display: none;">
+        <div class="card text-dark bg-light mb-3 customborder" style="max-width: 45rem;">
+            <form method="post" id="applyNowForm" asp-page-handler="HandleJobId">
+                <input type="hidden" id="selectedJobId" name="selectedJobId" value="" />
+                <div class="card-header"></div>
+                <br>
+                <div class="text-center">
+
+                    <div class="text-center">
+                        <button type="submit" id="btnApply" class="btn btn-primary"></button>
+                    </div>
+                </div>
+                <hr>
+                <div class="card-body">
+                    <h5 class="card-title"></h5>
+                    <p class="card-text"></p>
+                </div>
+                <div class="card-footer bg-transparent border-light"></div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+
+<script>
+    function showJobDetails(jobId) {
+        //find by id
+        //debugger;
+        var jobs = @Html.Raw(Json.Serialize(Model.Jobs));
+        var clickedJob = jobs.find(job => job.id === jobId);
+
+        var appliedJobs = @Html.Raw(Json.Serialize(Model.AppliedJobs));
+        
+        var alredyAppliedJob = appliedJobs.find(ajob => ajob.job.id === jobId);
+
+        if (clickedJob) {
+            document.getElementById('detailsContainer').querySelector('.card-header').innerText = clickedJob.jobTitle;
+            document.getElementById('detailsContainer').querySelector('.card-title').innerText = clickedJob.jobCategory;
+            document.getElementById('detailsContainer').querySelector('.card-text').innerHTML = clickedJob.jobDescription;
+            document.getElementById('detailsContainer').querySelector('.card-footer').innerText = 'Posted on: ' + clickedJob.startDate;
+
+            //set id to use in backend
+            document.getElementById('selectedJobId').value = clickedJob.id;
+            //make div visible
+            document.getElementById('detailsContainer').style.display = 'block';
+
+            //set button visibility and text
+            if(alredyAppliedJob){
+                document.getElementById('btnApply').innerText = 'Already applied';
+                document.getElementById('btnApply').disabled = true;
+                document.getElementById('btnApply').className = "btn btn-secondary";
+            } else {
+                document.getElementById('btnApply').innerText = 'Apply now';
+                document.getElementById('btnApply').disabled = false;
+                document.getElementById('btnApply').className = "btn btn-primary";
+            }
+        }
     }
-</ul>
+
+    //hide message after few seconds
+    document.addEventListener('DOMContentLoaded', function () {
+        setTimeout(function () {
+            var messageContainer = document.getElementById('jobmessageContainer');
+            if (messageContainer) {
+                messageContainer.style.display = 'none';
+            }
+        }, 2500);
+    });
+</script>

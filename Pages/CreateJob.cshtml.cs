@@ -25,7 +25,12 @@ namespace FSD08_AppDev2Project.Pages
 
         [BindProperty]
         public InputModel Input { get; set; }
+        [BindProperty]
+        public List<Company> Companys { get; set; }
+        [BindProperty]
+        public int SelectedCompanyId { get; set; }
 
+        
         public class InputModel
         {
             [Required(ErrorMessage = "The Job Title field is required.")]
@@ -53,6 +58,7 @@ namespace FSD08_AppDev2Project.Pages
 
         public void OnGet()
         {
+            this.Companys = _db.Companys.ToList();
         }
 
         public IActionResult OnPost()
@@ -65,7 +71,8 @@ namespace FSD08_AppDev2Project.Pages
                     JobCategory = Input.JobCategory,
                     JobDescription = Input.JobDescription,
                     StartDate = Input.StartDate,
-                    EndDate = Input.EndDate
+                    EndDate = Input.EndDate,
+                    JobCompanyId = this.SelectedCompanyId
                 };
 
                 _db.Jobs.Add(newJob);
