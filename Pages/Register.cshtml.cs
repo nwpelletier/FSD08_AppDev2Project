@@ -1,10 +1,13 @@
 using System.ComponentModel.DataAnnotations;
+using System.Reflection.Metadata.Ecma335;
 using System.Security.Cryptography.X509Certificates;
 using FSD08_AppDev2Project.Models;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace FSD08_AppDev2Project.Pages
 {
@@ -26,19 +29,18 @@ namespace FSD08_AppDev2Project.Pages
         [BindProperty]
         public InputModel Input { get; set; }
 
-        public ApplicationRoles role { get; set; }
-
         public List<SelectListItem> roles { get; set; } = new List<SelectListItem>
             {
                 new SelectListItem { Value = "Admin", Text = "Admin" },
                 new SelectListItem { Value = "HiringManager", Text = "HiringManager" },
                 new SelectListItem { Value = "Applicant", Text = "Applicant"  },
             };
-        
+
         public string ReturnUrl { get; set; }
 
         public class InputModel
         {
+            public ApplicationRoles role { get; set; }
             [Required(ErrorMessage = "The UserName field is required.")]
             [Display(Name = "Username")]
             public string UserName { get; set; }
@@ -98,8 +100,8 @@ namespace FSD08_AppDev2Project.Pages
                                                 };
                 var result = await userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded){
-                    //var result2 = await userManager.AddToRoleAsync(user, role.Name);
-                    var result2 = await userManager.AddToRoleAsync(user, "Admin");
+                    //var result2 = await userManager.AddToRoleAsync(user, role.ToString());
+                    var result2 = await userManager.AddToRoleAsync(user, Input.role.Name);
                     if (result2.Succeeded) {
                         logger.LogInformation($"User {Input.Email} create a new account with password");
                     return RedirectToPage("RegisterSuccess", new { email = Input.Email });

@@ -9,9 +9,7 @@
         <h2>@ViewData["Title"]</h2>
         
         <form method="post">
-            <select asp-for="role" asp-items="Model.roles">
-
-            </select>
+             <select asp-for="Input.role.Name" asp-items="Model.roles" onchange="Input.role.Name = this.value"></select>
             <div asp-validation-summary="All" class="text-danger"></div>
             <input type="hidden" asp-route-returnUrl="ReturnUrl" />
 
@@ -28,6 +26,8 @@
 
             <div class="form-group">
                 <label asp-for="Input.Password"></label>
+
+
                 <input asp-for="Input.Password" type="password" class="form-control" />
                 <span asp-validation-for="Input.Password" class="text-danger"></span>
             </div>
