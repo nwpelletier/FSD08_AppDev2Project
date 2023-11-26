@@ -33,7 +33,7 @@
     </div>
 
     <div class="col-md-6" id="detailsContainer" style="display: none;">
-        <div class="card text-dark bg-light mb-3 customborder" style="max-width: 45rem;">
+        <div class="card text-dark bg-light mb-3 customborder" style="max-width: 45rem;max-height:50rem;">
             <form method="post" id="applyNowForm" asp-page-handler="HandleJobId">
                 <input type="hidden" id="selectedJobId" name="selectedJobId" value="" />
                 <div class="card-header"></div>
@@ -45,7 +45,7 @@
                     </div>
                 </div>
                 <hr>
-                <div class="card-body">
+                <div class="card-body" style="max-height:35rem;overflow-y: auto;">
                     <h5 class="card-title"></h5>
                     <p class="card-text"></p>
                 </div>
