@@ -17,9 +17,8 @@ builder.Services.AddDbContext<AppDev2DbContext>(options =>
 //         builder.Configuration.GetConnectionString("DefaultConnection"))
 //         .EnableRetryOnFailure());
 
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<AppDev2DbContext>()
-                .AddDefaultTokenProviders();
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddEntityFrameworkStores<AppDev2DbContext>();
                 //.AddDefaultUI();
 
 

@@ -98,7 +98,8 @@ namespace FSD08_AppDev2Project.Pages
                                                 };
                 var result = await userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded){
-                    var result2 = await userManager.AddToRoleAsync(user, role.Name);
+                    //var result2 = await userManager.AddToRoleAsync(user, role.Name);
+                    var result2 = await userManager.AddToRoleAsync(user, "Admin");
                     if (result2.Succeeded) {
                         logger.LogInformation($"User {Input.Email} create a new account with password");
                     return RedirectToPage("RegisterSuccess", new { email = Input.Email });
