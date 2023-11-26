@@ -5,10 +5,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
-using System.Text.Json; // Add this using directive
+using System.Text.Json;
+using Microsoft.AspNetCore.Authorization; // Add this using directive
 
 namespace FSD08_AppDev2Project.Pages
 {
+    //[Authorize]
     public class JobPostingsModel : PageModel
     {
         private readonly AppDev2DbContext _db; // Make sure AppDev2DbContext is accessible
