@@ -3,17 +3,29 @@
 @{
     ViewData["Title"] = "Your Profile";
 }
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["SuccessMessage"]
+    </div>
+}
 
 <div class="user-profile">
+
     <div class="row">
         <div class="offset-2 col-8">
             <div class="profile-header">
                 <div class="container d-flex justify-content-between align-items-center">
                     <div class="profile-name">@Model.ApplicationUser.UserName</div>
-                    <div class="profile-image">JD</div>
+                    <div class="profile-image">
+
+                        @* Using hard coded image now - just organizing things ;) *@
+                        <img src="https://indeedjob.blob.core.windows.net/icons/0c840a6c-f289-4a0a-8b6d-0a2a01912ecc.jpg?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2023-12-30T07:38:42Z&st=2023-11-20T23:38:42Z&sip=1.0.0.0-223.255.255.255&spr=https&sig=nuduce9h%2FPmxk0N%2FphRowMjrR%2BU9fAFx%2FQ67nrjxAho%3D&cb=638366410459247734"
+                            alt="Profile Image">
+                    </div>
                 </div>
             </div>
-            <div class="contact-info-user my-3">
+            <div class="contact-info-user my-3 d-flex align-items-center justify-content-between">
                 <div class="contact-info">
                     <div>Email: @Model.ApplicationUser.Email</div>
                     <div>Phone: @Model.ApplicationUser.PhoneNumber</div>
@@ -22,14 +34,22 @@
                     <div>Country: @Model.ApplicationUser.Country</div>
                     <div>Zipcode: @Model.ApplicationUser.Zipcode</div>
                 </div>
+                <div>
+                    <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#testModal">
+                        Edit Details
+                    </button>
+                </div>
             </div>
             <h3>Resume</h3>
             <div class="profile-panel container d-flex justify-content-before align-items-center">
                 <div class="pdf-icon">PDF</div>
                 <div class="mx-3">
-                    <div>jdoe-resume.pdf</div>
-                    <div>Added Oct 24, 2023</div>
-                    <div>Click to view</div>
+                    <div>@Model.ApplicationUser.UserName 's Resume</div>
+                    <a href="https://indeedjob.blob.core.windows.net/cvs/0c840a6c-f289-4a0a-8b6d-0a2a01912ecc.pdf?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2023-12-30T07:38:42Z&st=2023-11-20T23:38:42Z&sip=1.0.0.0-223.255.255.255&spr=https&sig=nuduce9h%2FPmxk0N%2FphRowMjrR%2BU9fAFx%2FQ67nrjxAho%3D&cb=638366414647688598"
+                        target="_blank" style="text-decoration:none;">
+                        Click to view
+                    </a>
+
                 </div>
             </div>
             <br>
@@ -52,4 +72,80 @@
             <br>
         </div>
     </div>
+    @* This is a popup modal for editing user info on same page
+    Uses bootstrap validation (asp validation acted very strange with modal interaction)*@
+    <div class="modal fade" id="testModal" tabindex="-1" role="dialog" aria-labelledby="testModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="testModalLabel">Edit Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" class="needs-validation" novalidate>
+                        <div class="mb-3">
+                            <div>
+                                <label for="emailInput" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="emailInput" name="EditProfileInput.Email"
+                                    value="@Model.ApplicationUser.Email" required>
+                                <div class="invalid-feedback">
+                                    Please enter a valid email address.
+                                </div>
+                            </div>
+                            <div>
+                                <label for="PhoneNumber" class="form-label">Phone:</label>
+                                <input type="text" class="form-control" id="PhoneNumber"
+                                    name="EditProfileInput.PhoneNumber" value="@Model.ApplicationUser.PhoneNumber"
+                                    pattern="[0-9]{7,}"
+                                    title="Please enter a numeric phone number with at least 7 digits" required>
+                                <div class="invalid-feedback">
+                                    Please enter a valid phone number with at least 7 digits.
+                                </div>
+                            </div>
+                            <div>
+                                <label for="City" class="form-label">City:</label>
+                                <input type="text" class="form-control" id="City" name="EditProfileInput.City"
+                                    value="@Model.ApplicationUser.City" required>
+                                <div class="invalid-feedback">
+                                    City cannot be empty.
+                                </div>
+                            </div>
+                            <div>
+                                <label for="State" class="form-label">State:</label>
+                                <input type="text" class="form-control" id="State" name="EditProfileInput.State"
+                                    value="@Model.ApplicationUser.State" required>
+                                <div class="invalid-feedback">
+                                    State cannot be empty.
+                                </div>
+                            </div>
+                            <div>
+                                <label for="Country" class="form-label">Country:</label>
+                                <input type="text" class="form-control" id="Country" name="EditProfileInput.Country"
+                                    value="@Model.ApplicationUser.Country" required>
+                                <div class="invalid-feedback">
+                                    Country cannot be empty.
+                                </div>
+                            </div>
+                            <div>
+                                <label for="Zipcode" class="form-label">Zipcode:</label>
+                                <input type="text" class="form-control" id="Zipcode" name="EditProfileInput.ZipCode"
+                                    value="@Model.ApplicationUser.Zipcode" required>
+                                <div class="invalid-feedback">
+                                    Zipcode cannot be empty.
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-2">Submit Changes</button>
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                        onclick="return validateForm()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+<script src="~/js/site.js"></script>

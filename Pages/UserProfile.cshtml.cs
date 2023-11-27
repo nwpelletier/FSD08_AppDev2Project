@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -43,5 +44,77 @@ namespace FSD08_AppDev2Project.Pages
 
             return Page();
         }
+
+        public class EditProfileInputModel
+        {
+            [Required(ErrorMessage = "The Email field is required.")]
+            [Display(Name = "Email")]
+            public string Email { get; set; }
+
+            [Required(ErrorMessage = "The Country field is required.")]
+            [Display(Name = "Country")]
+            public string Country { get; set; }
+
+            [Required(ErrorMessage = "The State field is required.")]
+            [Display(Name = "State")]
+            public string State { get; set; }
+
+            [Required(ErrorMessage = "The City field is required.")]
+            [Display(Name = "City")]
+            public string City { get; set; }
+
+            [Required(ErrorMessage = "The Zipcode field is required.")]
+            [Display(Name = "Zipcode")]
+            public string ZipCode { get; set; }
+
+            [Required(ErrorMessage = "The Phone number field is required.")]
+            [Display(Name = "PhoneNumber")]
+            public string PhoneNumber { get; set; }
+        }
+
+        public EditProfileInputModel EditProfileInput { get; set; }
+
+        public async Task<IActionResult> OnPostAsync()
+        {
+            ApplicationUser = await _userManager.GetUserAsync(User);
+            EditProfileInput = new EditProfileInputModel();
+
+            EditProfileInput.Email = Request.Form["EditProfileInput.Email"];
+            EditProfileInput.Country = Request.Form["EditProfileInput.Country"];
+            EditProfileInput.State = Request.Form["EditProfileInput.State"];
+            EditProfileInput.City = Request.Form["EditProfileInput.City"];
+            EditProfileInput.ZipCode = Request.Form["EditProfileInput.ZipCode"];
+            EditProfileInput.PhoneNumber = Request.Form["EditProfileInput.PhoneNumber"];
+
+            if (ModelState.IsValid)
+            {
+                ApplicationUser.Email = EditProfileInput.Email;
+                ApplicationUser.Country = EditProfileInput.Country;
+                ApplicationUser.State = EditProfileInput.State;
+                ApplicationUser.City = EditProfileInput.City;
+                ApplicationUser.Zipcode = EditProfileInput.ZipCode;
+                ApplicationUser.PhoneNumber = EditProfileInput.PhoneNumber;
+
+                var result = await _userManager.UpdateAsync(ApplicationUser);
+
+                if (result.Succeeded)
+                {
+                    TempData["SuccessMessage"] = "Information updated successfully.";
+
+                    return RedirectToPage("/UserProfile");
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                }
+            }
+            return Page();
+        }
+
+
+
     }
 }

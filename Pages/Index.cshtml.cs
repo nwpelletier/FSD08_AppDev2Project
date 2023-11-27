@@ -19,8 +19,8 @@ public class IndexModel : PageModel
 
     public void OnGet()
     {
-        //Console.WriteLine(AzureBlobUtil.GetIconBlobUrl("0c840a6c-f289-4a0a-8b6d-0a2a01912ecc"));
-        //Console.WriteLine(AzureBlobUtil.GetCVsBlobUrl("0c840a6c-f289-4a0a-8b6d-0a2a01912ecc"));
+        // Console.WriteLine(AzureBlobUtil.GetIconBlobUrl("0c840a6c-f289-4a0a-8b6d-0a2a01912ecc"));
+        // Console.WriteLine(AzureBlobUtil.GetCVsBlobUrl("0c840a6c-f289-4a0a-8b6d-0a2a01912ecc"));
     }
 
     public async void OnPostAsync()
