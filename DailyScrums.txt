@@ -227,13 +227,18 @@ Needs help with:
 
 PEJMAN
 What I did yesterday:
-- 
+- Finishing Registration and Login
+- Authorization
 
 What I'm doing today:
-- 
+- Hide/unhide buttons in specific situations
+- Fetch the list of all the company names
+- Fetch Company ratings and reviews
+- CompanyReviews page 
 
 What I didn't finish:
-- 
+- Hide/unhide buttons in specific situations
+- CompanyReviews page
 
 Needs help with:
-- 
+- Hide/unhide buttons in specific situations 
