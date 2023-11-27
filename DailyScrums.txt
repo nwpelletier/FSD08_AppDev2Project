@@ -190,3 +190,50 @@ What I didn't finish:
 Needs help with:
 - Authorization (creating roles)
 - Hide/unhide buttons in specific situations
+
+============================
+Monday, Nov 27
+
+NICK
+What I did yesterday:
+- Small layout changes
+- User profile edit
+- Troubleshooting
+
+What I'm doing today:
+- Finish user profile/company profile
+
+What I didn't finish:
+- 
+
+Needs help with:
+- 
+
+MIRAL
+What I did yesterday:
+- Added styling and logic (job posting page)
+-Added company dropdown to job creation and backend code
+-Added property of Role in ApplicationUser table
+-Did trial deployment app to Azure App Service
+
+What I'm doing today:
+- Working on Azure app service
+
+What I didn't finish:
+- 
+
+Needs help with:
+- Need to read documentation for Azure app service
+
+PEJMAN
+What I did yesterday:
+- 
+
+What I'm doing today:
+- 
+
+What I didn't finish:
+- 
+
+Needs help with:
+- 
