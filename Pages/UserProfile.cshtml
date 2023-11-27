@@ -4,37 +4,23 @@
     ViewData["Title"] = "Your Profile";
 }
 
-@* TODO: Uncomment this once login persists *@
-@* <div class="user-profile">
-<div class="profile-header">
-<div class="profile-name">@Model.ApplicationUser.UserName</div>
-</div>
-
-<div class="contact-info">
-<h2>Contact Information</h2>
-<div>Email: @Model.ApplicationUser.Email</div>
-<div>Phone: @Model.ApplicationUser.PhoneNumber</div>
-<div>City: @Model.ApplicationUser.City</div>
-<div>State: @Model.ApplicationUser.State</div>
-<div>Country: @Model.ApplicationUser.Country</div>
-<div>Zipcode: @Model.ApplicationUser.Zipcode</div>
-</div>
-</div> *@
-
 <div class="user-profile">
     <div class="row">
         <div class="offset-2 col-8">
             <div class="profile-header">
                 <div class="container d-flex justify-content-between align-items-center">
-                    <div class="profile-name">John Doe</div>
+                    <div class="profile-name">@Model.ApplicationUser.UserName</div>
                     <div class="profile-image">JD</div>
                 </div>
             </div>
             <div class="contact-info-user my-3">
                 <div class="contact-info">
-                    <div>john.doe@example.com</div>
-                    <div>(123) 456-7890</div>
-                    <div>Montreal, QC, A1B2C3, CA</div>
+                    <div>Email: @Model.ApplicationUser.Email</div>
+                    <div>Phone: @Model.ApplicationUser.PhoneNumber</div>
+                    <div>City: @Model.ApplicationUser.City</div>
+                    <div>State: @Model.ApplicationUser.State</div>
+                    <div>Country: @Model.ApplicationUser.Country</div>
+                    <div>Zipcode: @Model.ApplicationUser.Zipcode</div>
                 </div>
             </div>
             <h3>Resume</h3>
@@ -47,12 +33,20 @@
                 </div>
             </div>
             <br>
+
+            @* Added in section to display all jobs the user has applied to *@
             <h3>Jobs Applied To</h3>
             <div class="profile-panel container d-flex justify-content-before align-items-center">
                 <div class="mx-3">
-                    <div>Job 1 (link to job posting)</div>
-                    <div>Job 2 (link to job posting)</div>
-                    <div>Job 3 (link to job posting)</div>
+                    @foreach (var appliedJob in Model.AppliedJobs)
+                    {
+                        <div>
+                            <p>
+                                <strong>@appliedJob.Job.JobTitle</strong> at
+                                @Model.GetCompanyName(appliedJob.Job.JobCompanyId)
+                            </p>
+                        </div>
+                    }
                 </div>
             </div>
             <br>
