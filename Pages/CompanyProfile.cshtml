@@ -33,7 +33,7 @@
                         <div>Start Date: @job.StartDate.ToShortDateString()</div>
                         <div>End Date: @job.EndDate.ToShortDateString()</div>
                         <hr>
-                        <div>Description: @job.JobDescription</div>
+                        <div>Description: @Html.Raw(@job.JobDescription)</div>
                     </div>
                     <div>
                         <a asp-page="/EditJob" asp-route-jobId="@job.Id" asp-route-companyId="@Model.Company.Id">Edit</a>

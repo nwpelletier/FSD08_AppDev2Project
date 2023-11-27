@@ -25,14 +25,23 @@
                 <input asp-for="Job.JobCategory" class="form-control" />
                 <span asp-validation-for="Job.JobCategory" class="text-danger"></span>
             </div>
-    
-            <div class="form-group">
-                <label asp-for="Job.JobDescription"></label>
-                <textarea asp-for="Job.JobDescription" class="form-control"></textarea>
-                <span asp-validation-for="Job.JobDescription" class="text-danger"></span>
-            </div>
+
+            @* element for rich text textarea *@
+                <div class="form-group">
+                    <label asp-for="Job.JobDescription"></label>
+                    <textarea asp-for="Job.JobDescription" id="JobDescriptionEditor" class="form-control"></textarea>
+                    <span asp-validation-for="Job.JobDescription" class="text-danger"></span>
+                </div>
     
             <button type="submit" class="btn btn-primary">Save</button>
         </form>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        tinymce.init({
+            selector: '#JobDescriptionEditor'
+        });
+    </script>
+}
