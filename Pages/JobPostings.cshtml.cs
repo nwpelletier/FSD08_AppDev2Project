@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Authorization; // Add this using directive
 
 namespace FSD08_AppDev2Project.Pages
 {
-    [Authorize]
     public class JobPostingsModel : PageModel
     {
         private readonly AppDev2DbContext _db; // Make sure AppDev2DbContext is accessible
@@ -38,20 +37,24 @@ namespace FSD08_AppDev2Project.Pages
             ApplicationUsers = _db.ApplicationUsers.ToList();
             ApplicationUser currentUser = await _userManager.GetUserAsync(User);
 
-            AppliedJobs = _db.AppliedJobs.Include(j => j.Applicant).Where(ja => ja.Applicant.Id == currentUser.Id).ToList();
-            
-            Console.WriteLine("JobsJSOnuser*----" + JsonSerializer.Serialize(AppliedJobs));
-            // Console.WriteLine("CurrentUser*----" + JsonSerializer.Serialize(currentUser));
-            
+            if (currentUser != null)
+            {
+                AppliedJobs = _db.AppliedJobs.Include(j => j.Applicant).Where(ja => ja.Applicant.Id == currentUser.Id).ToList();
+
+                Console.WriteLine("JobsJSOnuser*----" + JsonSerializer.Serialize(AppliedJobs));
+                // Console.WriteLine("CurrentUser*----" + JsonSerializer.Serialize(currentUser));
+            }
         }
 
-        public async Task<ActionResult> OnPostAsync(){
+        public async Task<ActionResult> OnPostAsync()
+        {
             Job selectedJob = _db.Jobs.Find(SelectedJobId);
             ApplicationUser user = await _userManager.GetUserAsync(User);
-            AppliedJob appliedJob = new AppliedJob(){
-                     Applicant = user,
-                     Job = selectedJob,
-                     AppliedDate = DateTime.Now
+            AppliedJob appliedJob = new AppliedJob()
+            {
+                Applicant = user,
+                Job = selectedJob,
+                AppliedDate = DateTime.Now
             };
 
             _db.AppliedJobs.Add(appliedJob);
