@@ -1,0 +1,5 @@
+{
+    "appService.preDeployTask": "publish-release",
+    "appService.deploySubpath": "bin\\Release\\net8.0\\publish",
+    "appService.defaultWebAppToDeploy": "/subscriptions/42ddaab4-a68b-4fb2-b0cd-400c81f629d0/resourceGroups/indeedjob/providers/Microsoft.Web/sites/indeedjobproject"
+}
