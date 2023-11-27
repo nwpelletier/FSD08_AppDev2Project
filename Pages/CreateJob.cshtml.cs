@@ -12,6 +12,7 @@ namespace FSD08_AppDev2Project.Pages
 {
     //[Authorize]
     //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "HiringManager")]
     public class CreateJobModel : PageModel
     {
         private readonly AppDev2DbContext _db;
