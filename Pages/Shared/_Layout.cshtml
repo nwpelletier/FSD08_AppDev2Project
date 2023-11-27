@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using FSD08_AppDev2Project.Models;
+@inject SignInManager<ApplicationUser> signInManager;
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -22,6 +24,7 @@
                 </button>
                 <div class="navbar-collapse collapse w-100">
                     <ul class="navbar-nav me-auto mx-3">
+                        @if (signInManager.IsSignedIn(User)) {
                         <li class="nav-item mx-2">
                             <a class="btn btn-outline-secondary" asp-area="" asp-page="/Index">Homepage</a>
                         </li>
@@ -38,17 +41,21 @@
                         <li class="nav-item mx-2">
                             <a class="btn btn-outline-secondary" asp-area="" asp-page="/JobPostings">Browse Jobs</a>
                         </li>
+                        }
                     </ul>
                     <ul class="navbar-nav ms-auto">
+                        @if (signInManager.IsSignedIn(User)) {
+                        <li class="nav-item mx-2">
+                            <a class="btn btn-outline-secondary" asp-area="" asp-page="/Logout">Logout</a>
+                        </li>
+                        } else {
                         <li class="nav-item mx-2">
                             <a class="btn btn-outline-secondary" asp-area="" asp-page="/Register">Register</a>
                         </li>
                         <li class="nav-item mx-2">
                             <a class="btn btn-outline-secondary" asp-area="" asp-page="/Login">Login</a>
                         </li>
-                        <li class="nav-item mx-2">
-                            <a class="btn btn-outline-secondary" asp-area="" asp-page="/Logout">Logout</a>
-                        </li>
+                        }
                     </ul>
                 </div>
 

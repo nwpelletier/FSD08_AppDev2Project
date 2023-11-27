@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace FSD08_AppDev2Project.Pages
 {
-    [Authorize]
+    //[Authorize]
     //[Authorize(Roles = "Admin")]
     public class CreateJobModel : PageModel
     {
