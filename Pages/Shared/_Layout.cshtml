@@ -25,24 +25,29 @@
                 <div class="navbar-collapse collapse w-100">
                     <ul class="navbar-nav me-auto mx-3">
                         @if (signInManager.IsSignedIn(User)) {
-                        <li class="nav-item mx-2">
-                            <a class="btn btn-outline-secondary" asp-area="" asp-page="/Index">Homepage</a>
-                        </li>
-                        <li class="nav-item mx-2">
-                            <a class="btn btn-outline-secondary" asp-area="" asp-page="/UserProfile">Your Profile</a>
-                        </li>
-                        <li class="nav-item mx-2">
-                            <a class="btn btn-outline-secondary" asp-area="" asp-page="/CompanyProfile"
-                                asp-route-companyId="1">Company Profile</a>
-                        </li>
-                        <li class="nav-item mx-2">
-                            <a class="btn btn-outline-secondary" asp-area="" asp-page="/CreateJob">Post a Job</a>
-                        </li>
+                            <li class="nav-item mx-2">
+                                <a class="btn btn-outline-secondary" asp-area="" asp-page="/Index">Homepage</a>
+                            </li>
+                            <li class="nav-item mx-2">
+                                <a class="btn btn-outline-secondary" asp-area="" asp-page="/UserProfile">Your Profile</a>
+                            </li>
+                            <li class="nav-item mx-2">
+                                <a class="btn btn-outline-secondary" asp-area="" asp-page="/JobPostings">Browse Jobs</a>
+                            </li>
+                                @if (User.IsInRole("HiringManager")) {
+                                    <li class="nav-item mx-2">
+                                        <a class="btn btn-outline-secondary" asp-area="" asp-page="/CompanyProfile"
+                                            asp-route-companyId="1">Company Profile</a>
+                                    </li>
+                                    <li class="nav-item mx-2">
+                                        <a class="btn btn-outline-secondary" asp-area="" asp-page="/CreateJob">Post a Job</a>
+                                    </li>
+                                }
+                        } else {
+                            <li class="nav-item mx-2">
+                                <a class="btn btn-outline-secondary" asp-area="" asp-page="/JobPostings">Browse Jobs</a>
+                            </li>
                         }
-                        <li class="nav-item mx-2">
-                            <a class="btn btn-outline-secondary" asp-area="" asp-page="/JobPostings">Browse Jobs</a>
-                        </li>
-
                     </ul>
                     <ul class="navbar-nav ms-auto">
                         @if (signInManager.IsSignedIn(User)) {
@@ -59,11 +64,9 @@
                         }
                     </ul>
                 </div>
-
             </div>
         </nav>
     </header>
-
 
     <div class="container-fluid">
         <main role="main" class="pb-3">
