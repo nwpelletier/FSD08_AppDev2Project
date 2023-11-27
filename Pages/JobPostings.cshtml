@@ -14,46 +14,48 @@
     </div>
 }
 
-<div class="row">
-    <div class="col-md-6">
-        <ul>
-            @foreach (var job in Model.Jobs)
-            {
-                <div class="card text-dark bg-light mb-3 customborder" style="max-width: 30rem;"
-                    onclick="showJobDetails(@job.Id)">
-                    <div class="card-header">@job.JobTitle</div>
-                    <div class="card-body">
-                        <h5 class="card-title">@job.JobCategory</h5>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <ul>
+                @foreach (var job in Model.Jobs)
+                {
+                    <div class="card text-dark bg-light mb-3 customborder" style="max-width: 30rem;"
+                        onclick="showJobDetails(@job.Id)">
+                        <div class="card-header">@job.JobTitle</div>
+                        <div class="card-body">
+                            <h5 class="card-title">@job.JobCategory</h5>
+                        </div>
+                        <div class="card-footer bg-transparent border-light">Posted on: @job.StartDate</div>
                     </div>
-                    <div class="card-footer bg-transparent border-light">Posted on: @job.StartDate</div>
-                </div>
-
-            }
-        </ul>
-    </div>
-
-    <div class="col-md-6" id="detailsContainer" style="display: none;">
-        <div class="card text-dark bg-light mb-3 customborder" style="max-width: 45rem;max-height:50rem;">
-            <form method="post" id="applyNowForm" asp-page-handler="HandleJobId">
-                <input type="hidden" id="selectedJobId" name="selectedJobId" value="" />
-                <div class="card-header"></div>
-                <br>
-                <div class="text-center">
-
-                    <div class="text-center">
-                        <button type="submit" id="btnApply" class="btn btn-primary"></button>
-                    </div>
-                </div>
-                <hr>
-                <div class="card-body" style="max-height:35rem;overflow-y: auto;">
-                    <h5 class="card-title"></h5>
-                    <p class="card-text"></p>
-                </div>
-                <div class="card-footer bg-transparent border-light"></div>
-            </form>
+    
+                }
+            </ul>
         </div>
+    
+        <div class="col-md-6" id="detailsContainer" style="display: none;">
+            <div class="card text-dark bg-light mb-3 customborder" style="max-width: 45rem;max-height:50rem;">
+                <form method="post" id="applyNowForm" asp-page-handler="HandleJobId">
+                    <input type="hidden" id="selectedJobId" name="selectedJobId" value="" />
+                    <div class="card-header"></div>
+                    <br>
+                    <div class="text-center">
+    
+                        <div class="text-center">
+                            <button type="submit" id="btnApply" class="btn btn-primary"></button>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="card-body" style="max-height:35rem;overflow-y: auto;">
+                        <h5 class="card-title"></h5>
+                        <p class="card-text"></p>
+                    </div>
+                    <div class="card-footer bg-transparent border-light"></div>
+                </form>
+            </div>
+        </div>
+    
     </div>
-
 </div>
 
 

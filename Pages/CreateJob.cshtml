@@ -3,62 +3,64 @@
 @{
 }
 
-<div class="row justify-content-center mt-5">
-    <div class="col-md-6">
-        <h2>Create Job</h2>
-
-        <form method="post">
-            <div asp-validation-summary="All" class="text-danger"></div>
-
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+            <h2>Create Job</h2>
+    
+            <form method="post">
+                <div asp-validation-summary="All" class="text-danger"></div>
+    
+                <div class="form-group">
+                    <label asp-for="Input.JobTitle"></label>
+                    <input asp-for="Input.JobTitle" class="form-control" />
+                    <span asp-validation-for="Input.JobTitle" class="text-danger"></span>
+                </div>
+    
+                <div class="form-group">
+                    <label asp-for="Input.JobCategory"></label>
+                    <input asp-for="Input.JobCategory" class="form-control" />
+                    <span asp-validation-for="Input.JobCategory" class="text-danger"></span>
+                </div>
+    
             <div class="form-group">
-                <label asp-for="Input.JobTitle"></label>
-                <input asp-for="Input.JobTitle" class="form-control" />
-                <span asp-validation-for="Input.JobTitle" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Input.JobCategory"></label>
-                <input asp-for="Input.JobCategory" class="form-control" />
-                <span asp-validation-for="Input.JobCategory" class="text-danger"></span>
-            </div>
-
-        <div class="form-group">
-            <label for="companyDropdown">Select a Company:</label>
-            <select id="companyDropdown" asp-for="SelectedCompanyId" class="form-control"
-                asp-items="new SelectList(Model.Companys, nameof(FSD08_AppDev2Project.Models.Company.Id), nameof(FSD08_AppDev2Project.Models.Company.Name))">
-                <option value="">Select Company</option>
-            </select>
-            </div>
-
-
-            @* element for rich text textarea *@
-            <div class="form-group">
-                <label asp-for="Input.JobDescription"></label>
-                <textarea asp-for="Input.JobDescription" id="JobDescriptionEditor" class="form-control"></textarea>
-                <span asp-validation-for="Input.JobDescription" class="text-danger"></span>
-            </div>
-
-
-            <div class="row justify-content-center mt-5">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label asp-for="Input.StartDate"></label>
-                        <input asp-for="Input.StartDate" type="date" class="form-control" />
-                        <span asp-validation-for="Input.StartDate" class="text-danger"></span>
+                <label for="companyDropdown">Select a Company:</label>
+                <select id="companyDropdown" asp-for="SelectedCompanyId" class="form-control"
+                    asp-items="new SelectList(Model.Companys, nameof(FSD08_AppDev2Project.Models.Company.Id), nameof(FSD08_AppDev2Project.Models.Company.Name))">
+                    <option value="">Select Company</option>
+                </select>
+                </div>
+    
+    
+                @* element for rich text textarea *@
+                <div class="form-group">
+                    <label asp-for="Input.JobDescription"></label>
+                    <textarea asp-for="Input.JobDescription" id="JobDescriptionEditor" class="form-control"></textarea>
+                    <span asp-validation-for="Input.JobDescription" class="text-danger"></span>
+                </div>
+    
+    
+                <div class="row justify-content-center mt-5">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Input.StartDate"></label>
+                            <input asp-for="Input.StartDate" type="date" class="form-control" />
+                            <span asp-validation-for="Input.StartDate" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Input.EndDate"></label>
+                            <input asp-for="Input.EndDate" type="date" class="form-control" />
+                            <span asp-validation-for="Input.EndDate" class="text-danger"></span>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label asp-for="Input.EndDate"></label>
-                        <input asp-for="Input.EndDate" type="date" class="form-control" />
-                        <span asp-validation-for="Input.EndDate" class="text-danger"></span>
-                    </div>
-                </div>
-            </div>
-
-
-            <button type="submit" class="btn btn-primary mt-2">Create Job</button>
-        </form>
+    
+    
+                <button type="submit" class="btn btn-primary mt-2">Create Job</button>
+            </form>
+        </div>
     </div>
 </div>
 
