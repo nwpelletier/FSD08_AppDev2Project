@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace FSD08_AppDev2Project.Pages
 {
-    [Authorize]
+    //[Authorize]
     [Authorize(Roles = "HiringManager")]
     public class CompanyProfileModel : PageModel
     {
