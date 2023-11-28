@@ -27,6 +27,11 @@
                         <div class="card-body">
                             <h5 class="card-title">City: @companyModel.Company.City</h5>
                         </div>
+                        @if  (@companyModel.aveRating > -1){
+                        <div id="AveRating" class="card-body" >
+                            <h5 class="card-title">Average: @companyModel.aveRating</h5>
+                        </div>
+                         }
                     </div>
                     @for(var rIndex = 0 ; rIndex < companyModel.Reviews.Count(); rIndex++){
                         <div>comment:  @companyModel.Reviews[rIndex].Reviews </div>

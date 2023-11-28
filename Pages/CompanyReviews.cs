@@ -35,6 +35,7 @@ namespace FSD08_AppDev2Project.Pages
             public Company Company { get; set; }
             public List<Review> Reviews { get; set; }
 
+            public int aveRating {get; set;}
         }
         public List<CompanyModel> companysModel = new List<CompanyModel>();
 
@@ -48,6 +49,13 @@ namespace FSD08_AppDev2Project.Pages
                 CompanyModel companyModel = new CompanyModel();
                 companyModel.Company = company;
                 companyModel.Reviews =  _db.Reviews.Where(re => re.Company == company).ToList();
+                int SumR = 0;
+                foreach(var r in companyModel.Reviews){
+                    SumR += r.Stars;
+                }
+                if(companyModel.Reviews.Count() > 0)
+                    companyModel.aveRating = SumR/companyModel.Reviews.Count();
+                    else companyModel.aveRating = -1;
                 companysModel.Add(companyModel);
             }
 
