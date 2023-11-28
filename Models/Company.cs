@@ -15,5 +15,6 @@ namespace FSD08_AppDev2Project.Models
         public string City { get; set; }
         public string State { get; set; }
         public string Country { get; set; }
+        public List<ApplicationUser> HiringManagers { get; set; }
     }
 }

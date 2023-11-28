@@ -4,6 +4,7 @@ using FSD08_AppDev2Project.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FSD08_AppDev2Project.Data.Migrations
 {
     [DbContext(typeof(AppDev2DbContext))]
-    partial class AppDev2DbContextModelSnapshot : ModelSnapshot
+    [Migration("20231128170642_AddedHiringManagersToCompany")]
+    partial class AddedHiringManagersToCompany
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

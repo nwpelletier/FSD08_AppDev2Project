@@ -27,6 +27,8 @@ namespace FSD08_AppDev2Project.Pages
         public ApplicationUser ApplicationUser { get; set; }
         public List<AppliedJob> AppliedJobs { get; set; }
         public List<Company> Companies { get; set; }
+        [BindProperty]
+        public string ProfileImage { get; set; }
 
         public string GetCompanyName(int companyId)
         {
@@ -41,6 +43,8 @@ namespace FSD08_AppDev2Project.Pages
             AppliedJobs = _db.AppliedJobs.Include(j => j.Job).Where(ja => ja.Applicant.Id == ApplicationUser.Id).ToList();
 
             Companies = _db.Companys.ToList();
+
+            ProfileImage = AzureBlobUtil.GetIconBlobUrl(ApplicationUser.Id);
 
             return Page();
         }

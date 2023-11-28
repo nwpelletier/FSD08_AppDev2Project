@@ -23,8 +23,7 @@
                         @* Using hard coded image now
                         I've tried uploading a profile image on this user account, id: fd7a30c3-e85a-42fb-94fc-66232329dcc7
                         And @AzureBlobUtil.GetIconBlobUrl("fd7a30c3-e85a-42fb-94fc-66232329dcc7") does not work *@
-                        <img src=@AzureBlobUtil.GetIconBlobUrl("0c840a6c-f289-4a0a-8b6d-0a2a01912ecc")
-                            alt="Profile Image">
+                        <img src="@Model.ProfileImage" alt="Profile Image" class="img-fluid">
                     </div>
                 </div>
             </div>
