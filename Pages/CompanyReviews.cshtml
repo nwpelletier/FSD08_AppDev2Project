@@ -1,0 +1,83 @@
+﻿@page
+@model FSD08_AppDev2Project.Pages.CompanyReviewsModel
+@{
+    ViewData["Title"] = "Company Reviews";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+                        <ul>
+                @for(var index = 0 ; index < Model.companysModel.Count(); index++)
+                {
+                    var companyModel = Model.companysModel[index];
+                    <div class="card text-dark bg-light mb-3 customborder" style="max-width: 30rem;"
+                        onclick="showCompanyDetails(@companyModel.Company.Id)">
+                        <div class="card-header">
+                            <h3 class="card-title">Company Name: @companyModel.Company.Name</h3>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Country: @companyModel.Company.Country</h5>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">State: @companyModel.Company.State</h5>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">City: @companyModel.Company.City</h5>
+                        </div>
+                    </div>
+                    @for(var rIndex = 0 ; rIndex < companyModel.Reviews.Count(); rIndex++){
+                        <div>comment:  @companyModel.Reviews[rIndex].Reviews </div>
+                    }
+                }
+            </ul>
+        </div>
+        <div class="col-md-6" id="detailsContainer" style="display: none;">
+            <div class="card text-dark bg-light mb-3 customborder" style="max-width: 45rem;max-height:50rem;">
+                <form method="post" id="applyNowForm" asp-page-handler="HandleCompanyId">
+                    <input type="hidden" id="selectedCompanyId" name="selectedCompanyId" value="" />
+                    <div class="card-header"></div>
+                    <br>
+                    <div class="text-center"></div>
+                    <hr>
+                    <div class="card-body" style="max-height:35rem;overflow-y: auto;">
+                        <h5 class="card-title"></h5>
+                        <p class="card-text"></p>
+                    </div>
+                    <div class="card-footer bg-transparent border-light"></div>
+                    <textarea id="commentBox" name="commentBox" rows="4" cols="50"></textarea>
+                    <div class="text-center">
+                        <button type="submit" id="btnComment" class="btn btn-primary"></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showCompanyDetails(companyId) {
+        //find by id
+        //debugger;
+        var companys = @Html.Raw(Json.Serialize(Model.Companys));
+        var clickedCompany = companys.find(company => company.id === companyId);
+        console.log(clickedCompany);
+        if (clickedCompany) {
+            document.getElementById('detailsContainer').querySelector('.card-header').innerText = clickedCompany.name;
+            document.getElementById('detailsContainer').querySelector('.card-title').innerText = clickedCompany.country;
+            document.getElementById('detailsContainer').querySelector('.card-text').innerHTML = clickedCompany.state;
+            document.getElementById('detailsContainer').querySelector('.card-text').innerHTML = clickedCompany.city;
+
+            //set id to use in backend
+            document.getElementById('selectedCompanyId').value = clickedCompany.id;
+            //make div visible
+            document.getElementById('detailsContainer').style.display = 'block';
+        }
+    }
+
+    var isAuthenticated = @User.Identity.IsAuthenticated;
+    var btnComment = document.getElementById('btnComment');
+    btnComment.style.display = isAuthenticated ? 'block' : 'none';
+</script>
