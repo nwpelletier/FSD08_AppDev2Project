@@ -16,26 +16,33 @@
                     <div class="card text-dark bg-light mb-3 customborder" style="max-width: 30rem;"
                         onclick="showCompanyDetails(@companyModel.Company.Id)">
                         <div class="card-header">
-                            <h3 class="card-title">Company Name: @companyModel.Company.Name</h3>
+                            <h3 class="card-title">Company Name:</h3>
+                            <h5 class="card-title">@companyModel.Company.Name</h5>
                         </div>
                         <div class="card-body">
-                            <h5 class="card-title">Country: @companyModel.Company.Country</h5>
+                            <h5 class="card-title">Country:</h5>
+                            <div class="card-title">@companyModel.Company.Country</div>
                         </div>
                         <div class="card-body">
-                            <h5 class="card-title">State: @companyModel.Company.State</h5>
+                            <h5 class="card-title">State:</h5>
+                            <div class="card-title">@companyModel.Company.State</div>
                         </div>
                         <div class="card-body">
-                            <h5 class="card-title">City: @companyModel.Company.City</h5>
+                            <h5 class="card-title">City:</h5>
+                            <div class="card-title">@companyModel.Company.City</div>
                         </div>
                         @if  (@companyModel.aveRating > -1){
                         <div id="AveRating" class="card-body" >
                             <h5 class="card-title">Average: @companyModel.aveRating</h5>
                         </div>
                          }
+                    
                     </div>
+                    <div><h5>comment(s):</h5></div>
                     @for(var rIndex = 0 ; rIndex < companyModel.Reviews.Count(); rIndex++){
-                        <div>comment:  @companyModel.Reviews[rIndex].Reviews </div>
+                        <div>@companyModel.Reviews[rIndex].Reviews </div>
                     }
+                    <br>
                 }
             </ul>
         </div>
@@ -43,12 +50,9 @@
             <div class="card text-dark bg-light mb-3 customborder" style="max-width: 45rem;max-height:50rem;">
                 <form method="post" id="applyNowForm" asp-page-handler="HandleCompanyId">
                     <input type="hidden" id="selectedCompanyId" name="selectedCompanyId" value="" />
-                    <div class="card-header"></div>
-                    <br>
-                    <div class="text-center"></div>
-                    <hr>
+                    <h5 class="card-header"></h5>
                     <div class="card-body" style="max-height:35rem;overflow-y: auto;">
-                        <h5 class="card-title"></h5>
+                        <p class="card-title"></p>
                         <p class="card-text"></p>
                     </div>
                     <div class="card-footer bg-transparent border-light"></div>
