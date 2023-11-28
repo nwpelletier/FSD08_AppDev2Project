@@ -1,0 +1,134 @@
+﻿@page
+@model FSD08_AppDev2Project.Pages.AdminModel
+@using FSD08_AppDev2Project.Data
+
+<div class="row justify-content-center">
+    <div class="col-8 admin-panel">
+        <h2>Companies</h2>
+        <hr>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>City</th>
+                    <th>State</th>
+                    <th>Country</th>
+                    <th>Hiring Managers</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var company in Model.Companys)
+                {
+                    <tr>
+                        <td>@company.Id</td>
+                        <td>@company.Name</td>
+                        <td>@company.City</td>
+                        <td>@company.State</td>
+                        <td>@company.Country</td>
+                        <td>
+                            @foreach (var manager in company.HiringManagers)
+                            {
+                                <p>@manager.UserName</p>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <br><br>
+
+    <div class="col-8 admin-panel">
+        <h2>Users</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    @* <th>Id</th> *@
+                    <th>UserName</th>
+                    <th>Email</th>
+                    <th>Active</th>
+                    <th>City</th>
+                    <th>State</th>
+                    <th>Country</th>
+                    <th>Zipcode</th>
+                    <th>Role</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model.ApplicationUsers)
+                {
+                    <tr>
+                        @* <td>@user.Id</td> *@
+                        <td>@user.UserName</td>
+                        <td>@user.Email</td>
+                        <td>@(user.Active ? "Yes" : "No")</td>
+                        <td>@user.City</td>
+                        <td>@user.State</td>
+                        <td>@user.Country</td>
+                        <td>@user.Zipcode</td>
+                        <td>@user.Role</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-8 admin-panel">
+        <h2>Job Reviews</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    @* <th>Id</th> *@
+                    <th>Id</th>
+                    <th>Company</th>
+                    <th>Username</th>
+                    <th>Review</th>
+                    <th>Stars</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var review in Model.Reviews)
+                {
+                    <tr>
+                        <td>@review.Id</td>
+                        <td>@review.Company.Name</td>
+                        <td>@review.User.UserName</td>
+                        <td>@review.Reviews</td>
+                        <td>@review.Stars</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-8 admin-panel">
+        <h2>Jobs</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>CompanyId</th>
+                    <th>Category</th>
+                    <th>Title</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var job in Model.Jobs)
+                {
+                    <tr>
+                        <td>@job.Id</td>
+                        <td>@job.JobCompanyId</td> <!-- Assuming you want to display the company ID -->
+                        <td>@job.JobCategory</td>
+                        <td>@job.JobTitle</td>
+                        <td>@job.StartDate</td>
+                        <td>@job.EndDate</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
