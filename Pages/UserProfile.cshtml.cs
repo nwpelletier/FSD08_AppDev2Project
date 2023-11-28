@@ -29,6 +29,8 @@ namespace FSD08_AppDev2Project.Pages
         public List<Company> Companies { get; set; }
         [BindProperty]
         public string ProfileImage { get; set; }
+        [BindProperty]
+        public string UserCV { get; set; }
 
         public string GetCompanyName(int companyId)
         {
@@ -45,6 +47,7 @@ namespace FSD08_AppDev2Project.Pages
             Companies = _db.Companys.ToList();
 
             ProfileImage = AzureBlobUtil.GetIconBlobUrl(ApplicationUser.Id);
+            UserCV = AzureBlobUtil.GetCVsBlobUrl(ApplicationUser.Id);
 
             return Page();
         }

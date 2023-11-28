@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Reflection.Metadata.Ecma335;
 using System.Security.Cryptography.X509Certificates;
+using FSD08_AppDev2Project.Data;
 using FSD08_AppDev2Project.Models;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Identity;
@@ -28,6 +29,9 @@ namespace FSD08_AppDev2Project.Pages
 
         [BindProperty]
         public InputModel Input { get; set; }
+
+        [BindProperty]
+        public IFormFile FileInput { get; set; }
 
         public List<SelectListItem> roles { get; set; } = new List<SelectListItem>
             {
@@ -84,32 +88,55 @@ namespace FSD08_AppDev2Project.Pages
             //ReturnUrl = returnUrl;
         }
 
-        public async Task<IActionResult> OnPostAsync(){
-            if(ModelState.IsValid){
+        public async Task<IActionResult> OnPostAsync()
+        {
+            if (ModelState.IsValid)
+            {
                 // var user = new ApplicationUser {UserName = "miral1", Email = "miral@sample.com", PhoneNumber = "123-456-4444", City ="Montreal", Country="Canada", State ="Quebec", Active = true, Zipcode = "P4W 2A5" };
                 // var result = await userManager.CreateAsync(user, "Test@2023");
 
-                var user = new ApplicationUser {UserName = Input.UserName,
-                                                Email = Input.Email,
-                                                Country = Input.Country,
-                                                State = Input.State,
-                                                City = Input.City,
-                                                Zipcode = Input.ZipCode,
-                                                PhoneNumber = Input.PhoneNumber,
-                                                Active = true
-                                                };
+                var user = new ApplicationUser
+                {
+                    UserName = Input.UserName,
+                    Email = Input.Email,
+                    Country = Input.Country,
+                    State = Input.State,
+                    City = Input.City,
+                    Zipcode = Input.ZipCode,
+                    PhoneNumber = Input.PhoneNumber,
+                    Active = true
+                };
                 var result = await userManager.CreateAsync(user, Input.Password);
-                if (result.Succeeded){
+                if (result.Succeeded)
+                {
+                    //user added, so add image
+                    if (FileInput != null && FileInput.Length > 0)
+                    {
+                        string fileName = Path.GetFileName(FileInput.FileName);
+                        string filePath = Path.Combine("wwwroot", "uploads", fileName);
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await FileInput.CopyToAsync(stream);
+                        }
+                        AzureBlobUtil.UploadIconToBlob(filePath, user.Id);
+                        System.IO.File.Delete(filePath);
+                    }
+                    //Add image code ends
+
                     //var result2 = await userManager.AddToRoleAsync(user, role.ToString());
                     var result2 = await userManager.AddToRoleAsync(user, Input.role.Name);
-                    if (result2.Succeeded) {
+                    if (result2.Succeeded)
+                    {
                         logger.LogInformation($"User {Input.Email} create a new account with password");
-                    return RedirectToPage("RegisterSuccess", new { email = Input.Email });
-                    } else {
+                        return RedirectToPage("RegisterSuccess", new { email = Input.Email });
+                    }
+                    else
+                    {
 
-                    }  
+                    }
                 }
-                foreach(var error in result.Errors){
+                foreach (var error in result.Errors)
+                {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
