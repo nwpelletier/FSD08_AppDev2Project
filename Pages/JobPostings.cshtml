@@ -1,4 +1,5 @@
 ﻿@page
+@using System.Globalization
 @model FSD08_AppDev2Project.Pages.JobPostingsModel
 @{
     ViewData["Title"] = "Job Postings";
@@ -26,7 +27,11 @@
                         <div class="card-body">
                             <h5 class="card-title">@job.JobCategory</h5>
                         </div>
-                        <div class="card-footer bg-transparent border-light">Posted on: @job.StartDate</div>
+
+                        @* added date formatting *@
+                        <div class="card-footer bg-transparent border-light">
+                            Start Date: @(job.StartDate.ToString("yyyy-MM-dd"))
+                        </div>
                     </div>
 
                 }
@@ -74,8 +79,13 @@
             document.getElementById('detailsContainer').querySelector('.card-header').innerText = clickedJob.jobTitle;
             document.getElementById('detailsContainer').querySelector('.card-title').innerText = clickedJob.jobCategory;
             document.getElementById('detailsContainer').querySelector('.card-text').innerHTML = clickedJob.jobDescription;
-            document.getElementById('detailsContainer').querySelector('.card-footer').innerText = 'Posted on: ' + clickedJob.startDate;
+           
+            // added date formatting
+            var startDate = typeof clickedJob.startDate === 'string' ?
+                new Date(clickedJob.startDate) : clickedJob.startDate;
 
+            document.getElementById('detailsContainer').querySelector('.card-footer').innerText = 'Start Date: ' +
+                (startDate instanceof Date ? startDate.toISOString().split('T')[0] : 'Invalid Date');
             //set id to use in backend
             document.getElementById('selectedJobId').value = clickedJob.id;
             //make div visible

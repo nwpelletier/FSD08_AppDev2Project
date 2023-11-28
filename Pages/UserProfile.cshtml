@@ -1,5 +1,6 @@
 ﻿@page
 @model FSD08_AppDev2Project.Pages.UserProfileModel
+@using FSD08_AppDev2Project.Data
 @{
     ViewData["Title"] = "Your Profile";
 }
@@ -19,8 +20,10 @@
                     <div class="profile-name">@Model.ApplicationUser.UserName</div>
                     <div class="profile-image">
 
-                        @* Using hard coded image now - just organizing things ;) *@
-                        <img src="https://indeedjob.blob.core.windows.net/icons/0c840a6c-f289-4a0a-8b6d-0a2a01912ecc.jpg?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2023-12-30T07:38:42Z&st=2023-11-20T23:38:42Z&sip=1.0.0.0-223.255.255.255&spr=https&sig=nuduce9h%2FPmxk0N%2FphRowMjrR%2BU9fAFx%2FQ67nrjxAho%3D&cb=638366410459247734"
+                        @* Using hard coded image now
+                        I've tried uploading a profile image on this user account, id: fd7a30c3-e85a-42fb-94fc-66232329dcc7
+                        And @AzureBlobUtil.GetIconBlobUrl("fd7a30c3-e85a-42fb-94fc-66232329dcc7") does not work *@
+                        <img src=@AzureBlobUtil.GetIconBlobUrl("0c840a6c-f289-4a0a-8b6d-0a2a01912ecc")
                             alt="Profile Image">
                     </div>
                 </div>
