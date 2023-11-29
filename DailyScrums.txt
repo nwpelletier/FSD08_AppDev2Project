@@ -349,3 +349,53 @@ What I didn't finish:
 
 Needs help with:
 - 
+
+============================
+Tuesday, Nov 28
+
+NICK
+What I did yesterday:
+- Started admin page
+- Navigation to admin on home
+- Small page adjustments throughout
+
+What I'm doing today:
+- More admin page
+- Pagination
+- Troublehsooting
+
+What I didn't finish:
+- Admin Page
+
+Needs help with:
+- 
+
+MIRAL
+What I did yesterday:        
+- Adjusted code for user icon upload from Register page
+- Added List of ApplicationUsers in Company class (HiringManagers)
+ 
+What I'm doing today:
+- Will work on CV upload
+ 
+What I didn't finish:
+- Will continue working on CV upload
+ 
+Needs help with:
+-
+
+
+PEJMAN
+What I did yesterday:
+- CompanyReview page
+
+What I'm doing today:
+- Continue working on CompanyReview page
+- Hide login and Register button from the confirmation page
+- Add more data to database 
+
+What I didn't finish:
+- Hide login and Registration button from the confirmation page
+
+Needs help with:
+- 
