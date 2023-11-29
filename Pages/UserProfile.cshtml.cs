@@ -34,6 +34,8 @@ namespace FSD08_AppDev2Project.Pages
         public string ProfileImage { get; set; }
         [BindProperty]
         public string UserCV { get; set; }
+        [BindProperty]
+        public IFormFile FileInputCv { get; set; }
 
         public string GetCompanyName(int companyId)
         {
@@ -49,9 +51,9 @@ namespace FSD08_AppDev2Project.Pages
 
             Companies = _db.Companys.ToList();
 
-            ProfileImage = AzureBlobUtil.GetIconBlobUrl(ApplicationUser.Id);
-            UserCV = AzureBlobUtil.GetCVsBlobUrl(ApplicationUser.Id);
-
+            ProfileImage = await AzureBlobUtil.GetIconBlobUrl(ApplicationUser.Id);
+            UserCV = await AzureBlobUtil.GetCVsBlobUrl(ApplicationUser.Id);
+            Console.WriteLine("USserCV==================" + UserCV);
             return Page();
         }
 
@@ -124,8 +126,8 @@ namespace FSD08_AppDev2Project.Pages
             return Page();
         }
 
-// Separate Async Post method from edit profile
-// Need to troubleshoot this - it's grabbing proper filename, correct ApplicationUser.Id
+        // Separate Async Post method from edit profile
+        // Need to troubleshoot this - it's grabbing proper filename, correct ApplicationUser.Id
         public async Task<IActionResult> OnPostUploadImageAsync()
         {
             ApplicationUser = await _userManager.GetUserAsync(User);
@@ -154,5 +156,26 @@ namespace FSD08_AppDev2Project.Pages
             }
             return RedirectToPage("/Index");
         }
+
+        public async Task<IActionResult> OnPostUploadCvAsync()
+        {
+            //upload CV
+            if (FileInputCv != null && FileInputCv.Length > 0)
+            {
+                ApplicationUser = await _userManager.GetUserAsync(User);
+
+                string fileName = Path.GetFileName(FileInputCv.FileName);
+                string filePath = Path.Combine("wwwroot", "uploads", fileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await FileInputCv.CopyToAsync(stream);
+                }
+                AzureBlobUtil.UploadCVsToBlob(filePath, ApplicationUser.Id);
+                System.IO.File.Delete(filePath);
+            }
+            //upload CV code ends
+            return await OnGet();
+        }
+
     }
 }

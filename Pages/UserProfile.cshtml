@@ -56,15 +56,34 @@
 
 
             <h3>Resume</h3>
-            <div class="profile-panel container d-flex justify-content-before align-items-center">
-                <div class="pdf-icon">PDF</div>
-                <div class="mx-3">
-                    <div>@Model.ApplicationUser.UserName 's Resume</div>
-                    <a href="@Model.UserCV" target="_blank" style="text-decoration:none;">
-                        Click to view
-                    </a>
+            <div class="row profile-panel container d-flex justify-content-before align-items-center">
+                <div class="col-md-6">
+                    @if (!string.IsNullOrEmpty(Model.UserCV))
+                    {
+                        <div class="pdf-icon">PDF</div>
+                        <div class="mx-3">
+                            <div>@Model.ApplicationUser.UserName 's Resume</div>
+                            <a href="@Model.UserCV" target="_blank" style="text-decoration:none;"
+                                onclick="window.open(this.href,'_blank');">Click to view</a>
+                        </div>
+                    }
                 </div>
+
+                <div class="col-md-6">
+                    <form method="post" enctype="multipart/form-data" asp-page-handler="UploadCv">
+                        <div class="form-group">
+                            <label for="fileInputCv">Choose CV (.pdf only):</label>
+                            <input type="file" name="fileInputCv" id="fileInputCv" class="form-control" />
+                            <button type="submit" class="btn btn-primary mt-2">Upload CV</button>
+                        </div>
+                    </form>
+
+                </div>
+
+
+
             </div>
+
             <br>
 
             @* Added in section to display all jobs the user has applied to *@

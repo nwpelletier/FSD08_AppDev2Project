@@ -12,7 +12,7 @@ namespace FSD08_AppDev2Project.Data
     public class AzureBlobUtil
     {
         static string sasToken = "sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2023-12-30T07:38:42Z&st=2023-11-20T23:38:42Z&sip=1.0.0.0-223.255.255.255&spr=https&sig=nuduce9h%2FPmxk0N%2FphRowMjrR%2BU9fAFx%2FQ67nrjxAho%3D";
-        
+
         // Storage Name:  indeedjob
         //Containers:  icons (To store user icons), cvs (to store CVs)
         static string iconsContainer = "icons";
@@ -30,12 +30,18 @@ namespace FSD08_AppDev2Project.Data
                 blobClient.Upload(fs, true);
             };
         }
-        public static string GetIconBlobUrl(string userId)
+        public static async Task<string> GetIconBlobUrl(string userId)
         {
             string blobName = userId + ".jpg";
             string cacheBuster = DateTime.UtcNow.Ticks.ToString();
             Uri blobUri = new Uri($"https://indeedjob.blob.core.windows.net/{iconsContainer}/{blobName}?{sasToken}&cb={cacheBuster}");
-            return blobUri.ToString();
+            bool isValid = await IsValidBlobUri(blobUri.ToString());
+
+            if(isValid){
+                return blobUri.ToString();
+            } else {
+                return string.Empty;
+            }
         }
         public static void UploadCVsToBlob(string localImagePath, string userId)
         {
@@ -49,14 +55,43 @@ namespace FSD08_AppDev2Project.Data
                 blobClient.Upload(fs, true);
             };
         }
-        public static string GetCVsBlobUrl(string userId)
+        public static async Task<string> GetCVsBlobUrl(string userId)
         {
             string blobName = userId + ".pdf";
             string cacheBuster = DateTime.UtcNow.Ticks.ToString();
             Uri blobUri = new Uri($"https://indeedjob.blob.core.windows.net/{cvsContainer}/{blobName}?{sasToken}&cb={cacheBuster}");
-            return blobUri.ToString();
+            
+            bool isValid = await IsValidBlobUri(blobUri.ToString());
+
+            if(isValid){
+                return blobUri.ToString();
+            } else {
+                return string.Empty;
+            }
+            
         }
-        
+
+        public static async Task<bool> IsValidBlobUri(string blobUri)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                var request = new HttpRequestMessage
+                {
+                    Method = HttpMethod.Head,
+                    RequestUri = new Uri(blobUri)
+                };
+
+                var response = await client.SendAsync(request);
+
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
     }
 
 }
