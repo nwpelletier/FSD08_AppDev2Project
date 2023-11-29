@@ -24,6 +24,9 @@ namespace FSD08_AppDev2Project.Pages
             _userManager = userManager;
         }
 
+        [BindProperty]
+        public IFormFile FileInput { get; set; }
+
         public ApplicationUser ApplicationUser { get; set; }
         public List<AppliedJob> AppliedJobs { get; set; }
         public List<Company> Companies { get; set; }
@@ -81,7 +84,7 @@ namespace FSD08_AppDev2Project.Pages
 
         public EditProfileInputModel EditProfileInput { get; set; }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostUpdateProfileAsync()
         {
             ApplicationUser = await _userManager.GetUserAsync(User);
             EditProfileInput = new EditProfileInputModel();
@@ -121,7 +124,35 @@ namespace FSD08_AppDev2Project.Pages
             return Page();
         }
 
+// Separate Async Post method from edit profile
+// Need to troubleshoot this - it's grabbing proper filename, correct ApplicationUser.Id
+        public async Task<IActionResult> OnPostUploadImageAsync()
+        {
+            ApplicationUser = await _userManager.GetUserAsync(User);
+            Console.WriteLine("=============================");
+            Console.WriteLine("User Id: " + ApplicationUser.Id);
+            Console.WriteLine("User Name: " + ApplicationUser.UserName);
+            Console.WriteLine("=============================");
 
-
+            if (ApplicationUser != null)
+            {
+                Console.WriteLine($"File Input: {FileInput.FileName}");
+                if (FileInput != null && FileInput.Length > 0)
+                {
+                    Console.WriteLine("=============FileInputDetected=============");
+                    string fileName = Path.GetFileName(FileInput.FileName);
+                    string filePath = Path.Combine("wwwroot", "uploads", fileName);
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await FileInput.CopyToAsync(stream);
+                    }
+                    AzureBlobUtil.UploadCVsToBlob(filePath, ApplicationUser.Id);
+                    Console.WriteLine(filePath);
+                    System.IO.File.Delete(filePath);
+                }
+                return RedirectToPage("/UserProfile");
+            }
+            return RedirectToPage("/Index");
+        }
     }
 }

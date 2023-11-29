@@ -25,6 +25,15 @@
             </div>
         }
 
+        @if (signInManager.IsSignedIn(User))
+        {
+            <div class="col-md-5 offset-md-1 index-page-panel d-flex flex-column">
+                <p class="flex-grow-1">To make a better first impression, make sure your profile information is filled out.
+                    As well, having a good up-to-date resume, and a recent profile photo will go a long way.  </p>
+                <a asp-page="/UserProfile" class="btn btn-outline-primary mt-auto">Your Profile</a>
+            </div>
+        }
+
         <div class="col-md-5 index-page-panel ms-2 d-flex flex-column">
             <p class="flex-grow-1">Feel the excitement of endless possibilities as you explore a myriad of job
                 opportunities on Icarus Job Board. Your next career move awaits –
