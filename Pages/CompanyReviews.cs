@@ -22,7 +22,7 @@ namespace FSD08_AppDev2Project.Pages
             _db = db;
             _userManager = userManager;
         }
-
+      [BindProperty]
         public List<Company> Companys { get; set; }
         // public List<Review> Reviews { get; set; }
         [BindProperty]
@@ -31,13 +31,18 @@ namespace FSD08_AppDev2Project.Pages
         [BindProperty]
         public List<ApplicationUser> ApplicationUsers { get; set; }
 
+     
         public class CompanyModel{
+      [BindProperty]
             public Company Company { get; set; }
+                  [BindProperty]
             public List<Review> Reviews { get; set; }
-
-            public int aveRating {get; set;}
+      [BindProperty]
+            public float aveRating {get; set;}
         }
         public List<CompanyModel> companysModel = new List<CompanyModel>();
+              [BindProperty]
+        public List<CompanyModel> companysModelInput  { get; set; }
 
         public async void OnGet()
         {
@@ -57,6 +62,7 @@ namespace FSD08_AppDev2Project.Pages
                     companyModel.aveRating = SumR/companyModel.Reviews.Count();
                     else companyModel.aveRating = -1;
                 companysModel.Add(companyModel);
+
             }
 
             if (currentUser != null)
@@ -66,23 +72,16 @@ namespace FSD08_AppDev2Project.Pages
 
         }
 
-        // public async Task<ActionResult> OnPostAsync()
-        // {
-        //     Job selectedJob = _db.Jobs.Find(SelectedJobId);
-        //     ApplicationUser user = await _userManager.GetUserAsync(User);
-        //     AppliedJob appliedJob = new AppliedJob()
-        //     {
-        //         Applicant = user,
-        //         Job = selectedJob,
-        //         AppliedDate = DateTime.Now
-        //     };
-
-        //     _db.AppliedJobs.Add(appliedJob);
-        //     _db.SaveChanges();
+        public async Task<ActionResult> OnPostAsync()
+        {
+            ApplicationUser user = await _userManager.GetUserAsync(User);
+            
+            Review review =new Review();
+           
+            _db.SaveChanges();
 
 
-        //     TempData["JobMessage"] = "Job added:  Your details are send to employer!";
-        //     return RedirectToPage("JobPostings");
-        // }
+            return RedirectToPage("CompanyReviews");
+        }
     }
 }

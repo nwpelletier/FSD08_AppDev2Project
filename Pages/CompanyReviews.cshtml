@@ -16,32 +16,9 @@
                     <div class="card text-dark bg-light mb-3 customborder" style="max-width: 30rem;"
                         onclick="showCompanyDetails(@companyModel.Company.Id, @companyModel.aveRating)">
                         <div class="card-header">
-                            <h3 class="card-title">Company Name:</h3>
                             <h5 class="card-title">@companyModel.Company.Name</h5>
                         </div>
-                        <div class="card-body">
-                            <h5 class="card-title">Country:</h5>
-                            <div class="card-title">@companyModel.Company.Country</div>
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">State:</h5>
-                            <div class="card-title">@companyModel.Company.State</div>
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">City:</h5>
-                            <div class="card-title">@companyModel.Company.City</div>
-                        </div>
-                        @if  (@companyModel.aveRating > -1){
-                        <div id="AveRating" class="card-body" >
-                            <h5 class="card-title">Average: @companyModel.aveRating</h5>
-                        </div>
-                         }
                     </div>
-                    @* <div><h5>Comment(s):</h5></div>
-                    @for(var rIndex = 0 ; rIndex < companyModel.Reviews.Count(); rIndex++){
-                        <div>@companyModel.Reviews[rIndex].Reviews </div>
-                    }
-                    <br> *@
                 }
             </ul>
         </div>
@@ -51,17 +28,22 @@
                     <input type="hidden" id="selectedCompanyId" name="selectedCompanyId" value="" />
                     <h5 class="card-header"></h5>
                     <div class="card-body" style="max-height:35rem;overflow-y: auto;">
+                        <div><h5>Country:</h5></div>
                         <p class="card-title1"></p>
+                        <div><h5>State:</h5></div>
                         <p class="card-title2"></p>
+                        <div><h5>City:</h5></div>
                         <p class="card-title3"></p>
+                        <div id="AverageRatingLbl"><h5>Average rating:</h5></div>
+                        <div id="AverageRating"></div>
+                        <br>
+                        <textarea id="commentBox" name="commentBox" rows="4" cols="50"></textarea>
+                        <div class="text-center">
+                            <button type="submit"  id="btnComment" class="btn btn-primary">Submit Comment</button>
+                        </div>
+                        <div><h5>Comment(s):</h5></div>
+                        <div id="Comments"></div>
                     </div>
-                    <textarea id="commentBox" name="commentBox" rows="4" cols="50"></textarea>
-                    <div class="text-center">
-                        <button type="submit" id="btnComment" class="btn btn-primary">Submit Comment</button>
-                    </div>
-                    <div><h5>Comment(s):</h5></div>
-                       <div id="Comments"></div>
-                    <br>
                 </form>
             </div>
         </div>
@@ -70,15 +52,17 @@
 
 <script>
     function showCompanyDetails(companyId, rating) {
-         debugger;
-        
+        document.getElementById('AverageRating').innerText = '';
         while (document.getElementById('Comments').hasChildNodes())
             document.getElementById('Comments').removeChild(document.getElementById('Comments').lastChild);
         
         var companysModel = @Html.Raw(Json.Serialize(Model.companysModel));
         var companyModel = companysModel.find(obj => obj.company.id === companyId);
+        
+        document.getElementById('commentBox').setAttribute("asp-for", "companyModel.reviews.review");
 
         if (companyModel) {
+            this.companyModel = companyModel;
             document.getElementById('detailsContainer').style.display = 'block';
 
             document.getElementById('detailsContainer').querySelector('.card-header').innerText = companyModel.company.name;
@@ -90,6 +74,19 @@
                 review.textContent = r.reviews;
                 document.getElementById('Comments').appendChild(review);
                 }
-        }     
+                  debugger;
+                  if(companyModel.aveRating < 0)
+                    document.getElementById('AverageRatingLbl').style.display = 'none';
+                  else {
+                    document.getElementById('AverageRatingLbl').style.display = 'block';
+                    document.getElementById('AverageRating').innerText = companyModel.aveRating;
+                    }
+        }
+        companysModelInput = 10;
     }
+@* 
+    function setComment(){
+        debugger
+        alert('here')
+    } *@
 </script>
