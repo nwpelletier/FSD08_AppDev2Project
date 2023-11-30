@@ -4,9 +4,11 @@ using FSD08_AppDev2Project.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FSD08_AppDev2Project.Pages
 {
+    [Authorize(Roles = "Admin")]
     public class AdminModel : PageModel
     {
         private readonly AppDev2DbContext _db;

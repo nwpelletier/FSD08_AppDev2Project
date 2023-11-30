@@ -57,7 +57,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var user in Model.ApplicationUsers)
+                @foreach (var user in Model.ApplicationUsers.OrderBy(u => u.UserName))
                 {
                     <tr>
                         <td>@user.UserName</td>
@@ -67,14 +67,23 @@
                         <td>@user.Country</td>
                         <td>@user.Zipcode</td>
                         <td>
-                            @foreach (var role in Model.UserRoles[user.Id])
+                            @if (Model.UserRoles.ContainsKey(user.Id) && Model.UserRoles[user.Id].Any())
                             {
-                                <span>@role</span>
+                                @foreach (var role in Model.UserRoles[user.Id])
+                                {
+                                    <a asp-page="AdminEditUserRole" asp-route-id="@user.Id">[@role]</a>
+                                }
+                            }
+                            else
+                            {
+                               <a asp-page="AdminEditUserRole" asp-route-id="@user.Id">[No Role]</a>
                             }
                         </td>
                         <td>
-                            <a class="btn btn-primary" asp-page="AdminEditUser" asp-route-id="@user.Id">@(user.Active ?
-                            "Yes" : "No")</a>
+                            <a class="btn @(user.Active ? "btn-success" : "btn-danger")" asp-page="AdminEditUserActive"
+                                asp-route-id="@user.Id">
+                                @(user.Active ? "Yes" : "No")
+                            </a>
                         </td>
                     </tr>
                 }

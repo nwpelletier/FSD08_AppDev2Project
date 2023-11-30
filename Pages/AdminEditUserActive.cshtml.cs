@@ -4,10 +4,12 @@ using Microsoft.EntityFrameworkCore;
 using FSD08_AppDev2Project.Data;
 using FSD08_AppDev2Project.Models;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FSD08_AppDev2Project.Pages
 {
-    public class AdminEditUserModel : PageModel
+    [Authorize(Roles = "Admin")]
+    public class AdminEditUserActiveModel : PageModel
     {
         private readonly AppDev2DbContext _db;
 
@@ -20,7 +22,7 @@ namespace FSD08_AppDev2Project.Pages
         [BindProperty]
         public int Active { get; set; }
 
-        public AdminEditUserModel(AppDev2DbContext db)
+        public AdminEditUserActiveModel(AppDev2DbContext db)
         {
             _db = db;
         }

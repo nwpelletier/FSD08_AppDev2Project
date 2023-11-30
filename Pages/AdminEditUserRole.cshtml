@@ -1,0 +1,28 @@
+﻿@page "{id}"
+@model FSD08_AppDev2Project.Pages.AdminEditUserRoleModel
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h2>Edit User Role</h2>
+
+            <form method="post">
+                <div class="form-group">
+                    <label for="userName">User Name:</label>
+                    <input type="text" id="userName" name="UserName" class="form-control" readonly value="@Model.UserName">
+                </div>
+
+                <div class="form-group">
+                    <label for="role">Role:</label>
+                    <select id="role" name="Roles" class="form-control">
+                        <option value="Admin">Admin</option>
+                        <option value="Applicant">Applicant</option>
+                        <option value="HiringManager">HiringManager</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Update User Role</button>
+            </form>
+        </div>
+    </div>
+</div>
