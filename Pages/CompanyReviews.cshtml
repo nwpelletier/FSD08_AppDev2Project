@@ -14,7 +14,7 @@
                 {
                     var companyModel = Model.companysModel[index];
                     <div class="card text-dark bg-light mb-3 customborder" style="max-width: 30rem;"
-                        onclick="showCompanyDetails(@companyModel.Company.Id)">
+                        onclick="showCompanyDetails(@companyModel.Company.Id, @companyModel.aveRating)">
                         <div class="card-header">
                             <h3 class="card-title">Company Name:</h3>
                             <h5 class="card-title">@companyModel.Company.Name</h5>
@@ -36,13 +36,12 @@
                             <h5 class="card-title">Average: @companyModel.aveRating</h5>
                         </div>
                          }
-                    
                     </div>
-                    <div><h5>comment(s):</h5></div>
+                    @* <div><h5>Comment(s):</h5></div>
                     @for(var rIndex = 0 ; rIndex < companyModel.Reviews.Count(); rIndex++){
                         <div>@companyModel.Reviews[rIndex].Reviews </div>
                     }
-                    <br>
+                    <br> *@
                 }
             </ul>
         </div>
@@ -52,14 +51,17 @@
                     <input type="hidden" id="selectedCompanyId" name="selectedCompanyId" value="" />
                     <h5 class="card-header"></h5>
                     <div class="card-body" style="max-height:35rem;overflow-y: auto;">
-                        <p class="card-title"></p>
-                        <p class="card-text"></p>
+                        <p class="card-title1"></p>
+                        <p class="card-title2"></p>
+                        <p class="card-title3"></p>
                     </div>
-                    <div class="card-footer bg-transparent border-light"></div>
                     <textarea id="commentBox" name="commentBox" rows="4" cols="50"></textarea>
                     <div class="text-center">
-                        <button type="submit" id="btnComment" class="btn btn-primary"></button>
+                        <button type="submit" id="btnComment" class="btn btn-primary">Submit Comment</button>
                     </div>
+                    <div><h5>Comment(s):</h5></div>
+                       <div id="Comments"></div>
+                    <br>
                 </form>
             </div>
         </div>
@@ -67,26 +69,27 @@
 </div>
 
 <script>
-    function showCompanyDetails(companyId) {
-        //find by id
-        //debugger;
-        var companys = @Html.Raw(Json.Serialize(Model.Companys));
-        var clickedCompany = companys.find(company => company.id === companyId);
-        console.log(clickedCompany);
-        if (clickedCompany) {
-            document.getElementById('detailsContainer').querySelector('.card-header').innerText = clickedCompany.name;
-            document.getElementById('detailsContainer').querySelector('.card-title').innerText = clickedCompany.country;
-            document.getElementById('detailsContainer').querySelector('.card-text').innerHTML = clickedCompany.state;
-            document.getElementById('detailsContainer').querySelector('.card-text').innerHTML = clickedCompany.city;
+    function showCompanyDetails(companyId, rating) {
+         debugger;
+        
+        while (document.getElementById('Comments').hasChildNodes())
+            document.getElementById('Comments').removeChild(document.getElementById('Comments').lastChild);
+        
+        var companysModel = @Html.Raw(Json.Serialize(Model.companysModel));
+        var companyModel = companysModel.find(obj => obj.company.id === companyId);
 
-            //set id to use in backend
-            document.getElementById('selectedCompanyId').value = clickedCompany.id;
-            //make div visible
+        if (companyModel) {
             document.getElementById('detailsContainer').style.display = 'block';
-        }
-    }
 
-    var isAuthenticated = @User.Identity.IsAuthenticated;
-    var btnComment = document.getElementById('btnComment');
-    btnComment.style.display = isAuthenticated ? 'block' : 'none';
+            document.getElementById('detailsContainer').querySelector('.card-header').innerText = companyModel.company.name;
+            document.getElementById('detailsContainer').querySelector('.card-title1').innerText =companyModel.company.country;
+            document.getElementById('detailsContainer').querySelector('.card-title2').innerHTML = companyModel.company.state;
+            document.getElementById('detailsContainer').querySelector('.card-title3').innerHTML = companyModel.company.city;
+            for(var r of companyModel.reviews){
+                var review = document.createElement('div');
+                review.textContent = r.reviews;
+                document.getElementById('Comments').appendChild(review);
+                }
+        }     
+    }
 </script>
