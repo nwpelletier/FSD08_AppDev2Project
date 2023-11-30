@@ -59,17 +59,19 @@
             <tbody>
                 @foreach (var user in Model.ApplicationUsers)
                 {
-                    <tr>
-                        @* <td>@user.Id</td> *@
-                        <td>@user.UserName</td>
-                        <td>@user.Email</td>
-                        <td>@(user.Active ? "Yes" : "No")</td>
-                        <td>@user.City</td>
-                        <td>@user.State</td>
-                        <td>@user.Country</td>
-                        <td>@user.Zipcode</td>
-                        <td>@user.Role</td>
-                    </tr>
+                <tr>
+                    <td>@user.UserName</td>
+                    <td>@user.Email</td>
+                    <td>@(user.Active ? "Yes" : "No")</td>
+                    <td>@user.City</td>
+                    <td>@user.State</td>
+                    <td>@user.Country</td>
+                    <td>@user.Zipcode</td>
+                    <td>@user.Role</td>
+                    <td>
+                        <a class="btn btn-primary" asp-page="AdminEditUser" asp-route-id="@user.Id">Edit</a>
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>
