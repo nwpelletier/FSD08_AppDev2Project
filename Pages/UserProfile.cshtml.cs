@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Text;
+using Microsoft.AspNetCore.Hosting;
 
 namespace FSD08_AppDev2Project.Pages
 {
@@ -47,13 +49,19 @@ namespace FSD08_AppDev2Project.Pages
         {
             ApplicationUser = await _userManager.GetUserAsync(User);
 
-            AppliedJobs = _db.AppliedJobs.Include(j => j.Job).Where(ja => ja.Applicant.Id == ApplicationUser.Id).ToList();
+            
+            string iconImageURL = AzureBlobUtil.GetBlobUrl(ApplicationUser.Id, "icons", ".jpg");
+            string cvURL = AzureBlobUtil.GetBlobUrl(ApplicationUser.Id, "cvs", ".pdf");
 
+            AppliedJobs = _db.AppliedJobs.Include(j => j.Job).Where(ja => ja.Applicant.Id == ApplicationUser.Id).ToList();
             Companies = _db.Companys.ToList();
 
-            ProfileImage = await AzureBlobUtil.GetIconBlobUrl(ApplicationUser.Id);
-            UserCV = await AzureBlobUtil.GetCVsBlobUrl(ApplicationUser.Id);
+            ProfileImage = iconImageURL.ToString();
+            UserCV = cvURL.ToString();
+
             Console.WriteLine("USserCV==================" + UserCV);
+            Console.WriteLine("ProfileImage==================" + ProfileImage);
+            Console.WriteLine("Environment=============================================" + Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"));
             return Page();
         }
 
@@ -131,30 +139,14 @@ namespace FSD08_AppDev2Project.Pages
         public async Task<IActionResult> OnPostUploadImageAsync()
         {
             ApplicationUser = await _userManager.GetUserAsync(User);
-            Console.WriteLine("=============================");
-            Console.WriteLine("User Id: " + ApplicationUser.Id);
-            Console.WriteLine("User Name: " + ApplicationUser.UserName);
-            Console.WriteLine("=============================");
-
-            if (ApplicationUser != null)
-            {
-                Console.WriteLine($"File Input: {FileInput.FileName}");
+            Console.WriteLine("User Id:======================= " + ApplicationUser.Id);
+            
+            
                 if (FileInput != null && FileInput.Length > 0)
-                {
-                    Console.WriteLine("=============FileInputDetected=============");
-                    string fileName = Path.GetFileName(FileInput.FileName);
-                    string filePath = Path.Combine("wwwroot", "uploads", fileName);
-                    using (var stream = new FileStream(filePath, FileMode.Create))
                     {
-                        await FileInput.CopyToAsync(stream);
-                    }
-                    AzureBlobUtil.UploadCVsToBlob(filePath, ApplicationUser.Id);
-                    Console.WriteLine(filePath);
-                    System.IO.File.Delete(filePath);
-                }
+                    await AzureBlobUtil.UploadToBlob(FileInput, ApplicationUser.Id, "icons", ".jpg");
+                    }       
                 return RedirectToPage("/UserProfile");
-            }
-            return RedirectToPage("/Index");
         }
 
         public async Task<IActionResult> OnPostUploadCvAsync()
@@ -163,15 +155,7 @@ namespace FSD08_AppDev2Project.Pages
             if (FileInputCv != null && FileInputCv.Length > 0)
             {
                 ApplicationUser = await _userManager.GetUserAsync(User);
-
-                string fileName = Path.GetFileName(FileInputCv.FileName);
-                string filePath = Path.Combine("wwwroot", "uploads", fileName);
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await FileInputCv.CopyToAsync(stream);
-                }
-                AzureBlobUtil.UploadCVsToBlob(filePath, ApplicationUser.Id);
-                System.IO.File.Delete(filePath);
+                await AzureBlobUtil.UploadToBlob(FileInputCv, ApplicationUser.Id, "cvs", ".pdf");
             }
             //upload CV code ends
             return await OnGet();
