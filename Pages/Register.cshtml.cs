@@ -115,15 +115,8 @@ namespace FSD08_AppDev2Project.Pages
                     //user added, so add image
                     if (FileInput != null && FileInput.Length > 0)
                     {
-                        string fileName = Path.GetFileName(FileInput.FileName);
-                        string filePath = Path.Combine("wwwroot", "uploads", fileName);
-                        using (var stream = new FileStream(filePath, FileMode.Create))
-                        {
-                            await FileInput.CopyToAsync(stream);
-                        }
-                        AzureBlobUtil.UploadIconToBlob(filePath, user.Id);
-                        System.IO.File.Delete(filePath);
-                    }
+                    await AzureBlobUtil.UploadToBlob(FileInput, user.Id, "icons", ".jpg");
+                    }                     
                     //Add image code ends
 
                     //var result2 = await userManager.AddToRoleAsync(user, role.ToString());

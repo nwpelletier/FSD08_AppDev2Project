@@ -24,7 +24,7 @@
                         I've tried uploading a profile image on this user account, id:
                         fd7a30c3-e85a-42fb-94fc-66232329dcc7
                         And @AzureBlobUtil.GetIconBlobUrl("fd7a30c3-e85a-42fb-94fc-66232329dcc7") does not work *@
-                        <img src="@Model.ProfileImage" alt="Profile Image" class="img-fluid">
+                        <img src="@Url.Content(@Model.ProfileImage)" alt="Profile Image" class="img-fluid">
                     </div>
                 </div>
             </div>
@@ -43,15 +43,18 @@
                     </button>
                 </div>
             </div>
-
-            <form method="post" enctype="multipart/form-data" asp-page-handler="UploadImage">
+        <h3>Profile Icon</h3>
+        <div class="row profile-panel container d-flex justify-content-before align-items-center">
+    <form method="post" enctype="multipart/form-data" asp-page-handler="UploadImage">
                 <label for="FileInput">Choose a file:</label>
                 <input type="file" name="FileInput" id="FileInput" />
-                <br />
-                <button type="submit">Upload File</button>
+                
+                <button type="submit" class="btn btn-primary">Upload File</button>
             </form>
+        </div>
 
-            <p>Image URL: @Model.ProfileImage</p>
+
+            @* <p>Image URL: @Model.ProfileImage</p> *@
 
 
 
