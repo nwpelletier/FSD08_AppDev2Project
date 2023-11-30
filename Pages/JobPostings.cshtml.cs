@@ -12,7 +12,7 @@ namespace FSD08_AppDev2Project.Pages
 {
     public class JobPostingsModel : PageModel
     {
-        private readonly AppDev2DbContext _db; // Make sure AppDev2DbContext is accessible
+        private readonly AppDev2DbContext _db;
 
         private readonly UserManager<ApplicationUser> _userManager;
 
@@ -21,6 +21,13 @@ namespace FSD08_AppDev2Project.Pages
             _db = db;
             _userManager = userManager;
         }
+
+        // Pagination Setup (we can adjust # of postings per page here)
+        [BindProperty(SupportsGet = true)]
+        public int CurrentPage { get; set; } = 1;
+        public int PageSize { get; set; } = 4;
+        public int TotalPages => (int)Math.Ceiling((double)_db.Jobs.Count() / PageSize);
+
 
         public List<Job> Jobs { get; set; }
         [BindProperty]
@@ -33,7 +40,9 @@ namespace FSD08_AppDev2Project.Pages
 
         public async void OnGet()
         {
-            Jobs = _db.Jobs.ToList();
+            var skipAmount = (CurrentPage - 1) * PageSize;
+
+            Jobs = _db.Jobs.Skip(skipAmount).Take(PageSize).ToList();
             ApplicationUsers = _db.ApplicationUsers.ToList();
             ApplicationUser currentUser = await _userManager.GetUserAsync(User);
 
@@ -41,8 +50,8 @@ namespace FSD08_AppDev2Project.Pages
             {
                 AppliedJobs = _db.AppliedJobs.Include(j => j.Applicant).Where(ja => ja.Applicant.Id == currentUser.Id).ToList();
 
-                Console.WriteLine("JobsJSOnuser*----" + JsonSerializer.Serialize(AppliedJobs));
-                // Console.WriteLine("CurrentUser*----" + JsonSerializer.Serialize(currentUser));
+                Console.WriteLine("TotalPages: " + TotalPages);
+                Console.WriteLine("CurrentPage: " + CurrentPage);
             }
         }
 
@@ -64,5 +73,6 @@ namespace FSD08_AppDev2Project.Pages
             TempData["JobMessage"] = "Job added:  Your details are send to employer!";
             return RedirectToPage("JobPostings");
         }
+
     }
 }

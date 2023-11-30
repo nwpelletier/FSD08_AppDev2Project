@@ -63,43 +63,59 @@
     </div>
 </div>
 
+<div class="text-center">
+    <nav aria-label="Job navigation">
+        <ul class="pagination justify-content-center">
+            @for (var i = 1; i <= Model.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                    <a class="page-link" asp-page="JobPostings" asp-route-CurrentPage="@i">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>
+
 
 <script>
     function showJobDetails(jobId) {
-        //find by id
-        //debugger;
+        // find job by id
         var jobs = @Html.Raw(Json.Serialize(Model.Jobs));
-        var clickedJob = jobs.find(job => job.id === jobId);
-
-        var appliedJobs = @Html.Raw(Json.Serialize(Model.AppliedJobs));
-
-        var alredyAppliedJob = appliedJobs.find(ajob => ajob.job.id === jobId);
+        var clickedJob = jobs.find(job => job.id === parseInt(jobId));
 
         if (clickedJob) {
-            document.getElementById('detailsContainer').querySelector('.card-header').innerText = clickedJob.jobTitle;
-            document.getElementById('detailsContainer').querySelector('.card-title').innerText = clickedJob.jobCategory;
-            document.getElementById('detailsContainer').querySelector('.card-text').innerHTML = clickedJob.jobDescription;
-           
+            // find if job is already applied
+            var appliedJobs = @Html.Raw(Json.Serialize(Model.AppliedJobs));
+            var alreadyAppliedJob = appliedJobs.find(ajob => ajob.job.id === parseInt(jobId));
+
+            // update job details container
+            var detailsContainer = document.getElementById('detailsContainer');
+            detailsContainer.querySelector('.card-header').innerText = clickedJob.jobTitle;
+            detailsContainer.querySelector('.card-title').innerText = clickedJob.jobCategory;
+            detailsContainer.querySelector('.card-text').innerHTML = clickedJob.jobDescription;
+
             // added date formatting
             var startDate = typeof clickedJob.startDate === 'string' ?
                 new Date(clickedJob.startDate) : clickedJob.startDate;
-
-            document.getElementById('detailsContainer').querySelector('.card-footer').innerText = 'Start Date: ' +
+            detailsContainer.querySelector('.card-footer').innerText = 'Start Date: ' +
                 (startDate instanceof Date ? startDate.toISOString().split('T')[0] : 'Invalid Date');
-            //set id to use in backend
-            document.getElementById('selectedJobId').value = clickedJob.id;
-            //make div visible
-            document.getElementById('detailsContainer').style.display = 'block';
 
-            //set button visibility and text
-            if (alredyAppliedJob) {
-                document.getElementById('btnApply').innerText = 'Already applied';
-                document.getElementById('btnApply').disabled = true;
-                document.getElementById('btnApply').className = "btn btn-secondary";
+            // set id to use in backend
+            document.getElementById('selectedJobId').value = clickedJob.id;
+
+            // make div visible
+            detailsContainer.style.display = 'block';
+
+            // set button visibility and text
+            var btnApply = document.getElementById('btnApply');
+            if (alreadyAppliedJob) {
+                btnApply.innerText = 'Already applied';
+                btnApply.disabled = true;
+                btnApply.className = "btn btn-secondary";
             } else {
-                document.getElementById('btnApply').innerText = 'Apply now';
-                document.getElementById('btnApply').disabled = false;
-                document.getElementById('btnApply').className = "btn btn-primary";
+                btnApply.innerText = 'Apply now';
+                btnApply.disabled = false;
+                btnApply.className = "btn btn-primary";
             }
         }
     }
@@ -121,7 +137,8 @@
 
     if (isAuthenticated) {
         var appliedJobs = @Html.Raw(Json.Serialize(Model.AppliedJobs));
-        var alreadyAppliedJob = appliedJobs.find(ajob => ajob.job.id === jobId);
+        var selectedJobId = document.getElementById('selectedJobId').value;
+        var alreadyAppliedJob = appliedJobs.find(ajob => ajob.job.id === parseInt(selectedJobId));
 
         if (alreadyAppliedJob) {
             btnApply.innerText = 'Already applied';
