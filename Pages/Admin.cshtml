@@ -48,30 +48,35 @@
                     @* <th>Id</th> *@
                     <th>UserName</th>
                     <th>Email</th>
-                    <th>Active</th>
                     <th>City</th>
                     <th>State</th>
                     <th>Country</th>
                     <th>Zipcode</th>
                     <th>Role</th>
+                    <th>Active</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var user in Model.ApplicationUsers)
                 {
-                <tr>
-                    <td>@user.UserName</td>
-                    <td>@user.Email</td>
-                    <td>@(user.Active ? "Yes" : "No")</td>
-                    <td>@user.City</td>
-                    <td>@user.State</td>
-                    <td>@user.Country</td>
-                    <td>@user.Zipcode</td>
-                    <td>@user.Role</td>
-                    <td>
-                        <a class="btn btn-primary" asp-page="AdminEditUser" asp-route-id="@user.Id">Edit</a>
-                    </td>
-                </tr>
+                    <tr>
+                        <td>@user.UserName</td>
+                        <td>@user.Email</td>
+                        <td>@user.City</td>
+                        <td>@user.State</td>
+                        <td>@user.Country</td>
+                        <td>@user.Zipcode</td>
+                        <td>
+                            @foreach (var role in Model.UserRoles[user.Id])
+                            {
+                                <span>@role</span>
+                            }
+                        </td>
+                        <td>
+                            <a class="btn btn-primary" asp-page="AdminEditUser" asp-route-id="@user.Id">@(user.Active ?
+                            "Yes" : "No")</a>
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>
