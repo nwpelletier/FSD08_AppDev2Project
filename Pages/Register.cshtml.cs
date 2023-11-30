@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Net;
+using System.Net.Mail;
+using System.Threading.Tasks;
 
 namespace FSD08_AppDev2Project.Pages
 {
@@ -127,6 +130,35 @@ namespace FSD08_AppDev2Project.Pages
                     var result2 = await userManager.AddToRoleAsync(user, Input.role.Name);
                     if (result2.Succeeded)
                     {
+
+                        // e-mail notification for successful registration (hard-coded e-mails for now)
+                        var body = $@"
+                                    <h1>Welcome to Icarus Job Board!</h1>
+                                    <p>Thank you for joining Icarus Job Board. We are excited to have you on board!</p>
+                                    <p>
+                                        Explore endless job opportunities, connect with leading companies, and take the leap towards a fulfilling career journey.
+                                        To get started, we recommend verifying your account information on the user's page. You can also browse the latest job postings
+                                        and read company reviews to make informed decisions about your career.
+                                    </p>";
+                        var message = new MailMessage();
+                        using (var smtp = new SmtpClient())
+                        {
+                            var credential = new NetworkCredential
+                            {
+                                UserName = "appdev2final@gmail.com",
+                                Password = "kynh wxzz yyku bsbj"
+                            };
+                            smtp.Credentials = credential;
+                            smtp.Host = "smtp.gmail.com";
+                            smtp.Port = 587;
+                            smtp.EnableSsl = true;
+                            message.To.Add("nickw.pelletier@gmail.com");
+                            message.Subject = "Welcome to Icarus Jobs!";
+                            message.Body = body;
+                            message.IsBodyHtml = true;
+                            message.From = new MailAddress("nickw.pelletier@gmail.com");
+                            await smtp.SendMailAsync(message);
+                        }
                         logger.LogInformation($"User {Input.Email} create a new account with password");
                         return RedirectToPage("RegisterSuccess", new { email = Input.Email });
                     }
