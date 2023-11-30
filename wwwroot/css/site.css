@@ -35,15 +35,27 @@ body {
 
 
 .index-splash-panel {
-  padding:2em;
-  background-color: rgb(230, 248, 255);
-  border-bottom:1px solid grey;
-  margin-bottom:2em;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-weight: bolder;
+  padding: 2em;
+  border-bottom: 1px solid rgb(0, 0, 0);
+  margin-bottom: 2em;
+
 }
 
-/* test styles for formatting PROFILE */
+.homepage-title {
+  font-size:5em;
+  color:rgb(255, 255, 255);
+  text-shadow: 2px 1px 1px rgb(0, 0, 0), -2px 1px 1px rgb(0, 0, 0);
+  border-radius: 9px;
+  padding: 6px 30px 10px 30px;
+}
 
-.profile-header {}
+
 
 .profile-panel {
   padding: 20px;
@@ -99,8 +111,12 @@ body {
 .index-page-panel {
   margin-top: 10px;
   padding: 20px;
-  border: 1px solid rgb(202, 202, 202);
+  border: 1px solid rgb(8, 86, 131);
   border-radius: 10px;
+}
+
+.index-page-panel:hover {
+  background-color:rgb(247, 247, 255);
 }
 
 .btn-info {

@@ -6,12 +6,28 @@
     ViewData["Title"] = "Home page";
 }
 
+<style>
+    .index-splash-panel {
+        background: url("@Model.StockImageUrl") center center/cover no-repeat;
+        filter: grayscale(50%);
+        height: 300px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
+
+<script>
+    var img = new Image();
+    img.src = "@Model.StockImageUrl";
+    img.onload = function () {
+        document.querySelector('.index-splash-panel').style.visibility = "visible";
+    };
+</script>
+
 <div class="index-splash-panel text-center container-fluid">
-    <h1 class="display-4 ">Welcome to Icarus Jobs</h1>
-    <br>
-    <h3 class="display-6 text-secondary">Companies can advertise their openings</h3>
-    <br>
-    <h3 class="display-6 text-secondary">And we help job seekers find their perfect career </h3>
+    <h1 class="lead homepage-title">Welcome to Icarus Jobs</h1>
 </div>
 <div class="text-center container">
     <div class="row justify-content-around">
@@ -29,7 +45,7 @@
         {
             <div class="col-md-5 offset-md-1 index-page-panel d-flex flex-column">
                 <p class="flex-grow-1">To make a better first impression, make sure your profile information is filled out.
-                    As well, having a good up-to-date resume, and a recent profile photo will go a long way.  </p>
+                    As well, having a good up-to-date resume, and a recent profile photo will go a long way. </p>
                 <a asp-page="/UserProfile" class="btn btn-outline-primary mt-auto">Your Profile</a>
             </div>
         }
