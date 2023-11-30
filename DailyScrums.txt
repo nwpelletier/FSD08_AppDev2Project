@@ -351,7 +351,7 @@ Needs help with:
 - 
 
 ============================
-Tuesday, Nov 28
+Wednesday, Nov 29
 
 NICK
 What I did yesterday:
@@ -396,6 +396,53 @@ What I'm doing today:
 
 What I didn't finish:
 - Hide login and Registration button from the confirmation page
+
+Needs help with:
+- 
+
+============================
+Thursday, Nov 30
+
+NICK
+What I did yesterday:
+- job search pagination
+- admin page (mainly user table)
+
+What I'm doing today:
+- stock image api
+- finish admin page
+- company edit profile
+- formatting
+
+What I didn't finish:
+- admin page
+
+Needs help with:
+- 
+
+MIRAL
+What I did yesterday:        
+- Adjusted code for blob downloading
+ 
+What I'm doing today:
+- working on image uploading
+ 
+What I didn't finish:
+- image upload on App service
+ 
+Needs help with:
+-Need to read documentation for image upload and download
+
+
+PEJMAN
+What I did yesterday:
+- 
+
+What I'm doing today:
+- 
+
+What I didn't finish:
+- 
 
 Needs help with:
 - 
