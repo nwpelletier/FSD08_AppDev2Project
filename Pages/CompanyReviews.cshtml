@@ -37,7 +37,7 @@
                         <div id="AverageRatingLbl"><h5>Average rating:</h5></div>
                         <div id="AverageRating"></div>
                         <br>
-                        <textarea id="commentBox" name="commentBox" rows="4" cols="50"></textarea>
+                        
                         <div class="text-center">
                             <div id = "leaveCommentDiv" >
 
@@ -83,11 +83,13 @@
                 document.getElementById('AverageRatingLbl').style.display = 'block';
                 document.getElementById('AverageRating').innerText = companyModel.aveRating;
             }
-            var comment = document.createElement('button');
+            var comment = document.createElement('input');
             comment.textContent = "Leave a Comment";
-            @* comment.setAttribute("asp-page", "LeaveComment");
-            comment.setAttribute("asp-route-id", companyModel.company.id); *@
+            comment.setAttribute("asp-page", "LeaveComment");
+            @* comment.setAttribute("asp-route-id", companyModel.company.id); *@
+            comment.setAttribute("type", "submit");
             comment.setAttribute("formaction", "/LeaveComment?id="+companyModel.company.id);
+            comment.setAttribute("value", "Leave a comment");
             document.getElementById('leaveCommentDiv').appendChild(comment);
         }
     }

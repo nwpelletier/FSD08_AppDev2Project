@@ -51,9 +51,6 @@ namespace FSD08_AppDev2Project.Pages
         public async void OnGet()
         {
             Companys = _db.Companys.ToList();
-         //   _ApplicationUsers = _db.ApplicationUsers.ToList();
-            ApplicationUser currentUser = await _userManager.GetUserAsync(User);
-
             foreach(var company in Companys){
                 CompanyModel companyModel = new CompanyModel();
                 companyModel.Company = company;
@@ -66,14 +63,7 @@ namespace FSD08_AppDev2Project.Pages
                     companyModel.aveRating = SumR/companyModel.Reviews.Count();
                     else companyModel.aveRating = -1;
                     companysModel.Add(companyModel);
-
             }
-
-            if (currentUser != null)
-            {
-
-            }
-
         }
 
         public async Task<ActionResult> OnPostAsync(string test)
