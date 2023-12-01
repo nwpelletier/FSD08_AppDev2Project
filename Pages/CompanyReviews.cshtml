@@ -24,7 +24,7 @@
         </div>
         <div class="col-md-6" id="detailsContainer" style="display: none;">
             <div class="card text-dark bg-light mb-3 customborder" style="max-width: 45rem;max-height:50rem;">
-                <form method="post" id="applyNowForm" asp-page-handler="HandleCompanyId">
+                <form method="post" asp-for ="" id="applyNowForm" asp-page-handler="HandleCompanyId">
                     <input type="hidden" id="selectedCompanyId" name="selectedCompanyId" value="" />
                     <h5 class="card-header"></h5>
                     <div class="card-body" style="max-height:35rem;overflow-y: auto;">
@@ -39,7 +39,10 @@
                         <br>
                         <textarea id="commentBox" name="commentBox" rows="4" cols="50"></textarea>
                         <div class="text-center">
-                            <button type="submit"  id="btnComment" class="btn btn-primary">Submit Comment</button>
+                            <div id = "leaveCommentDiv" >
+
+                            </div>
+                            
                         </div>
                         <div><h5>Comment(s):</h5></div>
                         <div id="Comments"></div>
@@ -58,9 +61,8 @@
         
         var companysModel = @Html.Raw(Json.Serialize(Model.companysModel));
         var companyModel = companysModel.find(obj => obj.company.id === companyId);
-        
-        document.getElementById('commentBox').setAttribute("asp-for", "companyModel.reviews.review");
-
+        debugger;
+       
         if (companyModel) {
             this.companyModel = companyModel;
             document.getElementById('detailsContainer').style.display = 'block';
@@ -70,19 +72,24 @@
             document.getElementById('detailsContainer').querySelector('.card-title2').innerHTML = companyModel.company.state;
             document.getElementById('detailsContainer').querySelector('.card-title3').innerHTML = companyModel.company.city;
             for(var r of companyModel.reviews){
-                var review = document.createElement('div');
-                review.textContent = r.reviews;
-                document.getElementById('Comments').appendChild(review);
+                    var review = document.createElement('div');
+                    review.textContent = r.reviews;
+                    document.getElementById('Comments').appendChild(review);
                 }
-                  debugger;
-                  if(companyModel.aveRating < 0)
-                    document.getElementById('AverageRatingLbl').style.display = 'none';
-                  else {
-                    document.getElementById('AverageRatingLbl').style.display = 'block';
-                    document.getElementById('AverageRating').innerText = companyModel.aveRating;
-                    }
+            debugger;
+            if(companyModel.aveRating < 0)
+                document.getElementById('AverageRatingLbl').style.display = 'none';
+            else {
+                document.getElementById('AverageRatingLbl').style.display = 'block';
+                document.getElementById('AverageRating').innerText = companyModel.aveRating;
+            }
+            var comment = document.createElement('button');
+            comment.textContent = "Leave a Comment";
+            @* comment.setAttribute("asp-page", "LeaveComment");
+            comment.setAttribute("asp-route-id", companyModel.company.id); *@
+            comment.setAttribute("formaction", "/LeaveComment?id="+companyModel.company.id);
+            document.getElementById('leaveCommentDiv').appendChild(comment);
         }
-        companysModelInput = 10;
     }
 @* 
     function setComment(){

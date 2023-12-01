@@ -16,12 +16,8 @@ namespace FSD08_AppDev2Project.Pages
         private readonly AppDev2DbContext _db; // Make sure AppDev2DbContext is accessible
 
         private readonly UserManager<ApplicationUser> _userManager;
-
-        public CompanyReviewsModel(UserManager<ApplicationUser> userManager, AppDev2DbContext db)
-        {
-            _db = db;
-            _userManager = userManager;
-        }
+        private readonly List<CompanyModel> _companysModel;
+        private readonly List<ApplicationUser> _ApplicationUsers ;
       [BindProperty]
         public List<Company> Companys { get; set; }
         // public List<Review> Reviews { get; set; }
@@ -30,24 +26,32 @@ namespace FSD08_AppDev2Project.Pages
 
         [BindProperty]
         public List<ApplicationUser> ApplicationUsers { get; set; }
-
      
         public class CompanyModel{
-      [BindProperty]
             public Company Company { get; set; }
-                  [BindProperty]
             public List<Review> Reviews { get; set; }
-      [BindProperty]
             public float aveRating {get; set;}
         }
-        public List<CompanyModel> companysModel = new List<CompanyModel>();
-              [BindProperty]
-        public List<CompanyModel> companysModelInput  { get; set; }
+       // public List<CompanyModel> companysModel = new List<CompanyModel>();
+         public List<CompanyModel> companysModel { get; set; } = new  List<CompanyModel> ();
+
+        // public CompanyReviewsModel(UserManager<ApplicationUser> userManager, AppDev2DbContext db, List<CompanyModel> companysModel)
+        // {
+        //     _db = db;
+        //     _userManager = userManager;
+        //    _companysModel = companysModel;
+        // }
+
+        public CompanyReviewsModel(UserManager<ApplicationUser> userManager, AppDev2DbContext db)
+        {
+            _db = db;
+            _userManager = userManager;
+        }
 
         public async void OnGet()
         {
             Companys = _db.Companys.ToList();
-            ApplicationUsers = _db.ApplicationUsers.ToList();
+         //   _ApplicationUsers = _db.ApplicationUsers.ToList();
             ApplicationUser currentUser = await _userManager.GetUserAsync(User);
 
             foreach(var company in Companys){
@@ -61,7 +65,7 @@ namespace FSD08_AppDev2Project.Pages
                 if(companyModel.Reviews.Count() > 0)
                     companyModel.aveRating = SumR/companyModel.Reviews.Count();
                     else companyModel.aveRating = -1;
-                companysModel.Add(companyModel);
+                    companysModel.Add(companyModel);
 
             }
 
@@ -72,16 +76,20 @@ namespace FSD08_AppDev2Project.Pages
 
         }
 
-        public async Task<ActionResult> OnPostAsync()
+        public async Task<ActionResult> OnPostAsync(string test)
         {
-            ApplicationUser user = await _userManager.GetUserAsync(User);
+        //     ApplicationUser user = await _userManager.GetUserAsync(User);
+        //     companysModel = await _companysModel;
             
-            Review review =new Review();
+            
+
+
+        //     Review review =new Review();
            
-            _db.SaveChanges();
+        //     _db.SaveChanges();
 
 
-            return RedirectToPage("CompanyReviews");
+             return NotFound();
         }
     }
 }
