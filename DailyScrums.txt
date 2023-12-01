@@ -436,13 +436,19 @@ Needs help with:
 
 PEJMAN
 What I did yesterday:
-- 
+- CompanyReview page
 
 What I'm doing today:
-- 
+- Posting users' comments to db
+- CompanyProfile page
+- Hide login and register buttons from the confirmation page
+- Add more data to db
+- Flash messages
 
 What I didn't finish:
-- 
+- Hide login and register buttons from the confirmation page
 
 Needs help with:
 - 
+
+** Re-adding because earlier commit was missing information
