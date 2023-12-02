@@ -9,8 +9,19 @@
         <div class="offset-2 col-8">
             <div class="profile-header">
                 <div class="container d-flex justify-content-between align-items-center">
-                    <div class="profile-name">@Model.Company.Name</div>
-                    <div class="profile-image" style="font-size:18px">Logo</div>
+                    <div class="">
+                        @if (Model.CompanyLogoUrls != null && Model.CompanyLogoUrls.Any())
+                        {
+                            @foreach (var logoUrl in Model.CompanyLogoUrls)
+                            {
+                                <img src="@logoUrl" alt="Company Logo" style="max-width: 400px; max-height: 400px;" alt=@Model.Company.Name/>
+                            }
+                        }
+                        else
+                        {
+                            <div class="profile-name">@Model.Company.Name</div>
+                        }
+                    </div>
                 </div>
             </div>
             <div class="contact-info-user my-3">

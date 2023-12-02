@@ -50,6 +50,8 @@ builder.Services.ConfigureApplicationCookie(options => {
     options.AccessDeniedPath = "/AccessDenied";
 });
 
+builder.Services.AddHttpClient();
+
 var app = builder.Build();
 
 // using (var scope = app.Services.CreateScope())
