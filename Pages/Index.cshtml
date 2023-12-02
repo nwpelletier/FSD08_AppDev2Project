@@ -27,7 +27,7 @@
 </script>
 
 <div class="index-splash-panel text-center container-fluid">
-    <h1 class="lead homepage-title">Welcome to Icarus Jobs</h1>
+    <h1 style="font-size:120px" class="lead homepage-title">Icarus Jobs</h1>
 </div>
 <div class="text-center container">
     <div class="row justify-content-around">
@@ -43,19 +43,52 @@
 
         @if (signInManager.IsSignedIn(User))
         {
-            <div class="col-md-5 offset-md-1 index-page-panel d-flex flex-column">
-                <p class="flex-grow-1">To make a better first impression, make sure your profile information is filled out.
-                    As well, having a good up-to-date resume, and a recent profile photo will go a long way. </p>
-                <a asp-page="/UserProfile" class="btn btn-outline-primary mt-auto">Your Profile</a>
-            </div>
+            @if (User.IsInRole("Applicant"))
+            {
+                <div class="col-md-5 offset-md-1 index-page-panel d-flex flex-column">
+                    <p class="h4">Welcome in, <b>@User.Identity.Name</b></p>
+                    <p class="flex-grow-1">To make a better first impression, make sure your profile information is filled out.
+                        As well, having a good up-to-date resume, and a recent profile photo will go a long way. </p>
+                    <a asp-page="/UserProfile" class="btn btn-outline-primary mt-auto">Your Profile</a>
+
+                </div>
+            }
         }
 
-        <div class="col-md-5 index-page-panel ms-2 d-flex flex-column">
-            <p class="flex-grow-1">Feel the excitement of endless possibilities as you explore a myriad of job
-                opportunities on Icarus Job Board. Your next career move awaits –
-                if you feel like browsing first before creating an account, feel free to view our job postings here.</p>
-            <a asp-page="/JobPostings" class="btn btn-outline-primary mt-auto">View Jobs</a>
-        </div>
+        @if (!User.IsInRole("Admin"))
+        {
+            <div class="col-md-5 index-page-panel ms-2 d-flex flex-column">
+                @if (User.IsInRole("Applicant"))
+                {
+                    <p class="flex-grow-1">Feel the excitement of endless possibilities as you explore a myriad of job
+                        opportunities on Icarus Job Board. Your next career move awaits –
+                        if you feel like browsing first before creating an account, feel free to view our job postings here.</p>
+                    <a asp-page="/JobPostings" class="btn btn-outline-primary mt-auto">View Jobs</a>
+                }
+                else
+                {
+                    <p class="h4">Welcome in, <b>@User.Identity.Name</b></p>
+                    <p class="flex-grow-1">Check in on all job postings on our site. You can see how your postings stack up
+                        against other companies.</p>
+                    <a asp-page="/JobPostings" class="btn btn-outline-primary mt-auto">View Job Postings</a>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="col-md-5 index-page-panel ms-2 d-flex flex-column">
+                <p class="display-4">Welcome in,<br> <b>@User.Identity.Name!</b></p>
+                @if (User.IsInRole("HiringManager"))
+                {
+                    <p>Welcome, Hiring Manager! Compare your job listings and ratings with other companies, edit your personal
+                        profile, and post jobs.</p>
+                }
+                else if (User.IsInRole("Admin"))
+                {
+                    <p>Welcome, Admin! Manage user roles, review job listings, and perform administrative tasks.</p>
+                }
+            </div>
+        }
     </div>
 
 </div>

@@ -16,6 +16,5 @@ namespace FSD08_AppDev2Project.Models
         public Company Company { get; set; }
         public string Reviews { get; set; }
         public int Stars { get; set; }
-        
     }
 }
