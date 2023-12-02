@@ -55,26 +55,16 @@
             }
         }
 
-        @if (!User.IsInRole("Admin"))
+        @if (User.IsInRole("Applicant"))
         {
             <div class="col-md-5 index-page-panel ms-2 d-flex flex-column">
-                @if (User.IsInRole("Applicant"))
-                {
                     <p class="flex-grow-1">Feel the excitement of endless possibilities as you explore a myriad of job
                         opportunities on Icarus Job Board. Your next career move awaits –
                         if you feel like browsing first before creating an account, feel free to view our job postings here.</p>
                     <a asp-page="/JobPostings" class="btn btn-outline-primary mt-auto">View Jobs</a>
-                }
-                else
-                {
-                    <p class="h4">Welcome in, <b>@User.Identity.Name</b></p>
-                    <p class="flex-grow-1">Check in on all job postings on our site. You can see how your postings stack up
-                        against other companies.</p>
-                    <a asp-page="/JobPostings" class="btn btn-outline-primary mt-auto">View Job Postings</a>
-                }
             </div>
         }
-        else
+        else if (signInManager.IsSignedIn(User))
         {
             <div class="col-md-5 index-page-panel ms-2 d-flex flex-column">
                 <p class="display-4">Welcome in,<br> <b>@User.Identity.Name!</b></p>
