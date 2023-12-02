@@ -11,3 +11,14 @@
         <div class="Company: "></div>
     </div>
 </div>
+<body>
+    <form method="post" asp-for ="" id="applyNowForm" asp-page-handler="HandleCompanyId">
+    <textarea asp-for="@Model.Reviews.Reviews" id="commentBox" name="commentBox" rows="4" cols="50"></textarea>
+        <div class="text-center">
+            <div id = "leaveCommentDiv" >
+
+            </div>
+        </div>
+    <button  type="submit">Submit Comment</button>
+    </form>
+</body>

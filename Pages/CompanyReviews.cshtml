@@ -24,7 +24,7 @@
         </div>
         <div class="col-md-6" id="detailsContainer" style="display: none;">
             <div class="card text-dark bg-light mb-3 customborder" style="max-width: 45rem;max-height:50rem;">
-                <form method="post" asp-for ="" id="applyNowForm" asp-page-handler="HandleCompanyId">
+                <form method="post" asp-for ="" id="applyNowForm" >
                     <input type="hidden" id="selectedCompanyId" name="selectedCompanyId" value="" />
                     <h5 class="card-header"></h5>
                     <div class="card-body" style="max-height:35rem;overflow-y: auto;">
@@ -37,6 +37,7 @@
                         <div id="AverageRatingLbl"><h5>Average rating:</h5></div>
                         <div id="AverageRating"></div>
                         <br>
+                        <button id="test" asp-route-id = "" asp-page = "LeaveComment">Test</button>
                         
                         <div class="text-center">
                             <div id = "leaveCommentDiv" >
@@ -85,14 +86,22 @@
             }
             var comment = document.createElement('input');
             comment.textContent = "Leave a Comment";
-            comment.setAttribute("asp-page", "LeaveComment");
-            @* comment.setAttribute("asp-route-id", companyModel.company.id); *@
+           comment.setAttribute("asp-page", "LeaveComment");
+              @* comment.setAttribute("asp-route-id", companyModel.company.id);  *@
             comment.setAttribute("type", "submit");
+           // comment.setAttribute("formaction", "http://localhost:5213/LeaveComment/"+companyModel.company.id);
+          //  comment.setAttribute("formaction", "/LeaveComment/id:"+companyModel.company.id);
             comment.setAttribute("formaction", "/LeaveComment?id="+companyModel.company.id);
             comment.setAttribute("value", "Leave a comment");
             document.getElementById('leaveCommentDiv').appendChild(comment);
+
         }
     }
+
+    $('#test').on('click', function(){
+        $.post('/LeaveComment',{id: this.companyModel.company.id})
+    })
+
 @* 
     function setComment(){
         debugger
