@@ -2,149 +2,234 @@
 @model FSD08_AppDev2Project.Pages.AdminModel
 @using FSD08_AppDev2Project.Data
 
-<div class="row justify-content-center">
-    <div class="col-8 admin-panel">
-        <h2>Companies</h2>
-        <hr>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Name</th>
-                    <th>City</th>
-                    <th>State</th>
-                    <th>Country</th>
-                    <th>Hiring Managers</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var company in Model.Companys)
-                {
-                    <tr>
-                        <td>@company.Id</td>
-                        <td>@company.Name</td>
-                        <td>@company.City</td>
-                        <td>@company.State</td>
-                        <td>@company.Country</td>
-                        <td>
-                            @foreach (var manager in company.HiringManagers)
-                            {
-                                <p>@manager.UserName</p>
-                            }
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+@if (TempData.ContainsKey("ErrorMessage"))
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
     </div>
+}
 
-    <br><br>
-
-    <div class="col-8 admin-panel">
-        <h2>Users</h2>
-        <table class="table">
-            <thead>
-                <tr>
-                    @* <th>Id</th> *@
-                    <th>UserName</th>
-                    <th>Email</th>
-                    <th>City</th>
-                    <th>State</th>
-                    <th>Country</th>
-                    <th>Zipcode</th>
-                    <th>Role</th>
-                    <th>Active</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var user in Model.ApplicationUsers.OrderBy(u => u.UserName))
-                {
-                    <tr>
-                        <td>@user.UserName</td>
-                        <td>@user.Email</td>
-                        <td>@user.City</td>
-                        <td>@user.State</td>
-                        <td>@user.Country</td>
-                        <td>@user.Zipcode</td>
-                        <td>
-                            @if (Model.UserRoles.ContainsKey(user.Id) && Model.UserRoles[user.Id].Any())
-                            {
-                                @foreach (var role in Model.UserRoles[user.Id])
-                                {
-                                    <a asp-page="AdminEditUserRole" asp-route-id="@user.Id">[@role]</a>
-                                }
-                            }
-                            else
-                            {
-                               <a asp-page="AdminEditUserRole" asp-route-id="@user.Id">[No Role]</a>
-                            }
-                        </td>
-                        <td>
-                            <a class="btn @(user.Active ? "btn-success" : "btn-danger")" asp-page="AdminEditUserActive"
-                                asp-route-id="@user.Id">
-                                @(user.Active ? "Yes" : "No")
-                            </a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+@if (TempData.ContainsKey("SuccessMessage"))
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
     </div>
+}
 
-    <div class="col-8 admin-panel">
-        <h2>Job Reviews</h2>
-        <table class="table">
-            <thead>
-                <tr>
-                    @* <th>Id</th> *@
-                    <th>Id</th>
-                    <th>Company</th>
-                    <th>Username</th>
-                    <th>Review</th>
-                    <th>Stars</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var review in Model.Reviews)
-                {
-                    <tr>
-                        <td>@review.Id</td>
-                        <td>@review.Company.Name</td>
-                        <td>@review.User.UserName</td>
-                        <td>@review.Reviews</td>
-                        <td>@review.Stars</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+<div class="container-fluid">
+    <div class="row mt-3">
+        <div class="col-2 bg-light sidebar">
+            <h5> Table Displays</h5>
+            <hr>
+            <div class="d-flex flex-column align-items-start p-3">
+                <button class="admin-btn" onclick="toggleTable('companies', this)">Companies</button>
+                <button class="admin-btn" onclick="toggleTable('users', this)">Users</button>
+                <div class="d-flex justify-content-between align-items-center">
+                    <button class="admin-btn" onclick="toggleTable('jobReviews', this)">Reviews</button>
+                    <div class="form-group">
+                        <select class="form-control" id="companyFilter" onchange="filterReviewsByCompany()">
+                            <option value="">All</option>
+                            @foreach (var company in Model.Companys)
+                            {
+                                <option value="@company.Name">@company.Name</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <button class="admin-btn" onclick="toggleTable('jobs', this)">Show Jobs</button>
+                <a class="admin-btn" asp-page="AdminAddCompany">Add Company</a>
+            </div>
+        </div>
+        <div class="col-10 " style="overflow-y: auto; max-height: 80vh;">
 
-    <div class="col-8 admin-panel">
-        <h2>Jobs</h2>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>CompanyId</th>
-                    <th>Category</th>
-                    <th>Title</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var job in Model.Jobs)
-                {
-                    <tr>
-                        <td>@job.Id</td>
-                        <td>@job.JobCompanyId</td> <!-- Assuming you want to display the company ID -->
-                        <td>@job.JobCategory</td>
-                        <td>@job.JobTitle</td>
-                        <td>@job.StartDate</td>
-                        <td>@job.EndDate</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+            <div class="row">
+                <div class="col-10 admin-panel" id="companiesTable" style="display: none;">
+                    <h2>Companies</h2>
+                    <hr>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Name</th>
+                                <th>City</th>
+                                <th>State</th>
+                                <th>Country</th>
+                                <th>Hiring Managers</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var company in Model.Companys)
+                            {
+                                <tr>
+                                    <td>@company.Id</td>
+                                    <td>@company.Name</td>
+                                    <td>@company.City</td>
+                                    <td>@company.State</td>
+                                    <td>@company.Country</td>
+                                    <td>
+                                        @foreach (var manager in company.HiringManagers)
+                                        {
+                                            <p>@manager.UserName</p>
+                                        }
+                                    </td>
+                                    <td>
+                                        <a asp-page="AdminAddHiringManager" asp-route-id="@company.Id">Add Hiring
+                                            Manager</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <br><br>
+
+                <div class="col-10 admin-panel" id="usersTable" style="display: none;">
+                    <h2>Users</h2>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                @* <th>Id</th> *@
+                                <th>UserName</th>
+                                <th>Email</th>
+                                <th>City</th>
+                                <th>State</th>
+                                <th>Country</th>
+                                <th>Zipcode</th>
+                                <th>Role</th>
+                                <th>Active</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var user in Model.ApplicationUsers.OrderBy(u => u.UserName))
+                            {
+                                <tr>
+                                    <td>@user.UserName</td>
+                                    <td>@user.Email</td>
+                                    <td>@user.City</td>
+                                    <td>@user.State</td>
+                                    <td>@user.Country</td>
+                                    <td>@user.Zipcode</td>
+                                    <td>
+                                        @if (Model.UserRoles.ContainsKey(user.Id) && Model.UserRoles[user.Id].Any())
+                                        {
+                                            @foreach (var role in Model.UserRoles[user.Id])
+                                            {
+                                                <a asp-page="AdminEditUserRole" asp-route-id="@user.Id">[@role]</a>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <a asp-page="AdminEditUserRole" asp-route-id="@user.Id">[No Role]</a>
+                                        }
+                                    </td>
+                                    <td>
+                                        <a class="btn @(user.Active ? "btn-success" : "btn-danger")"
+                                            asp-page="AdminEditUserActive" asp-route-id="@user.Id">
+                                            @(user.Active ? "Yes" : "No")
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-10 admin-panel" id="jobReviewsTable" style="display: none;">
+                    <h2>Job Reviews</h2>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                @* <th>Id</th> *@
+                                <th>Id</th>
+                                <th>Company</th>
+                                <th>Username</th>
+                                <th>Review</th>
+                                <th>Stars</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var review in Model.Reviews)
+                            {
+                                <tr>
+                                    <td>@review.Id</td>
+                                    <td>@review.Company.Name</td>
+                                    <td>@review.User.UserName</td>
+                                    <td>@review.Reviews</td>
+                                    <td>@review.Stars</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-10 admin-panel" id="jobsTable" style="display: none;">
+                    <h2>Jobs</h2>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>CompanyId</th>
+                                <th>Category</th>
+                                <th>Title</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var job in Model.Jobs)
+                            {
+                                <tr>
+                                    <td>@job.Id</td>
+                                    <td>@job.JobCompanyId</td>
+                                    <td>@job.JobCategory</td>
+                                    <td>@job.JobTitle</td>
+                                    <td>@job.StartDate</td>
+                                    <td>@job.EndDate</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+<script>
+    function toggleTable(tableName, button) {
+        hideAllTables();
+        resetButtonStyles();
+
+        document.getElementById(`${tableName}Table`).style.display = 'block';
+        button.classList.add('clicked');
+    }
+
+    function resetButtonStyles() {
+        var buttons = document.querySelectorAll('.admin-btn');
+        buttons.forEach(function (button) {
+            button.classList.remove('clicked');
+        });
+    }
+
+    function hideAllTables() {
+        document.getElementById('companiesTable').style.display = 'none';
+        document.getElementById('usersTable').style.display = 'none';
+        document.getElementById('jobReviewsTable').style.display = 'none';
+        document.getElementById('jobsTable').style.display = 'none';
+    }
+
+    function filterReviewsByCompany() {
+        var selectedCompany = document.getElementById('companyFilter').value;
+        var rows = document.getElementById('jobReviewsTable').getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+
+        for (var i = 0; i < rows.length; i++) {
+            var companyName = rows[i].getElementsByTagName('td')[1].innerText;
+            if (selectedCompany === '' || companyName === selectedCompany) {
+                rows[i].style.display = '';
+            } else {
+                rows[i].style.display = 'none';
+            }
+        }
+    }
+</script>

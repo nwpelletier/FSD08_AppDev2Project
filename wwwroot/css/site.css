@@ -147,9 +147,60 @@ body {
 }
 
 .admin-panel {
-  background-color:rgb(232, 244, 255);
+  /* background-color:#e2e2e2; */
   padding:2em;
-  border: 2px solid grey;
-  border-radius:12px;
-  margin:2em;
+  border:1px solid rgb(141, 141, 141);
+  /* margin:2em; */
+}
+
+.admin-btn {
+  padding:4px;
+  border-radius:3px;
+  font-weight:300;
+  font-size:20px;
+  margin: 10px;
+  width: 80%;
+  text-align: center;
+  background-color:#d2d6dd;
+  border:none;
+}
+
+.admin-btn:hover {
+  background-color:#555555;
+}
+
+.admin-btn.clicked {
+  background-color:#1E1E2C;
+  color:white;
+}
+
+.sidebar {
+  /* height: 350px; */
+  border:1px solid grey;
+  border-right:none;
+}
+
+.admin-spacer {
+  border: 1px solid rgb(170, 170, 180);
+  height:1px;
+  width:100%;
+}
+
+.sidebar h5 {
+  margin-top: 10px;
+  margin-left: auto;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color:black;
+}
+
+a:hover {
+  color:black;
 }
