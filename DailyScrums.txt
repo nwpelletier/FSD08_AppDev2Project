@@ -452,3 +452,55 @@ Needs help with:
 - 
 
 ** Re-adding because earlier commit was missing information
+
+============================
+Saturday, Dec 2
+
+NICK
+What I did yesterday:
+- homepage image
+- pagination on job search
+- admin page update
+
+What I'm doing today:
+- finish admin panel
+- troubleshooting
+
+What I didn't finish:
+- 
+
+Needs help with:
+- 
+
+MIRAL
+What I did yesterday:        
+- Adjuested company review page
+- Adjusted leavecomment page
+ 
+What I'm doing today:
+- job search 
+ 
+What I didn't finish:
+- 
+ 
+Needs help with:
+-
+
+
+PEJMAN
+What I did yesterday:
+- CompanyReview page
+
+What I'm doing today:
+- CompanyProfile page (Read, Update)
+- Hide Login and Registration buttons from the confirmation pages
+- Add more data to database
+- Flash messages
+
+What I didn't finish:
+- CompanyProfile page (Read, Update)
+- Hide Login and Registration buttons from the confirmation pages
+- Add more data to database
+- Flash messages
+
+Needs help with:
