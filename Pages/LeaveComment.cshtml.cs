@@ -7,48 +7,69 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using System.ComponentModel.DataAnnotations;
 
 namespace FSD08_AppDev2Project.Pages
 {
-     [Authorize]
+    [Authorize]
     public class LeaveCommentModel : PageModel
     {
         private readonly AppDev2DbContext _db;
         private readonly UserManager<ApplicationUser> _userManager;
 
+        [BindProperty]
+        public List<Company> Companys { get; set; }
+        [BindProperty]
+        public int SelectedCompanyId { get; set; }
+        [BindProperty]
+        public InputModel Input { get; set; }
+        public class InputModel
+        {
+            [Required(ErrorMessage = "Please provide reviews.")]
+            public string Reviews { get; set; }
+
+            [Required(ErrorMessage = "Please provide stars.")]
+            public int Stars { get; set; }
+
+        }
         public LeaveCommentModel(AppDev2DbContext db, UserManager<ApplicationUser> userManager)
         {
             _db = db;
-            _userManager = userManager; 
+            _userManager = userManager;
         }
 
         public Review Reviews { get; set; }
-         public Company Company { get; set; }
+        public Company Company { get; set; }
 
-        [BindProperty(SupportsGet = true)]
+        // [BindProperty(SupportsGet = true)]
         public string id { get; set; }
-        
-        public IActionResult OnGet(string id)
-        {            
-            if(id == null)
-                return NotFound();
-            Company = _db.Companys.FirstOrDefault(c => c.Id == int.Parse(id));
-            return Page();
-        }
-        // public async Task<ActionResult> OnPost()
-        // {
-        //     ApplicationUser currentUser = await _userManager.GetUserAsync(User);
-        //     if(currentUser != null){
-        //         Review newReview = new Review();
-        //         newReview.Company = Company;
-        //         newReview.Reviews = Reviews.Reviews;
-        //         newReview.Stars = 4;
-        //         newReview.User = currentUser;
 
-        //         _db.Reviews.Add(newReview);
-        //         _db.SaveChanges();
-        //     }
-        //     return Page();
-        // }
+        public void OnGet()
+        {
+            this.Companys = _db.Companys.ToList();
+        }
+
+        public async Task<ActionResult> OnPostAsync()
+        {
+
+            if (ModelState.IsValid)
+            {
+                var newReview = new Review
+                {
+                    User = await _userManager.GetUserAsync(User),
+                    Company = _db.Companys.Find(SelectedCompanyId),
+                    Reviews = Input.Reviews,
+                    Stars = Input.Stars
+                };
+
+                _db.Reviews.Add(newReview);
+                _db.SaveChanges();
+
+                return RedirectToPage("CompanyReviews");
+            }
+
+            return Page();
+
+        }
     }
 }

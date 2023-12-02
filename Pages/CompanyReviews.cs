@@ -20,7 +20,7 @@ namespace FSD08_AppDev2Project.Pages
         private readonly List<ApplicationUser> _ApplicationUsers ;
       [BindProperty]
         public List<Company> Companys { get; set; }
-        // public List<Review> Reviews { get; set; }
+        
         [BindProperty]
         public int SelectedCompanyId { get; set; }
 
@@ -32,15 +32,10 @@ namespace FSD08_AppDev2Project.Pages
             public List<Review> Reviews { get; set; }
             public float aveRating {get; set;}
         }
-       // public List<CompanyModel> companysModel = new List<CompanyModel>();
-         public List<CompanyModel> companysModel { get; set; } = new  List<CompanyModel> ();
 
-        // public CompanyReviewsModel(UserManager<ApplicationUser> userManager, AppDev2DbContext db, List<CompanyModel> companysModel)
-        // {
-        //     _db = db;
-        //     _userManager = userManager;
-        //    _companysModel = companysModel;
-        // }
+        public List<Review> Reviews { get; set; }
+        
+         public List<CompanyModel> companysModel { get; set; } = new  List<CompanyModel> ();
 
         public CompanyReviewsModel(UserManager<ApplicationUser> userManager, AppDev2DbContext db)
         {
@@ -48,38 +43,25 @@ namespace FSD08_AppDev2Project.Pages
             _userManager = userManager;
         }
 
-        public async void OnGet()
+        public async void OnGet(int? selectedCompanyId)
         {
-            Companys = _db.Companys.ToList();
-            foreach(var company in Companys){
-                CompanyModel companyModel = new CompanyModel();
-                companyModel.Company = company;
-                companyModel.Reviews =  _db.Reviews.Where(re => re.Company == company).ToList();
-                int SumR = 0;
-                foreach(var r in companyModel.Reviews){
-                    SumR += r.Stars;
-                }
-                if(companyModel.Reviews.Count() > 0)
-                    companyModel.aveRating = SumR/companyModel.Reviews.Count();
-                    else companyModel.aveRating = -1;
-                    companysModel.Add(companyModel);
+            if (selectedCompanyId.HasValue){
+                Reviews = _db.Reviews.Where(r => r.Company.Id == selectedCompanyId.Value).ToList();    
+            }else {
+                Reviews = new List<Review>();
             }
+            
+            Companys = _db.Companys.ToList();
         }
 
-        public async Task<ActionResult> OnPostAsync(string test)
+        public ActionResult OnPostGiveReview()
         {
-        //     ApplicationUser user = await _userManager.GetUserAsync(User);
-        //     companysModel = await _companysModel;
-            
-            
+             return RedirectToPage("LeaveComment");
+        }
 
-
-        //     Review review =new Review();
-           
-        //     _db.SaveChanges();
-
-
-             return NotFound();
+        
+        public ActionResult OnPostSelectedCompanyReview(){
+            return RedirectToPage("CompanyReviews", new {selectedCompanyId = SelectedCompanyId});;
         }
     }
 }

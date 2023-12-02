@@ -8,103 +8,51 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-6">
-                        <ul>
-                @for(var index = 0 ; index < Model.companysModel.Count(); index++)
-                {
-                    var companyModel = Model.companysModel[index];
-                    <div class="card text-dark bg-light mb-3 customborder" style="max-width: 30rem;"
-                        onclick="showCompanyDetails(@companyModel.Company.Id, @companyModel.aveRating)">
-                        <div class="card-header">
-                            <h5 class="card-title">@companyModel.Company.Name</h5>
-                        </div>
-                    </div>
-                }
-            </ul>
-        </div>
-        <div class="col-md-6" id="detailsContainer" style="display: none;">
-            <div class="card text-dark bg-light mb-3 customborder" style="max-width: 45rem;max-height:50rem;">
-                <form method="post" asp-for ="" id="applyNowForm" >
-                    <input type="hidden" id="selectedCompanyId" name="selectedCompanyId" value="" />
-                    <h5 class="card-header"></h5>
-                    <div class="card-body" style="max-height:35rem;overflow-y: auto;">
-                        <div><h5>Country:</h5></div>
-                        <p class="card-title1"></p>
-                        <div><h5>State:</h5></div>
-                        <p class="card-title2"></p>
-                        <div><h5>City:</h5></div>
-                        <p class="card-title3"></p>
-                        <div id="AverageRatingLbl"><h5>Average rating:</h5></div>
-                        <div id="AverageRating"></div>
-                        <br>
-                        <button id="test" asp-route-id = "" asp-page = "LeaveComment">Test</button>
-                        
-                        <div class="text-center">
-                            <div id = "leaveCommentDiv" >
-
-                            </div>
-                            
-                        </div>
-                        <div><h5>Comment(s):</h5></div>
-                        <div id="Comments"></div>
-                    </div>
-                </form>
-            </div>
-        </div>
+        <form method="post" asp-page-handler="GiveReview">
+            <div class="d-grid gap-2 col-6 mx-auto mb-2">
+                <button class="btn btn-primary" type="submit">Give Company review</button>
+        </form>
     </div>
 </div>
 
-<script>
-    function showCompanyDetails(companyId, rating) {
-        document.getElementById('AverageRating').innerText = '';
-        while (document.getElementById('Comments').hasChildNodes())
-            document.getElementById('Comments').removeChild(document.getElementById('Comments').lastChild);
-        
-        var companysModel = @Html.Raw(Json.Serialize(Model.companysModel));
-        var companyModel = companysModel.find(obj => obj.company.id === companyId);
-        debugger;
-       
-        if (companyModel) {
-            this.companyModel = companyModel;
-            document.getElementById('detailsContainer').style.display = 'block';
 
-            document.getElementById('detailsContainer').querySelector('.card-header').innerText = companyModel.company.name;
-            document.getElementById('detailsContainer').querySelector('.card-title1').innerText =companyModel.company.country;
-            document.getElementById('detailsContainer').querySelector('.card-title2').innerHTML = companyModel.company.state;
-            document.getElementById('detailsContainer').querySelector('.card-title3').innerHTML = companyModel.company.city;
-            for(var r of companyModel.reviews){
-                    var review = document.createElement('div');
-                    review.textContent = r.reviews;
-                    document.getElementById('Comments').appendChild(review);
+<div class="row">
+    <div class="col-md-6">
+        <form method="post" asp-page-handler="SelectedCompanyReview">
+        <div class="form-group">
+            <label for="companyDropdown">Select a Company:</label>
+            <select id="companyDropdown" asp-for="SelectedCompanyId" class="form-control"
+                asp-items="new SelectList(Model.Companys, nameof(FSD08_AppDev2Project.Models.Company.Id), nameof(FSD08_AppDev2Project.Models.Company.Name))">
+                <option value="">Select Company</option>
+            </select>
+        </div>
+        <div class="form-group">
+            
+                <button type="submit" class="btn btn-primary mt-2">Get Review</button>
+
+
+        </div>
+        </form>
+    </div>
+    <div class="col-md-6" style="max-width: 30rem;max-length: 40rem;">
+        <ul>
+            @if (Model.SelectedCompanyId != null)
+            {
+                foreach (var review in Model.Reviews)
+                {
+                    <div class="card text-dark bg-light mb-3 customborder">
+                        <div class="card-header">@review.Company.Name</div>
+                        <div class="card-body">
+                            <p>@Html.Raw(@review.Reviews)</p>
+                        </div>
+
+                        <div class="card-footer bg-transparent border-light">
+                            Stars: @review.Stars
+                        </div>
+                    </div>
                 }
-            debugger;
-            if(companyModel.aveRating < 0)
-                document.getElementById('AverageRatingLbl').style.display = 'none';
-            else {
-                document.getElementById('AverageRatingLbl').style.display = 'block';
-                document.getElementById('AverageRating').innerText = companyModel.aveRating;
             }
-            var comment = document.createElement('input');
-            comment.textContent = "Leave a Comment";
-           comment.setAttribute("asp-page", "LeaveComment");
-              @* comment.setAttribute("asp-route-id", companyModel.company.id);  *@
-            comment.setAttribute("type", "submit");
-           // comment.setAttribute("formaction", "http://localhost:5213/LeaveComment/"+companyModel.company.id);
-          //  comment.setAttribute("formaction", "/LeaveComment/id:"+companyModel.company.id);
-            comment.setAttribute("formaction", "/LeaveComment?id="+companyModel.company.id);
-            comment.setAttribute("value", "Leave a comment");
-            document.getElementById('leaveCommentDiv').appendChild(comment);
-
-        }
-    }
-
-    $('#test').on('click', function(){
-        $.post('/LeaveComment',{id: this.companyModel.company.id})
-    })
-
-@* 
-    function setComment(){
-        debugger
-        alert('here')
-    } *@
-</script>
+        </ul>
+    </div>
+</div>
+</div>
