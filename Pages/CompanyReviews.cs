@@ -17,25 +17,26 @@ namespace FSD08_AppDev2Project.Pages
 
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly List<CompanyModel> _companysModel;
-        private readonly List<ApplicationUser> _ApplicationUsers ;
-      [BindProperty]
+        private readonly List<ApplicationUser> _ApplicationUsers;
+        [BindProperty]
         public List<Company> Companys { get; set; }
-        
+
         [BindProperty]
         public int SelectedCompanyId { get; set; }
 
         [BindProperty]
         public List<ApplicationUser> ApplicationUsers { get; set; }
-     
-        public class CompanyModel{
+
+        public class CompanyModel
+        {
             public Company Company { get; set; }
             public List<Review> Reviews { get; set; }
-            public float aveRating {get; set;}
+            public float aveRating { get; set; }
         }
 
         public List<Review> Reviews { get; set; }
-        
-         public List<CompanyModel> companysModel { get; set; } = new  List<CompanyModel> ();
+
+        public List<CompanyModel> companysModel { get; set; } = new List<CompanyModel>();
 
         public CompanyReviewsModel(UserManager<ApplicationUser> userManager, AppDev2DbContext db)
         {
@@ -45,23 +46,33 @@ namespace FSD08_AppDev2Project.Pages
 
         public async void OnGet(int? selectedCompanyId)
         {
-            if (selectedCompanyId.HasValue){
-                Reviews = _db.Reviews.Where(r => r.Company.Id == selectedCompanyId.Value).ToList();    
-            }else {
+            if (selectedCompanyId.HasValue)
+            {
+                Reviews = _db.Reviews.Where(r => r.Company.Id == selectedCompanyId.Value).ToList();
+            }
+            else
+            {
                 Reviews = new List<Review>();
             }
-            
+
             Companys = _db.Companys.ToList();
         }
 
         public ActionResult OnPostGiveReview()
         {
-             return RedirectToPage("LeaveComment");
+            return RedirectToPage("LeaveComment");
         }
 
-        
-        public ActionResult OnPostSelectedCompanyReview(){
-            return RedirectToPage("CompanyReviews", new {selectedCompanyId = SelectedCompanyId});;
+
+        public ActionResult OnPostSelectedCompanyReview()
+        {
+            return RedirectToPage("CompanyReviews", new { selectedCompanyId = SelectedCompanyId }); ;
+        }
+
+        public string GetStarRatingAscii(int stars)
+        {
+            const string starCharacter = "★";
+            return new string(starCharacter[0], stars);
         }
     }
 }

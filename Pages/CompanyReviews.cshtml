@@ -19,41 +19,41 @@
 <div class="row">
     <div class="col-md-6">
         <form method="post" asp-page-handler="SelectedCompanyReview">
-        <div class="form-group">
-            <label for="companyDropdown">Select a Company:</label>
-            <select id="companyDropdown" asp-for="SelectedCompanyId" class="form-control"
-                asp-items="new SelectList(Model.Companys, nameof(FSD08_AppDev2Project.Models.Company.Id), nameof(FSD08_AppDev2Project.Models.Company.Name))">
-                <option value="">Select Company</option>
-            </select>
-        </div>
-        <div class="form-group">
-            
+            <div class="form-group">
+                <label for="companyDropdown">Select a Company:</label>
+                <select id="companyDropdown" asp-for="SelectedCompanyId" class="form-control"
+                    asp-items="new SelectList(Model.Companys, nameof(FSD08_AppDev2Project.Models.Company.Id), nameof(FSD08_AppDev2Project.Models.Company.Name))">
+                    <option value="">Select Company</option>
+                </select>
+            </div>
+            <div class="form-group">
+
                 <button type="submit" class="btn btn-primary mt-2">Get Review</button>
 
 
-        </div>
+            </div>
         </form>
     </div>
     <div class="col-md-6" style="max-width: 50rem;">
         <div class="card-body" style="max-height:40rem;overflow-y: auto;">
-        <ul>
-            @if (Model.SelectedCompanyId != null)
-            {
-                foreach (var review in Model.Reviews)
+            <ul>
+                @if (Model.SelectedCompanyId != null)
                 {
-                    <div class="card text-dark bg-light mb-3 customborder">
-                        <div class="card-header">@review.Company.Name</div>
-                        <div class="card-body">
-                            <p>@Html.Raw(@review.Reviews)</p>
-                        </div>
+                    foreach (var review in Model.Reviews)
+                    {
+                        <div class="card text-dark bg-light mb-3 customborder">
+                            <div class="card-header">@review.Company.Name</div>
+                            <div class="card-body">
+                                <p>@Html.Raw(@review.Reviews)</p>
+                            </div>
 
-                        <div class="card-footer bg-transparent border-light">
-                            Stars: @review.Stars
+                            <div class="card-footer bg-transparent border-light">
+                                Stars: @Model.GetStarRatingAscii(review.Stars)
+                            </div>
                         </div>
-                    </div>
+                    }
                 }
-            }
-        </ul>
+            </ul>
         </div>
     </div>
 </div>
