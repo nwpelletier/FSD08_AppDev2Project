@@ -52,7 +52,7 @@
             @* <p>Image URL: @Model.ProfileImage</p> *@
 
 
-
+@if (User.IsInRole("Applicant")){
             <h3>Resume</h3>
             <div class="row profile-panel container d-flex justify-content-before align-items-center">
                 <div class="col-md-6">
@@ -81,6 +81,7 @@
 
 
             </div>
+            
 
             <br>
 
@@ -99,6 +100,7 @@
                     }
                 </div>
             </div>
+            }
             <br>
         </div>
     </div>
