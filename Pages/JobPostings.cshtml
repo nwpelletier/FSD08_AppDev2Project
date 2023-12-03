@@ -15,6 +15,19 @@
     </div>
 }
 
+<div class="text-center">
+    <nav aria-label="Job navigation">
+        <ul class="pagination justify-content-center">
+            @for (var i = 1; i <= Model.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                    <a class="page-link" asp-page="JobPostings" asp-route-CurrentPage="@i">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>
+
 <div class="container">
     <div class="row">
         <div class="col-md-6">
@@ -63,18 +76,7 @@
     </div>
 </div>
 
-<div class="text-center">
-    <nav aria-label="Job navigation">
-        <ul class="pagination justify-content-center">
-            @for (var i = 1; i <= Model.TotalPages; i++)
-            {
-                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                    <a class="page-link" asp-page="JobPostings" asp-route-CurrentPage="@i">@i</a>
-                </li>
-            }
-        </ul>
-    </nav>
-</div>
+
 
 
 <script>

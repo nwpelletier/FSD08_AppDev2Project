@@ -53,7 +53,14 @@
                             <div>Start Date: @job.StartDate.ToShortDateString()</div>
                             <div>End Date: @job.EndDate.ToShortDateString()</div>
                             <hr>
-                            <div>Description: @Html.Raw(@job.JobDescription)</div>
+                            <button class="admin-btn" style="font-size: 14px; width:150px;" type="button" data-bs-toggle="collapse" data-bs-target="#descriptionCollapse_@job.Id" aria-expanded="false" aria-controls="descriptionCollapse_@job.Id">
+                                Job Details
+                            </button>
+
+                            <div class="collapse" id="descriptionCollapse_@job.Id">
+                                <hr>
+                                <div>Description: @Html.Raw(@job.JobDescription)</div>
+                            </div>
                             <hr>
                             <div>
                                 <strong>Applicants:</strong>
