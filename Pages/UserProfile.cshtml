@@ -19,11 +19,6 @@
                 <div class="container d-flex justify-content-between align-items-center">
                     <div class="profile-name">@Model.ApplicationUser.UserName</div>
                     <div class="profile-image">
-
-                        @* Using hard coded image now
-                        I've tried uploading a profile image on this user account, id:
-                        fd7a30c3-e85a-42fb-94fc-66232329dcc7
-                        And @AzureBlobUtil.GetIconBlobUrl("fd7a30c3-e85a-42fb-94fc-66232329dcc7") does not work *@
                         <img src="@Url.Content(@Model.ProfileImage)" alt="Profile Image" class="img-fluid">
                     </div>
                 </div>

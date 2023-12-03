@@ -60,7 +60,12 @@
                                 <ul>
                                     @foreach (var appliedJob in Model.GetAppliedJobsForJob(job.Id))
                                     {
-                                        <li>@appliedJob.Applicant.UserName - Applied on: @appliedJob.AppliedDate.ToShortDateString()</li>
+                                                   <li>
+                <a asp-page="/ApplicantProfile" asp-route-userId="@appliedJob.Applicant.Id">
+                    @appliedJob.Applicant.UserName
+                </a>
+                - Applied on: @appliedJob.AppliedDate.ToShortDateString()
+            </li>
                                     }
                                 </ul>
                             </div>

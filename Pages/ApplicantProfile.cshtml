@@ -1,0 +1,56 @@
+﻿@page
+@model FSD08_AppDev2Project.Pages.ApplicantProfileModel
+@using FSD08_AppDev2Project.Data
+@{
+    ViewData["Title"] = "Applicant Profile";
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+<div class="user-profile container">
+
+    <div class="row">
+        <div class="offset-2 col-8">
+            <div class="profile-header">
+                <div class="container d-flex justify-content-between align-items-center">
+                    <div class="profile-name">@Model.ApplicationUser.UserName</div>
+                    <div class="profile-image">
+                        <img src="@Url.Content(@Model.ProfileImage)" alt="Profile Image" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+            <div class="contact-info-user my-3 d-flex align-items-center justify-content-between">
+                <div class="contact-info">
+                    <div>Email: @Model.ApplicationUser.Email</div>
+                    <div>Phone: @Model.ApplicationUser.PhoneNumber</div>
+                    <div>City: @Model.ApplicationUser.City</div>
+                    <div>State: @Model.ApplicationUser.State</div>
+                    <div>Country: @Model.ApplicationUser.Country</div>
+                    <div>Zipcode: @Model.ApplicationUser.Zipcode</div>
+                </div>
+                <div>
+                </div>
+            </div>
+            <h3>Resume</h3>
+            <div class="row profile-panel container d-flex justify-content-before align-items-center">
+                <div class="col-md-6">
+                    @if (!string.IsNullOrEmpty(Model.UserCV))
+                    {
+                        <div class="pdf-icon">PDF</div>
+                        <div class="mx-3">
+                            <div>@Model.ApplicationUser.UserName 's Resume</div>
+                            <a href="@Model.UserCV" target="_blank" style="text-decoration:none;"
+                                onclick="window.open(this.href,'_blank');">Click to view</a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script src="~/js/site.js"></script>
