@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace FSD08_AppDev2Project.Pages
 {
@@ -23,7 +24,13 @@ namespace FSD08_AppDev2Project.Pages
         private readonly ILogger<CompanyProfileModel> _logger;
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly SignInManager<ApplicationUser> _signInManager;
+
         public ApplicationUser ApplicationUser { get; set; }
+        public Company Company { get; set; }
+        public List<Job> Jobs { get; set; }
+        public List<string> CompanyLogoUrls { get; set; }
+        public Dictionary<int, List<AppliedJob>> AppliedJobsForJobs { get; set; }
+
         public CompanyProfileModel(SignInManager<ApplicationUser> signInManager, AppDev2DbContext db, ILogger<CompanyProfileModel> logger, IHttpClientFactory httpClientFactory, UserManager<ApplicationUser> userManager)
         {
             _db = db;
@@ -33,15 +40,13 @@ namespace FSD08_AppDev2Project.Pages
             _signInManager = signInManager;
         }
 
-        public Company Company { get; set; }
-        public List<Job> Jobs { get; set; }
-        public List<string> CompanyLogoUrls { get; set; }
-
-        public async Task OnGetAsync(int companyId){
+        public async Task OnGetAsync(int companyId)
+        {
             ApplicationUser = await _userManager.GetUserAsync(User);
 
             Company = _db.Companys.FirstOrDefault(c => c.HiringManagers[0].UserName == ApplicationUser.UserName);
-            if(Company != null){
+            if (Company != null)
+            {
                 _logger.LogInformation($"Company Name: {Company?.Name}");
 
                 Jobs = _db.Jobs.Where(j => j.JobCompanyId == Company.Id).ToList();
@@ -71,12 +76,25 @@ namespace FSD08_AppDev2Project.Pages
                     }
                 }
             }
+
+            AppliedJobsForJobs = new Dictionary<int, List<AppliedJob>>();
+            foreach (var job in Jobs)
+            {
+                AppliedJobsForJobs[job.Id] = GetAppliedJobsForJob(job.Id);
+            }
         }
-        
+
         public ActionResult OnPostEditCompany()
         {
             return RedirectToPage("EditCompany");
         }
-    }
 
+        public List<AppliedJob> GetAppliedJobsForJob(int jobId)
+        {
+            return _db.AppliedJobs
+                .Include(aj => aj.Applicant)
+                .Where(aj => aj.Job.Id == jobId)
+                .ToList();
+        }
+    }
 }
