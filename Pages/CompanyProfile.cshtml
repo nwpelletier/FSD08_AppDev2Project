@@ -30,17 +30,65 @@
                 </div>
                 <div class="contact-info-user my-3">
                     <div class="contact-info">
-                        <div><b>Location:</b> @Model.Company.City, @Model.Company.State, @Model.Company.Country</div>
+                        <div><b>Location:</b> @Model.Company.City, @Model.Company.State, @Model.Company.Country
+                        <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#testModal">
+                Edit Details
+            </button></div>
+                        
                     </div>
+                    
                 </div>
             </div>
         </div>
 
-        <form method="post" asp-page-handler="EditCompany">
-            <div class="d-grid gap-2 col-6 mx-auto mb-2">
-                <button class="btn btn-primary" type="submit">Edit Company</button>
+        <div class="modal fade" id="testModal" tabindex="-1" role="dialog" aria-labelledby="testModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="testModalLabel">Edit Company</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" class="needs-validation" novalidate asp-page-handler="UpdateCompany">
+                        <div class="mb-3">
+                            <div>
+                                <label for="Country" class="form-label">Country:</label>
+                                <input type="text" class="form-control" id="Country" name="EditCompanyInput.Country"
+                                    value="@Model.Company.Country" required asp-for="EditCompanyInput.Country">
+                                <div class="invalid-feedback">
+                                    Country cannot be empty.
+                                </div>
+                            </div>
+                            <div>
+                                <label for="State" class="form-label">State:</label>
+                                <input type="text" class="form-control" id="State" name="EditCompanyInput.State"
+                                    value="@Model.Company.State" required asp-for="EditCompanyInput.State">
+                                <div class="invalid-feedback">
+                                    State cannot be empty.
+                                </div>
+                            </div>
+                            <div>
+                                <label for="City" class="form-label">City:</label>
+                                <input type="text" class="form-control" id="City" name="EditCompanyInput.City"
+                                    value="@Model.Company.City" required asp-for="EditCompanyInput.City">
+                                <div class="invalid-feedback">
+                                    City cannot be empty.
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-2">Submit Changes</button>
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                        onclick="return validateForm()">Close</button>
+                </div>
             </div>
-        </form>
+        </div>
+    </div>
+
         <div class="row mt-3">
             <div class="offset-2 col-8">
                 <h3>Job Postings</h3>

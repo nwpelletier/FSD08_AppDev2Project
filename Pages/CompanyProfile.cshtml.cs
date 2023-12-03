@@ -12,6 +12,7 @@ using Newtonsoft.Json.Linq;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace FSD08_AppDev2Project.Pages
 {
@@ -95,6 +96,52 @@ namespace FSD08_AppDev2Project.Pages
                 .Include(aj => aj.Applicant)
                 .Where(aj => aj.Job.Id == jobId)
                 .ToList();
+        }
+
+        public class EditCompanyInputModel
+        {
+            [Required(ErrorMessage = "The Country field is required.")]
+            [Display(Name = "Country")]
+            public string Country { get; set; }
+
+            [Required(ErrorMessage = "The State field is required.")]
+            [Display(Name = "State")]
+            public string State { get; set; }
+
+            [Required(ErrorMessage = "The City field is required.")]
+            [Display(Name = "City")]
+            public string City { get; set; }
+        }
+        public EditCompanyInputModel EditCompanyInput { get; set; }
+        public async Task<IActionResult> OnPostUpdateCompanyAsync(){
+            ApplicationUser = await _userManager.GetUserAsync(User);
+            Company = _db.Companys.FirstOrDefault(c => c.HiringManagers[0].UserName == ApplicationUser.UserName);
+
+            Company.Country = Request.Form["EditCompanyInput.Country"];
+            Company.State = Request.Form["EditCompanyInput.State"];
+            Company.City = Request.Form["EditCompanyInput.City"];
+
+            if (ModelState.IsValid)
+            {
+            var UpdateCompany = _db.Companys.FirstOrDefault(c => c.Id == Company.Id);
+
+            if (UpdateCompany != null && Company.Country!= null && Company.State != null && Company.City != null)
+            {
+                UpdateCompany.Country = Company.Country;
+                UpdateCompany.State = Company.State;
+                UpdateCompany.City = Company.City;
+                _db.SaveChanges();
+
+                _logger.LogInformation($"Company Info description updated successfully for Company {Company.Name}.");
+            }
+            else
+            {
+                _logger.LogWarning($"Company with comapny name {Company.Name} not found.");
+                return NotFound();
+            }
+                return RedirectToPage("/CompanyProfile");
+            }
+            return Page();
         }
     }
 }
