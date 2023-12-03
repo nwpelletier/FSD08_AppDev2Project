@@ -98,6 +98,7 @@
                                 <th>Zipcode</th>
                                 <th>Role</th>
                                 <th>Active</th>
+                                <th>Add Company</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -128,6 +129,13 @@
                                             asp-page="AdminEditUserActive" asp-route-id="@user.Id">
                                             @(user.Active ? "Yes" : "No")
                                         </a>
+                                    </td>
+                                    <td>
+                                        @if (Model.UserRoles.ContainsKey(user.Id) &&
+                                       Model.UserRoles[user.Id].Contains("HiringManager"))
+                                        {
+                                            <a asp-page="AdminAddUserCompany" asp-route-id="@user.Id">Add Company</a>
+                                        }
                                     </td>
                                 </tr>
                             }
