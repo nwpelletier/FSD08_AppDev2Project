@@ -55,7 +55,8 @@ namespace FSD08_AppDev2Project.Pages
                 if (result.Succeeded)
                 {
                     logger.LogInformation($"User {Input.UserName} logged in");
-                    return RedirectToPage("LoginSuccess");
+                    TempData["AlertMessage"] = "Login successful!";
+                    return RedirectToPage("Index");
                 }
                 else
                 {

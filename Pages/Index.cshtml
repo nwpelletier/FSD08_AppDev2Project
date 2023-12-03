@@ -6,6 +6,13 @@
     ViewData["Title"] = "Home page";
 }
 
+@if(TempData["AlertMessage"] != null)
+{
+    <div class="alert alert-success">
+        <center>@TempData["AlertMessage"]</center>
+    </div>
+}
+
 <style>
     .index-splash-panel {
         background: url("@Model.StockImageUrl") center center/cover no-repeat;

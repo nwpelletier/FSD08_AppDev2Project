@@ -21,7 +21,7 @@ namespace FSD08_AppDev2Project.Pages
         }
         public async Task<IActionResult> OnGetAsync()
         {
-
+            TempData["AlertMessage"] = "Logout successful!";
             if (signInManager.IsSignedIn(User)) {
                 logger.LogInformation($"User {User.Identity.Name} logged out");
             }

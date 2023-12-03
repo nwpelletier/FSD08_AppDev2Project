@@ -3,7 +3,12 @@
 @{
     ViewData["Title"] = "User logged out";
 }
-
+@if(TempData["AlertMessage"] != null)
+{
+    <div class="alert alert-success">
+        <center>@TempData["AlertMessage"]</center>
+    </div>
+}
 <h1>@ViewData["Title"]</h1>
 @{
     <div class="container">

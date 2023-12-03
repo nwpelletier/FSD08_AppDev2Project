@@ -153,7 +153,8 @@ namespace FSD08_AppDev2Project.Pages
                             await smtp.SendMailAsync(message);
                         }
                         logger.LogInformation($"User {Input.Email} create a new account with password");
-                        return RedirectToPage("RegisterSuccess", new { email = Input.Email });
+                        TempData["AlertMessage"] = "Register successful!";
+                        return RedirectToPage("Login", new { email = Input.Email });
                     }
                     else
                     {
