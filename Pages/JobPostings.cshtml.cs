@@ -6,7 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using System.Text.Json;
-using Microsoft.AspNetCore.Authorization; // Add this using directive
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Net.Http.Headers; // Add this using directive
 
 namespace FSD08_AppDev2Project.Pages
 {
@@ -26,8 +27,7 @@ namespace FSD08_AppDev2Project.Pages
         [BindProperty(SupportsGet = true)]
         public int CurrentPage { get; set; } = 1;
         public int PageSize { get; set; } = 4;
-        public int TotalPages => (int)Math.Ceiling((double)_db.Jobs.Count() / PageSize);
-
+        public int TotalPages { get; set; }
 
         public List<Job> Jobs { get; set; }
         [BindProperty]
@@ -41,18 +41,31 @@ namespace FSD08_AppDev2Project.Pages
         public List<Job> AllJobs { get; set; }
         [BindProperty]
         public bool IsAuthenticated { get; set; }
+        [BindProperty]
+        public List<Company> Companys { get; set; }
 
-        public async void OnGet(int? currentPage)
+        [BindProperty]
+        public int SelectedCompanyId { get; set; }
+
+        public async void OnGet(int? currentPage, int? selectedCompanyId)
         {
-            Console.WriteLine("IsCurrentPage OnGet---------" + currentPage.HasValue);
+            var skipAmount = (CurrentPage - 1) * PageSize;
+            Companys = _db.Companys.ToList();
+            
             //Stay on same page after apply
             if(currentPage.HasValue){
                 CurrentPage = currentPage.Value;
             }
+            if(selectedCompanyId.HasValue && selectedCompanyId.Value != 0){ //Show JObs for selected Company in dropdown
+                SelectedCompanyId = selectedCompanyId.Value;
+                TotalPages = (int)Math.Ceiling((double)_db.Jobs.Where(j => j.JobCompanyId == SelectedCompanyId).Count() / PageSize);
 
-            var skipAmount = (CurrentPage - 1) * PageSize;
-
-            Jobs = _db.Jobs.Skip(skipAmount).Take(PageSize).ToList();
+                Jobs = _db.Jobs.Where(j => j.JobCompanyId == SelectedCompanyId).Skip(skipAmount).Take(PageSize).ToList();
+            } else { //Show all Jobs
+                TotalPages = (int)Math.Ceiling((double)_db.Jobs.Count() / PageSize);
+                Jobs = _db.Jobs.Skip(skipAmount).Take(PageSize).ToList();
+            }
+            
             AllJobs =  _db.Jobs.ToList();
             ApplicationUsers = _db.ApplicationUsers.ToList();
             ApplicationUser currentUser = await _userManager.GetUserAsync(User);
@@ -87,7 +100,13 @@ namespace FSD08_AppDev2Project.Pages
 
             TempData["JobMessage"] = "Job added:  Your details are send to employer!";
             
-            return RedirectToPage("JobPostings", new {currentPage = CurrentPage});
+            return RedirectToPage("JobPostings", new {currentPage = CurrentPage, selectedCompanyId = SelectedCompanyId});
+        }
+        
+        public async Task<ActionResult> OnPostFindByCompanyAsync()
+        {
+            //If find by Company clicked, go to page 1
+            return RedirectToPage("JobPostings", new {currentPage = 1, selectedCompanyId = SelectedCompanyId});
         }
 
     }

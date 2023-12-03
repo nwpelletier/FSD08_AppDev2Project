@@ -1,4 +1,4 @@
-﻿@page "{currentPage:int?}"
+﻿@page "{currentPage:int?}/{selectedCompanyId:int?}"
 @using System.Globalization
 @model FSD08_AppDev2Project.Pages.JobPostingsModel
 @{
@@ -15,20 +15,57 @@
     </div>
 }
 
-<div class="text-center">
-    <nav aria-label="Job navigation">
-        <ul class="pagination justify-content-center">
-            @for (var i = 1; i <= Model.TotalPages; i++)
-            {
-                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                    <a class="page-link" asp-page="JobPostings" asp-route-CurrentPage="@i">@i</a>
-                </li>
-            }
-        </ul>
-    </nav>
+
+@* Search Starts *@
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-4">
+        <form method="post" asp-page-handler="FindByCompany">
+            <div class="input-group mb-3">
+                <button class="btn btn-outline-secondary" type="submit">Show Jobs by Company</button>
+
+                <select id="companyDropdown" asp-for="SelectedCompanyId" class="form-select"
+                    asp-items="new SelectList(Model.Companys, nameof(FSD08_AppDev2Project.Models.Company.Id), nameof(FSD08_AppDev2Project.Models.Company.Name))">
+                    <option value="">Select Company</option>
+                </select>
+            </div>
+        </form>
+    </div>
+
+    @* Search Ends *@
+    <div class="col-md-6">
+        <div class="text-center">
+            <nav aria-label="Job navigation">
+                <ul class="pagination justify-content-center">
+                    @for (var i = 1; i <= Model.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                            @{
+                                var routeValues = new Dictionary<string, string>
+                        {
+                        { "CurrentPage", i.ToString() }
+                        };
+
+                                if (Model.SelectedCompanyId != null)
+                                {
+                                    routeValues.Add("SelectedCompanyId", Model.SelectedCompanyId.ToString());
+                                } else {
+                                    routeValues.Add("SelectedCompanyId", "");
+                                }
+                            }
+                            <a class="page-link" asp-page="JobPostings" asp-all-route-data="routeValues">@i</a>
+                        </li>
+
+                    }
+                </ul>
+            </nav>
+        </div>
+    </div>
 </div>
 
 <div class="container">
+
+
     <div class="row">
         <div class="col-md-6">
             <ul>
@@ -60,7 +97,7 @@
                     <div class="text-center">
 
                         <div class="text-center">
-                            <button type="submit" id="btnApply" class="btn btn-primary"></button>
+                            <button type="submit" id="btnApply" class="btn btn-primary" style="margin-left: 40%;" ></button>
                         </div>
                     </div>
                     <hr>
