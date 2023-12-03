@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Microsoft.AspNetCore.Identity;
 
 namespace FSD08_AppDev2Project.Pages
 {
@@ -17,14 +18,18 @@ namespace FSD08_AppDev2Project.Pages
     public class CompanyProfileModel : PageModel
     {
         private readonly AppDev2DbContext _db;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<CompanyProfileModel> _logger;
         private readonly IHttpClientFactory _httpClientFactory;
-
-        public CompanyProfileModel(AppDev2DbContext db, ILogger<CompanyProfileModel> logger, IHttpClientFactory httpClientFactory)
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        public ApplicationUser ApplicationUser { get; set; }
+        public CompanyProfileModel(SignInManager<ApplicationUser> signInManager, AppDev2DbContext db, ILogger<CompanyProfileModel> logger, IHttpClientFactory httpClientFactory, UserManager<ApplicationUser> userManager)
         {
             _db = db;
             _logger = logger;
             _httpClientFactory = httpClientFactory;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         public Company Company { get; set; }
@@ -33,34 +38,37 @@ namespace FSD08_AppDev2Project.Pages
 
         public async Task OnGetAsync(int companyId)
         {
-            Company = _db.Companys.FirstOrDefault(c => c.Id == companyId);
+            ApplicationUser = await _userManager.GetUserAsync(User);
 
-            _logger.LogInformation($"Company Name: {Company?.Name}");
+            Company = _db.Companys.FirstOrDefault(c => c.HiringManagers[0].UserName == ApplicationUser.UserName);
+            if(Company != null){
+                _logger.LogInformation($"Company Name: {Company?.Name}");
 
-            Jobs = _db.Jobs.Where(j => j.JobCompanyId == companyId).ToList();
-            CompanyLogoUrls = new List<string>();
+                Jobs = _db.Jobs.Where(j => j.JobCompanyId == Company.Id).ToList();
+                CompanyLogoUrls = new List<string>();
 
-            using (var httpClient = _httpClientFactory.CreateClient())
-            {
-                string apiUrl = $"https://api.api-ninjas.com/v1/logo?name={Company.Name}";
-                httpClient.DefaultRequestHeaders.Add("X-Api-Key", "Qbk39pjWMzGyojJAuOX8QA==DyZF5iYnPYo2tlB6");
-
-                HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
-
-                if (response.IsSuccessStatusCode)
+                using (var httpClient = _httpClientFactory.CreateClient())
                 {
-                    string result = await response.Content.ReadAsStringAsync();
-                    JArray logoDataArray = JsonConvert.DeserializeObject<JArray>(result);
+                    string apiUrl = $"https://api.api-ninjas.com/v1/logo?name={Company.Name}";
+                    httpClient.DefaultRequestHeaders.Add("X-Api-Key", "Qbk39pjWMzGyojJAuOX8QA==DyZF5iYnPYo2tlB6");
 
-                    foreach (var logoData in logoDataArray)
+                    HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
+
+                    if (response.IsSuccessStatusCode)
                     {
-                        string imageUrl = logoData["image"]?.ToString();
-                        CompanyLogoUrls.Add(imageUrl);
+                        string result = await response.Content.ReadAsStringAsync();
+                        JArray logoDataArray = JsonConvert.DeserializeObject<JArray>(result);
+
+                        foreach (var logoData in logoDataArray)
+                        {
+                            string imageUrl = logoData["image"]?.ToString();
+                            CompanyLogoUrls.Add(imageUrl);
+                        }
                     }
-                }
-                else
-                {
-                    _logger.LogError($"Error retrieving company logo: {response.StatusCode} - {response.ReasonPhrase}");
+                    else
+                    {
+                        _logger.LogError($"Error retrieving company logo: {response.StatusCode} - {response.ReasonPhrase}");
+                    }
                 }
             }
         }

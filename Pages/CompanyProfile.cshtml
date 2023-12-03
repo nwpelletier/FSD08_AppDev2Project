@@ -3,54 +3,59 @@
 @{
     ViewData["Title"] = "Company Profile";
 }
+@if (@Model.Company != null)
+{
+    <div class="company-profile container">
+        <div class="row mt-3">
+            <div class="offset-2 col-8">
+                <div class="profile-header">
+                    <div class="container d-flex justify-content-between align-items-center">
+                        <div class="">
 
-<div class="company-profile container">
-    <div class="row mt-3">
-        <div class="offset-2 col-8">
-            <div class="profile-header">
-                <div class="container d-flex justify-content-between align-items-center">
-                    <div class="">
-                        @if (Model.CompanyLogoUrls != null && Model.CompanyLogoUrls.Any())
-                        {
-                            @foreach (var logoUrl in Model.CompanyLogoUrls)
+                            @if (Model.CompanyLogoUrls != null && Model.CompanyLogoUrls.Any())
                             {
-                                <img src="@logoUrl" alt="Company Logo" style="max-width: 400px; max-height: 400px;" alt=@Model.Company.Name/>
+                                @foreach (var logoUrl in Model.CompanyLogoUrls)
+                                {
+                                    <img src="@logoUrl" alt="Company Logo" style="max-width: 400px; max-height: 400px;"
+                                        alt=@Model.Company.Name />
+                                }
                             }
-                        }
-                        else
-                        {
-                            <div class="profile-name">@Model.Company.Name</div>
-                        }
-                    </div>
-                </div>
-            </div>
-            <div class="contact-info-user my-3">
-                <div class="contact-info">
-                    <div><b>Location:</b> @Model.Company.City, @Model.Company.State, @Model.Company.Country</div>
-                </div>
-            </div>
-        </div>
-    </div>
+                            else
+                            {
+                                <div class="profile-name">@Model.Company.Name</div>
+                            }
 
-    <div class="row mt-3">
-        <div class="offset-2 col-8">
-            <h3>Job Postings</h3>
-            @foreach (var job in Model.Jobs.Where(j => j.JobCompanyId == Model.Company.Id))
-            {
-                <div class="profile-panel container d-flex justify-content-between align-items-center mb-3">
-                    <div class="mx-3">
-                        <div>@job.JobTitle (link to job posting)</div>
-                        <div>Category: @job.JobCategory</div>
-                        <div>Start Date: @job.StartDate.ToShortDateString()</div>
-                        <div>End Date: @job.EndDate.ToShortDateString()</div>
-                        <hr>
-                        <div>Description: @Html.Raw(@job.JobDescription)</div>
-                    </div>
-                    <div>
-                        <a asp-page="/EditJob" asp-route-jobId="@job.Id" asp-route-companyId="@Model.Company.Id">Edit</a>
+                        </div>
                     </div>
                 </div>
-            }
+                <div class="contact-info-user my-3">
+                    <div class="contact-info">
+                        <div><b>Location:</b> @Model.Company.City, @Model.Company.State, @Model.Company.Country</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="offset-2 col-8">
+                <h3>Job Postings</h3>
+                @foreach (var job in Model.Jobs.Where(j => j.JobCompanyId == Model.Company.Id))
+                {
+                    <div class="profile-panel container d-flex justify-content-between align-items-center mb-3">
+                        <div class="mx-3">
+                            <div>@job.JobTitle (link to job posting)</div>
+                            <div>Category: @job.JobCategory</div>
+                            <div>Start Date: @job.StartDate.ToShortDateString()</div>
+                            <div>End Date: @job.EndDate.ToShortDateString()</div>
+                            <hr>
+                            <div>Description: @Html.Raw(@job.JobDescription)</div>
+                        </div>
+                        <div>
+                            <a asp-page="/EditJob" asp-route-jobId="@job.Id" asp-route-companyId="@Model.Company.Id">Edit</a>
+                        </div>
+                    </div>
+                }
+            </div>
         </div>
     </div>
-</div>
+}
