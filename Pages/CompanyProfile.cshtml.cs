@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FSD08_AppDev2Project.Pages
 {
@@ -36,8 +37,7 @@ namespace FSD08_AppDev2Project.Pages
         public List<Job> Jobs { get; set; }
         public List<string> CompanyLogoUrls { get; set; }
 
-        public async Task OnGetAsync(int companyId)
-        {
+        public async Task OnGetAsync(int companyId){
             ApplicationUser = await _userManager.GetUserAsync(User);
 
             Company = _db.Companys.FirstOrDefault(c => c.HiringManagers[0].UserName == ApplicationUser.UserName);
@@ -72,5 +72,11 @@ namespace FSD08_AppDev2Project.Pages
                 }
             }
         }
+        
+        public ActionResult OnPostEditCompany()
+        {
+            return RedirectToPage("EditCompany");
+        }
     }
+
 }
