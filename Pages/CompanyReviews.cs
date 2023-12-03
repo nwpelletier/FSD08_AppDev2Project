@@ -34,6 +34,7 @@ namespace FSD08_AppDev2Project.Pages
             public float aveRating { get; set; }
         }
 
+        public int aveRating {get; set;}
         public List<Review> Reviews { get; set; }
 
         public List<CompanyModel> companysModel { get; set; } = new List<CompanyModel>();
@@ -49,6 +50,15 @@ namespace FSD08_AppDev2Project.Pages
             if (selectedCompanyId.HasValue)
             {
                 Reviews = _db.Reviews.Where(r => r.Company.Id == selectedCompanyId.Value).ToList();
+
+                if(Reviews.Count != 0){
+                    int sum = 0;
+                    foreach(var review in Reviews){
+                        sum += review.Stars;
+                    }
+                    aveRating = sum / Reviews.Count;
+                }
+                else aveRating = -1;
             }
             else
             {

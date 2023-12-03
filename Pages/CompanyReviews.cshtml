@@ -39,6 +39,9 @@
             <ul>
                 @if (Model.SelectedCompanyId != null)
                 {
+                    @if(Model.aveRating > 0){
+                        <div>Average Reating: @Model.aveRating </div>
+                    }
                     foreach (var review in Model.Reviews)
                     {
                         <div class="card text-dark bg-light mb-3 customborder">
