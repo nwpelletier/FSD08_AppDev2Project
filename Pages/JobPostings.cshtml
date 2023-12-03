@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{currentPage:int?}"
 @using System.Globalization
 @model FSD08_AppDev2Project.Pages.JobPostingsModel
 @{
@@ -80,13 +80,35 @@
 <script>
     function showJobDetails(jobId) {
         // find job by id
+        var isAuthenticated = @Html.Raw(Json.Serialize(Model.IsAuthenticated));//@User.Identity.IsAuthenticated;
         var jobs = @Html.Raw(Json.Serialize(Model.Jobs));
         var clickedJob = jobs.find(job => job.id === parseInt(jobId));
 
         if (clickedJob) {
             // find if job is already applied
-            var appliedJobs = @Html.Raw(Json.Serialize(Model.AppliedJobs));
-            var alreadyAppliedJob = appliedJobs.find(ajob => ajob.job.id === parseInt(jobId));
+            // set button visibility and text
+            var btnApply = document.getElementById('btnApply');
+            btnApply.style.display = isAuthenticated ? 'block' : 'none';
+
+            if (isAuthenticated) {
+                var appliedJobs = @Html.Raw(Json.Serialize(Model.AppliedJobs));
+                var alreadyAppliedJob;
+                if (isAuthenticated) {
+                    alreadyAppliedJob = appliedJobs.find(ajob => ajob.job.id === parseInt(jobId));
+                } else {
+                    alreadyAppliedJob = null;
+                }
+                if (alreadyAppliedJob) {
+                    btnApply.innerText = 'Already applied';
+                    btnApply.disabled = true;
+                    btnApply.className = "btn btn-secondary";
+                } else {
+                    btnApply.innerText = 'Apply now';
+                    btnApply.disabled = false;
+                    btnApply.className = "btn btn-primary";
+                }
+            }
+
 
             // update job details container
             var detailsContainer = document.getElementById('detailsContainer');
@@ -105,18 +127,6 @@
 
             // make div visible
             detailsContainer.style.display = 'block';
-
-            // set button visibility and text
-            var btnApply = document.getElementById('btnApply');
-            if (alreadyAppliedJob) {
-                btnApply.innerText = 'Already applied';
-                btnApply.disabled = true;
-                btnApply.className = "btn btn-secondary";
-            } else {
-                btnApply.innerText = 'Apply now';
-                btnApply.disabled = false;
-                btnApply.className = "btn btn-primary";
-            }
         }
     }
 
@@ -130,24 +140,4 @@
         }, 2500);
     });
 
-
-    var isAuthenticated = @User.Identity.IsAuthenticated;
-    var btnApply = document.getElementById('btnApply');
-    btnApply.style.display = isAuthenticated ? 'block' : 'none';
-
-    if (isAuthenticated) {
-        var appliedJobs = @Html.Raw(Json.Serialize(Model.AppliedJobs));
-        var selectedJobId = document.getElementById('selectedJobId').value;
-        var alreadyAppliedJob = appliedJobs.find(ajob => ajob.job.id === parseInt(selectedJobId));
-
-        if (alreadyAppliedJob) {
-            btnApply.innerText = 'Already applied';
-            btnApply.disabled = true;
-            btnApply.className = "btn btn-secondary";
-        } else {
-            btnApply.innerText = 'Apply now';
-            btnApply.disabled = false;
-            btnApply.className = "btn btn-primary";
-        }
-    }
 </script>

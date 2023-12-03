@@ -37,12 +37,23 @@ namespace FSD08_AppDev2Project.Pages
         public List<AppliedJob> AppliedJobs { get; set; }
         [BindProperty]
         public List<ApplicationUser> ApplicationUsers { get; set; }
+        [BindProperty]
+        public List<Job> AllJobs { get; set; }
+        [BindProperty]
+        public bool IsAuthenticated { get; set; }
 
-        public async void OnGet()
+        public async void OnGet(int? currentPage)
         {
+            Console.WriteLine("IsCurrentPage OnGet---------" + currentPage.HasValue);
+            //Stay on same page after apply
+            if(currentPage.HasValue){
+                CurrentPage = currentPage.Value;
+            }
+
             var skipAmount = (CurrentPage - 1) * PageSize;
 
             Jobs = _db.Jobs.Skip(skipAmount).Take(PageSize).ToList();
+            AllJobs =  _db.Jobs.ToList();
             ApplicationUsers = _db.ApplicationUsers.ToList();
             ApplicationUser currentUser = await _userManager.GetUserAsync(User);
 
@@ -52,6 +63,10 @@ namespace FSD08_AppDev2Project.Pages
 
                 Console.WriteLine("TotalPages: " + TotalPages);
                 Console.WriteLine("CurrentPage: " + CurrentPage);
+                IsAuthenticated = true;
+            }
+            else {
+                IsAuthenticated = false;
             }
         }
 
@@ -71,7 +86,8 @@ namespace FSD08_AppDev2Project.Pages
 
 
             TempData["JobMessage"] = "Job added:  Your details are send to employer!";
-            return RedirectToPage("JobPostings");
+            
+            return RedirectToPage("JobPostings", new {currentPage = CurrentPage});
         }
 
     }
