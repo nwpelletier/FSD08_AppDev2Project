@@ -19,11 +19,22 @@
 <div class="container-fluid">
     <div class="row mt-3">
         <div class="col-2 bg-light sidebar">
-            <h5> Table Displays</h5>
+            <h5> Table Views</h5>
             <hr>
             <div class="d-flex flex-column align-items-start p-3">
                 <button class="admin-btn" onclick="toggleTable('companies', this)">Companies</button>
-                <button class="admin-btn" onclick="toggleTable('users', this)">Users</button>
+                <div class="d-flex justify-content-between align-items-center" style="width:100%">
+                    <button class="admin-btn" style="width:40%" onclick="toggleTable('users', this)">Users</button>
+                    <div class="form-group">
+                        <select class="form-control" id="roleFilter" onchange="filterUsersByRole()">
+                            <option value="">All Roles</option>
+                            @foreach (var role in Model.AllRoles)
+                            {
+                                <option value="@role">@role</option>
+                            }
+                        </select>
+                    </div>
+                </div>
                 <div class="d-flex justify-content-between align-items-center">
                     <button class="admin-btn" onclick="toggleTable('jobReviews', this)">Reviews</button>
                     <div class="form-group">
@@ -37,7 +48,12 @@
                     </div>
                 </div>
                 <button class="admin-btn" onclick="toggleTable('jobs', this)">Show Jobs</button>
-                <a class="admin-btn" asp-page="AdminAddCompany">Add Company</a>
+            </div>
+            <hr>
+            <h5>Options</h5>
+            <hr>
+            <div class="d-flex flex-column align-items-start p-3">
+                    <a class="admin-btn" asp-page="AdminAddCompany">Add Company</a>
             </div>
         </div>
         <div class="col-10 " style="overflow-y: auto; max-height: 80vh;">
@@ -61,20 +77,16 @@
                             @foreach (var company in Model.Companys)
                             {
                                 <tr>
-                                    <td>@company.Id</td>
-                                    <td>@company.Name</td>
-                                    <td>@company.City</td>
-                                    <td>@company.State</td>
-                                    <td>@company.Country</td>
-                                    <td>
+                                    <td style="vertical-align: middle;">@company.Id</td>
+                                    <td style="vertical-align: middle;">@company.Name</td>
+                                    <td style="vertical-align: middle;">@company.City</td>
+                                    <td style="vertical-align: middle;">@company.State</td>
+                                    <td style="vertical-align: middle;">@company.Country</td>
+                                    <td style="vertical-align: middle;">
                                         @foreach (var manager in company.HiringManagers)
                                         {
-                                            <p>@manager.UserName</p>
+                                            <span>@manager.UserName, </span>
                                         }
-                                    </td>
-                                    <td>
-                                        <a asp-page="AdminAddHiringManager" asp-route-id="@company.Id">Add Hiring
-                                            Manager</a>
                                     </td>
                                 </tr>
                             }
@@ -98,43 +110,57 @@
                                 <th>Zipcode</th>
                                 <th>Role</th>
                                 <th>Active</th>
-                                <th>Add Company</th>
+                                <th>Company (Hiring Manager)</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var user in Model.ApplicationUsers.OrderBy(u => u.UserName))
                             {
                                 <tr>
-                                    <td>@user.UserName</td>
-                                    <td>@user.Email</td>
-                                    <td>@user.City</td>
-                                    <td>@user.State</td>
-                                    <td>@user.Country</td>
-                                    <td>@user.Zipcode</td>
-                                    <td>
+                                    <td style="vertical-align: middle;">@user.UserName</td>
+                                    <td style="vertical-align: middle;">@user.Email</td>
+                                    <td style="vertical-align: middle;">@user.City</td>
+                                    <td style="vertical-align: middle;">@user.State</td>
+                                    <td style="vertical-align: middle;">@user.Country</td>
+                                    <td style="vertical-align: middle;">@user.Zipcode</td>
+                                    <td style="vertical-align: middle;">
                                         @if (Model.UserRoles.ContainsKey(user.Id) && Model.UserRoles[user.Id].Any())
                                         {
                                             @foreach (var role in Model.UserRoles[user.Id])
                                             {
-                                                <a asp-page="AdminEditUserRole" asp-route-id="@user.Id">[@role]</a>
+                                                <a class="admin-table-normal-btn" asp-page="AdminEditUserRole"
+                                                    asp-route-id="@user.Id">@role</a>
                                             }
                                         }
                                         else
                                         {
-                                            <a asp-page="AdminEditUserRole" asp-route-id="@user.Id">[No Role]</a>
+                                            <a class="admin-table-red-btn" asp-page="AdminEditUserRole"
+                                                asp-route-id="@user.Id">No Role</a>
                                         }
                                     </td>
-                                    <td>
+                                    <td style="vertical-align: middle;">
                                         <a class="btn @(user.Active ? "btn-success" : "btn-danger")"
                                             asp-page="AdminEditUserActive" asp-route-id="@user.Id">
                                             @(user.Active ? "Yes" : "No")
                                         </a>
                                     </td>
-                                    <td>
+                                    <td style="vertical-align: middle;">
                                         @if (Model.UserRoles.ContainsKey(user.Id) &&
                                        Model.UserRoles[user.Id].Contains("HiringManager"))
                                         {
-                                            <a asp-page="AdminAddUserCompany" asp-route-id="@user.Id">Add Company</a>
+                                            if (user.CompanyId.HasValue)
+                                            {
+                                                var company = Model.Companys.FirstOrDefault(c => c.Id == user.CompanyId);
+                                                <a class="admin-table-normal-btn" asp-page="AdminAddUserCompany"
+                                                    asp-route-id="@user.Id">@((company != null ?
+                                        company.Name : "Unknown Company"))</a>
+                                            }
+                                            else
+                                            {
+                                                // Display "Add Company" link
+                                                <a class="admin-table-red-btn" asp-page="AdminAddUserCompany"
+                                                    asp-route-id="@user.Id">Add Company</a>
+                                            }
                                         }
                                     </td>
                                 </tr>
@@ -144,7 +170,7 @@
                 </div>
 
                 <div class="col-10 admin-panel" id="jobReviewsTable" style="display: none;">
-                    <h2>Job Reviews</h2>
+                    <h2>Reviews</h2>
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -160,11 +186,11 @@
                             @foreach (var review in Model.Reviews)
                             {
                                 <tr>
-                                    <td>@review.Id</td>
-                                    <td>@review.Company.Name</td>
-                                    <td>@review.User.UserName</td>
-                                    <td>@review.Reviews</td>
-                                    <td>@review.Stars</td>
+                                    <td style="vertical-align: middle;">@review.Id</td>
+                                    <td style="vertical-align: middle;">@review.Company.Name</td>
+                                    <td style="vertical-align: middle;">@review.User.UserName</td>
+                                    <td style="vertical-align: middle;">@review.Reviews</td>
+                                    <td style="vertical-align: middle;">@review.Stars</td>
                                 </tr>
                             }
                         </tbody>
@@ -188,12 +214,12 @@
                             @foreach (var job in Model.Jobs)
                             {
                                 <tr>
-                                    <td>@job.Id</td>
-                                    <td>@job.JobCompanyId</td>
-                                    <td>@job.JobCategory</td>
-                                    <td>@job.JobTitle</td>
-                                    <td>@job.StartDate</td>
-                                    <td>@job.EndDate</td>
+                                    <td style="vertical-align: middle;">@job.Id</td>
+                                    <td style="vertical-align: middle;">@job.JobCompanyId</td>
+                                    <td style="vertical-align: middle;">@job.JobCategory</td>
+                                    <td style="vertical-align: middle;">@job.JobTitle</td>
+                                    <td style="vertical-align: middle;">@job.StartDate</td>
+                                    <td style="vertical-align: middle;">@job.EndDate</td>
                                 </tr>
                             }
                         </tbody>
@@ -234,6 +260,20 @@
         for (var i = 0; i < rows.length; i++) {
             var companyName = rows[i].getElementsByTagName('td')[1].innerText;
             if (selectedCompany === '' || companyName === selectedCompany) {
+                rows[i].style.display = '';
+            } else {
+                rows[i].style.display = 'none';
+            }
+        }
+    }
+
+    function filterUsersByRole() {
+        var selectedRole = document.getElementById('roleFilter').value;
+        var rows = document.getElementById('usersTable').getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+
+        for (var i = 0; i < rows.length; i++) {
+            var roles = rows[i].getElementsByTagName('td')[6].innerText;
+            if (selectedRole === '' || roles.includes(selectedRole)) {
                 rows[i].style.display = '';
             } else {
                 rows[i].style.display = 'none';

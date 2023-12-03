@@ -159,13 +159,15 @@ body {
   font-weight:300;
   font-size:20px;
   margin: 10px;
-  width: 80%;
+  width: 100%;
   text-align: center;
   background-color:#d2d6dd;
   border:none;
 }
 
-.admin-btn:hover {
+.admin-btn:hover,
+.admin-table-normal-btn:hover,
+.admin-table-red-btn:hover {
   background-color:#555555;
 }
 
@@ -203,4 +205,30 @@ a {
 
 a:hover {
   color:black;
+}
+
+.admin-table-normal-btn {
+  display:inline-block;
+  padding:4px;
+  border-radius:3px;
+  font-weight:400;
+  font-size:16px;
+  margin: 10px;
+  width: 90%;
+  text-align: center;
+  background-color:#abc0e4;
+  border:none;
+}
+
+.admin-table-red-btn {
+  display:inline-block;
+  padding:4px;
+  border-radius:3px;
+  font-weight:300;
+  font-size:16px;
+  margin: 10px;
+  width: 90%;
+  text-align: center;
+  background-color:#e4abab;
+  border:none;
 }

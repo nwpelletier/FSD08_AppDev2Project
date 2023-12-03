@@ -25,6 +25,7 @@ namespace FSD08_AppDev2Project.Pages
         public List<Company> Companys { get; set; }
         public List<Review> Reviews { get; set; }
         public List<Job> Jobs { get; set; }
+        public List<string> AllRoles { get; set; } // Add this property
 
         public void OnGet()
         {
@@ -32,6 +33,8 @@ namespace FSD08_AppDev2Project.Pages
             ApplicationUsers = _db.ApplicationUsers.ToList();
             Reviews = _db.Reviews.ToList();
             Jobs = _db.Jobs.ToList();
+
+            AllRoles = new List<string> { "Admin", "Applicant", "HiringManager" }; // Add the roles you want to display
 
             UserRoles = new Dictionary<string, List<string>>();
             foreach (var user in ApplicationUsers)
