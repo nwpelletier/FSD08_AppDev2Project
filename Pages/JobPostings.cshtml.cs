@@ -29,11 +29,11 @@ namespace FSD08_AppDev2Project.Pages
         public int CurrentPage { get; set; } = 1;
         public int PageSize { get; set; } = 4;
         public int TotalPages { get; set; }
-public String roleTemp {get; set;}
+        public String roleTemp { get; set; }
         public List<Job> Jobs { get; set; }
         [BindProperty]
         public int SelectedJobId { get; set; }
-        public Role UserRole {get;set;}
+        public Role UserRole { get; set; }
         public ApplicationUser currentUser { get; set; }
         [BindProperty]
         public List<AppliedJob> AppliedJobs { get; set; }
@@ -51,43 +51,47 @@ public String roleTemp {get; set;}
 
         public async void OnGet(int? currentPage, int? selectedCompanyId)
         {
-
-            
-
-            var skipAmount = (CurrentPage - 1) * PageSize;
-            Companys = _db.Companys.ToList();
-            
-            //Stay on same page after apply
-            if(currentPage.HasValue){
-                CurrentPage = currentPage.Value;
-            }
-            if(selectedCompanyId.HasValue && selectedCompanyId.Value != 0){ //Show JObs for selected Company in dropdown
-                SelectedCompanyId = selectedCompanyId.Value;
-                TotalPages = (int)Math.Ceiling((double)_db.Jobs.Where(j => j.JobCompanyId == SelectedCompanyId).Count() / PageSize);
-
-                Jobs = _db.Jobs.Where(j => j.JobCompanyId == SelectedCompanyId).Skip(skipAmount).Take(PageSize).ToList();
-            } else { //Show all Jobs
-                TotalPages = (int)Math.Ceiling((double)_db.Jobs.Count() / PageSize);
-                Jobs = _db.Jobs.Skip(skipAmount).Take(PageSize).ToList();
-            }
-            
-            AllJobs =  _db.Jobs.ToList();
-            ApplicationUsers = _db.ApplicationUsers.ToList();
-            currentUser = await _userManager.GetUserAsync(User);
-
-        var tesmp = _db.UserRoles.First(r => r.UserId == currentUser.Id);
-            roleTemp = _db.Roles.First(r => r.Id == tesmp.RoleId).Name;
-
-            if (currentUser != null)
+            try
             {
-                AppliedJobs = _db.AppliedJobs.Include(j => j.Applicant).Where(ja => ja.Applicant.Id == currentUser.Id).ToList();
+                var skipAmount = (CurrentPage - 1) * PageSize;
+                Companys = _db.Companys.ToList();
+                //Stay on same page after apply
+                if (currentPage.HasValue)
+                {
+                    CurrentPage = currentPage.Value;
+                }
+                if (selectedCompanyId.HasValue && selectedCompanyId.Value != 0)
+                { //Show JObs for selected Company in dropdown
+                    SelectedCompanyId = selectedCompanyId.Value;
+                    TotalPages = (int)Math.Ceiling((double)_db.Jobs.Where(j => j.JobCompanyId == SelectedCompanyId).Count() / PageSize);
 
-                Console.WriteLine("TotalPages: " + TotalPages);
-                Console.WriteLine("CurrentPage: " + CurrentPage);
-                IsAuthenticated = true;
+                    Jobs = _db.Jobs.Where(j => j.JobCompanyId == SelectedCompanyId).Skip(skipAmount).Take(PageSize).ToList();
+                }
+                else
+                { //Show all Jobs
+                    TotalPages = (int)Math.Ceiling((double)_db.Jobs.Count() / PageSize);
+                    Jobs = _db.Jobs.Skip(skipAmount).Take(PageSize).ToList();
+                }
+
+                AllJobs = _db.Jobs.ToList();
+                ApplicationUsers = _db.ApplicationUsers.ToList();
+                currentUser = await _userManager.GetUserAsync(User);
+                if (currentUser != null)
+                {
+                    AppliedJobs = _db.AppliedJobs.Include(j => j.Applicant).Where(ja => ja.Applicant.Id == currentUser.Id).ToList();
+
+                    Console.WriteLine("TotalPages: " + TotalPages);
+                    Console.WriteLine("CurrentPage: " + CurrentPage);
+                    IsAuthenticated = true;
+                }
+                else
+                {
+                    IsAuthenticated = false;
+                }
             }
-            else {
-                IsAuthenticated = false;
+            catch (Exception ex)
+            {
+                Console.WriteLine("OnGet Exception JOb Posting ==========================================================" + ex.Message);
             }
         }
 
@@ -107,14 +111,14 @@ public String roleTemp {get; set;}
 
 
             TempData["JobMessage"] = "Job added:  Your details are send to employer!";
-            
-            return RedirectToPage("JobPostings", new {currentPage = CurrentPage, selectedCompanyId = SelectedCompanyId});
+
+            return RedirectToPage("JobPostings", new { currentPage = CurrentPage, selectedCompanyId = SelectedCompanyId });
         }
-        
+
         public async Task<ActionResult> OnPostFindByCompanyAsync()
         {
             //If find by Company clicked, go to page 1
-            return RedirectToPage("JobPostings", new {currentPage = 1, selectedCompanyId = SelectedCompanyId});
+            return RedirectToPage("JobPostings", new { currentPage = 1, selectedCompanyId = SelectedCompanyId });
         }
 
     }

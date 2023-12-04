@@ -47,6 +47,9 @@ namespace FSD08_AppDev2Project.Pages
 
         public async void OnGet(int? selectedCompanyId)
         {
+            try {
+
+            
             if (selectedCompanyId.HasValue)
             {
                 Reviews = _db.Reviews.Where(r => r.Company.Id == selectedCompanyId.Value).ToList();
@@ -66,6 +69,10 @@ namespace FSD08_AppDev2Project.Pages
             }
 
             Companys = _db.Companys.ToList();
+            }
+            catch (Exception ex){
+                Console.WriteLine("OnGet Exception===================================" + ex.Message);
+            }
         }
 
         public ActionResult OnPostGiveReview()
