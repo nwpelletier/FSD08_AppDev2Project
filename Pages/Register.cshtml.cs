@@ -126,8 +126,8 @@ namespace FSD08_AppDev2Project.Pages
 
                         // e-mail notification for successful registration (hard-coded e-mails for now)
                         var body = $@"
-                                    <h1>Welcome to Icarus Job Board!</h1>
-                                    <p>Thank you for joining Icarus Job Board. We are excited to have you on board!</p>
+                                    <h1>Welcome to NPM Job Board!</h1>
+                                    <p>Thank you for joining NPM Job Board. We are excited to have you on board!</p>
                                     <p>
                                         Explore endless job opportunities, connect with leading companies, and take the leap towards a fulfilling career journey.
                                         To get started, we recommend verifying your account information on the user's page. You can also browse the latest job postings
