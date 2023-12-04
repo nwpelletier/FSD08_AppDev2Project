@@ -49,19 +49,25 @@ namespace FSD08_AppDev2Project.Pages
         {
             ApplicationUser = await _userManager.GetUserAsync(User);
 
-            
-            string iconImageURL = AzureBlobUtil.GetBlobUrl(ApplicationUser.Id, "icons", ".jpg");
-            string cvURL = AzureBlobUtil.GetBlobUrl(ApplicationUser.Id, "cvs", ".pdf");
+            if (ApplicationUser != null)
+            {
+                string iconImageURL = AzureBlobUtil.GetBlobUrl(ApplicationUser.Id, "icons", ".jpg");
+                string cvURL = AzureBlobUtil.GetBlobUrl(ApplicationUser.Id, "cvs", ".pdf");
 
-            AppliedJobs = _db.AppliedJobs.Include(j => j.Job).Where(ja => ja.Applicant.Id == ApplicationUser.Id).ToList();
-            Companies = _db.Companys.ToList();
+                Companies = _db.Companys.ToList();
 
-            ProfileImage = iconImageURL.ToString();
-            UserCV = cvURL.ToString();
+                ProfileImage = iconImageURL.ToString();
+                UserCV = cvURL.ToString();
 
-            Console.WriteLine("USserCV==================" + UserCV);
-            Console.WriteLine("ProfileImage==================" + ProfileImage);
-            Console.WriteLine("Environment=============================================" + Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"));
+                // Console.WriteLine("USserCV==================" + UserCV);
+                // Console.WriteLine("ProfileImage==================" + ProfileImage);
+                // Console.WriteLine("Environment=============================================" + Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"));
+                AppliedJobs = _db.AppliedJobs
+                    .Include(j => j.Job)
+                    .Where(ja => ja.Applicant.Id == ApplicationUser.Id)
+                    .ToList();
+            }
+
             return Page();
         }
 
@@ -96,57 +102,67 @@ namespace FSD08_AppDev2Project.Pages
 
         public async Task<IActionResult> OnPostUpdateProfileAsync()
         {
-            ApplicationUser = await _userManager.GetUserAsync(User);
-            EditProfileInput = new EditProfileInputModel();
-
-            EditProfileInput.Email = Request.Form["EditProfileInput.Email"];
-            EditProfileInput.Country = Request.Form["EditProfileInput.Country"];
-            EditProfileInput.State = Request.Form["EditProfileInput.State"];
-            EditProfileInput.City = Request.Form["EditProfileInput.City"];
-            EditProfileInput.ZipCode = Request.Form["EditProfileInput.ZipCode"];
-            EditProfileInput.PhoneNumber = Request.Form["EditProfileInput.PhoneNumber"];
-
-            if (ModelState.IsValid)
+            try
             {
-                ApplicationUser.Email = EditProfileInput.Email;
-                ApplicationUser.Country = EditProfileInput.Country;
-                ApplicationUser.State = EditProfileInput.State;
-                ApplicationUser.City = EditProfileInput.City;
-                ApplicationUser.Zipcode = EditProfileInput.ZipCode;
-                ApplicationUser.PhoneNumber = EditProfileInput.PhoneNumber;
+                Console.WriteLine("OnPostUpdateProfileAsync method is being called.");
 
-                var result = await _userManager.UpdateAsync(ApplicationUser);
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    return NotFound();
+                }
 
-                if (result.Succeeded)
+                var email = Request.Form["EditProfileInput.Email"];
+                var country = Request.Form["EditProfileInput.Country"];
+                var state = Request.Form["EditProfileInput.State"];
+                var city = Request.Form["EditProfileInput.City"];
+                var zipCode = Request.Form["EditProfileInput.ZipCode"];
+                var phoneNumber = Request.Form["EditProfileInput.PhoneNumber"];
+
+                user.Email = email;
+                user.Country = country;
+                user.State = state;
+                user.City = city;
+                user.Zipcode = zipCode;
+                user.PhoneNumber = phoneNumber;
+
+                var updateResult = await _userManager.UpdateAsync(user);
+
+                if (updateResult.Succeeded)
                 {
                     TempData["SuccessMessage"] = "Information updated successfully.";
-
+                    var updatedUser = await _userManager.GetUserAsync(User);
                     return RedirectToPage("/UserProfile");
                 }
                 else
                 {
-                    foreach (var error in result.Errors)
+                    foreach (var error in updateResult.Errors)
                     {
                         ModelState.AddModelError(string.Empty, error.Description);
                     }
+                    Console.WriteLine("Update failed. Errors: " + string.Join(", ", updateResult.Errors.Select(e => e.Description)));
                 }
             }
-            return Page();
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal Server Error");
+            }
+            return await OnGet();
         }
 
-        // Separate Async Post method from edit profile
-        // Need to troubleshoot this - it's grabbing proper filename, correct ApplicationUser.Id
+
+
         public async Task<IActionResult> OnPostUploadImageAsync()
         {
             ApplicationUser = await _userManager.GetUserAsync(User);
             Console.WriteLine("User Id:======================= " + ApplicationUser.Id);
-            
-            
-                if (FileInput != null && FileInput.Length > 0)
-                    {
-                    await AzureBlobUtil.UploadToBlob(FileInput, ApplicationUser.Id, "icons", ".jpg");
-                    }       
-                return RedirectToPage("/UserProfile");
+
+
+            if (FileInput != null && FileInput.Length > 0)
+            {
+                await AzureBlobUtil.UploadToBlob(FileInput, ApplicationUser.Id, "icons", ".jpg");
+            }
+            return RedirectToPage("/UserProfile");
         }
 
         public async Task<IActionResult> OnPostUploadCvAsync()
