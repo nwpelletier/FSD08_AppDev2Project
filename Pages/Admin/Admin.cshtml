@@ -15,6 +15,13 @@
         @TempData["SuccessMessage"]
     </div>
 }
+@{
+    ViewData["Title"] = "Admin Panel";
+}
+<div class="text-center mb-2 mt-0" 
+style="border-bottom:1px solid rgb(216, 216, 255); background-color:rgb(245, 245, 245); color:rgb(92, 92, 92); text-shadow:1px 1px 2px black;">
+    <h1 class="display-3">@ViewData["Title"]</h1>
+</div>
 
 <div class="container-fluid">
     <div class="row mt-3">

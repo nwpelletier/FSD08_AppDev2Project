@@ -4,7 +4,10 @@
     ViewData["Title"] = "Company Reviews";
 }
 
-<h1>@ViewData["Title"]</h1>
+<div class="text-center mb-4 mt-0" 
+style="border-bottom:1px solid rgb(216, 216, 255); background-color:rgb(245, 245, 245); color:rgb(92, 92, 92); text-shadow:1px 1px 2px black;">
+    <h1 class="display-3">@ViewData["Title"]</h1>
+</div>
 
 <div class="container">
     <div class="row">
@@ -51,7 +54,11 @@
                             </div>
 
                             <div class="card-footer bg-transparent border-light">
-                                <span style="font-size:22px; text-shadow:1px 1px 1px rgb(75, 65, 9), -1px -1px 1px rgb(122, 109, 25); color:gold;">@Model.GetStarRatingAscii(review.Stars)</span>
+                                <span 
+                                style="font-size:22px; 
+                                text-shadow:1px 1px 1px #4b4109, -1px -1px 1px #7a6d19; 
+                                color:#ffd700;">@Model.GetStarRatingAscii(review.Stars)
+                                </span>
                             </div>
                         </div>
                     }

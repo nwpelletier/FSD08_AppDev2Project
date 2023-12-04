@@ -11,13 +11,16 @@
     </div>
 }
 
-<h1>@ViewData["Title"]</h1>
+<div class="text-center mb-2 mt-0" 
+style="border-bottom:1px solid rgb(216, 216, 255); background-color:rgb(245, 245, 245); color:rgb(92, 92, 92); text-shadow:1px 1px 2px black;">
+    <h1 class="display-3">@ViewData["Title"]</h1>
+</div>
 <div class="container">
     <div class="row">
         <div class="col-md-4">
             <section>
                 <form id="account" method="post">
-                    <h4>Enter you UserName and password to login</h4>
+                    <h4>Enter your username and password</h4>
                     <hr />
                     <div asp-validation-summary="All" class="text-danger"></div>
                     <div class="form-group">
@@ -30,12 +33,12 @@
                         <input asp-for="Input.Password" class="form-control" />
                         <span asp-validation-for="Input.Password" class="text-danger"></span>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group mt-1">
                         <button type="submit" class="btn btn-primary">Log in</button>
                     </div>
                     <div class="form-group">
                         <p>
-                            <a asp-page="./Register">Register as a new user</a>
+                            <a asp-page="./Register" style="color:rgb(80, 44, 44);">Register as a new user</a>
                         </p>
                     </div>
                 </form>

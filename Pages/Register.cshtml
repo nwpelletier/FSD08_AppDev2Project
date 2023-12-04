@@ -3,12 +3,13 @@
 @{
     ViewData["Title"] = "Register";
 }
-
+<div class="text-center mb-2 mt-0" 
+style="border-bottom:1px solid rgb(216, 216, 255); background-color:rgb(245, 245, 245); color:rgb(92, 92, 92); text-shadow:1px 1px 2px black;">
+    <h1 class="display-3">@ViewData["Title"]</h1>
+</div>
 <div class="container">
     <div class="row justify-content-center mt-5">
         <div class="col-md-4">
-            <h2>@ViewData["Title"]</h2>
-    
             <form method="post" enctype="multipart/form-data">
                 <div class="form-group">
                  <select asp-for="Input.role.Name" class="form-control" asp-items="Model.roles" onchange="Input.role.Name = this.value"></select>
