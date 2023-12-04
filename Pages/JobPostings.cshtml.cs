@@ -7,7 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Net.Http.Headers; // Add this using directive
+using Microsoft.Net.Http.Headers;
+using System.Net.WebSockets; // Add this using directive
 
 namespace FSD08_AppDev2Project.Pages
 {
@@ -28,11 +29,12 @@ namespace FSD08_AppDev2Project.Pages
         public int CurrentPage { get; set; } = 1;
         public int PageSize { get; set; } = 4;
         public int TotalPages { get; set; }
-
+public String roleTemp {get; set;}
         public List<Job> Jobs { get; set; }
         [BindProperty]
         public int SelectedJobId { get; set; }
-
+        public Role UserRole {get;set;}
+        public ApplicationUser currentUser { get; set; }
         [BindProperty]
         public List<AppliedJob> AppliedJobs { get; set; }
         [BindProperty]
@@ -49,6 +51,9 @@ namespace FSD08_AppDev2Project.Pages
 
         public async void OnGet(int? currentPage, int? selectedCompanyId)
         {
+
+            
+
             var skipAmount = (CurrentPage - 1) * PageSize;
             Companys = _db.Companys.ToList();
             
@@ -68,7 +73,10 @@ namespace FSD08_AppDev2Project.Pages
             
             AllJobs =  _db.Jobs.ToList();
             ApplicationUsers = _db.ApplicationUsers.ToList();
-            ApplicationUser currentUser = await _userManager.GetUserAsync(User);
+            currentUser = await _userManager.GetUserAsync(User);
+
+        var tesmp = _db.UserRoles.First(r => r.UserId == currentUser.Id);
+            roleTemp = _db.Roles.First(r => r.Id == tesmp.RoleId).Name;
 
             if (currentUser != null)
             {

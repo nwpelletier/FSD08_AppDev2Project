@@ -6,6 +6,7 @@
 }
 
 <h1>@ViewData["Title"]</h1>
+
 @if (TempData.ContainsKey("JobMessage"))
 {
     <div id="jobmessageContainer" class="jobmessage-container text-center">
@@ -94,10 +95,12 @@
                     <input type="hidden" id="selectedJobId" name="selectedJobId" value="" />
                     <div class="card-header"></div>
                     <br>
+                   
                     <div class="text-center">
-
                         <div class="text-center">
-                            <button type="submit" id="btnApply" class="btn btn-primary" style="margin-left: 40%;" ></button>
+                   @* @if (Model.currentUser.Role == Models.Role.Applicant) *@
+                   @* @if (Model.roleTemp == "Applicant") *@
+                            <button type="submit" id="btnApply" class="btn btn-primary"  style="margin-left: 40%; " ></button>
                         </div>
                     </div>
                     <hr>
@@ -119,7 +122,7 @@
 <script>
     function showJobDetails(jobId) {
         // find job by id
-        var isAuthenticated = @Html.Raw(Json.Serialize(Model.IsAuthenticated));//@User.Identity.IsAuthenticated;
+        var isAuthenticated = @Html.Raw(Json.Serialize(Model.IsAuthenticated));
         var jobs = @Html.Raw(Json.Serialize(Model.Jobs));
         var clickedJob = jobs.find(job => job.id === parseInt(jobId));
 
@@ -178,5 +181,12 @@
             }
         }, 2500);
     });
-
+    @* if( @Html.Raw(Json.Serialize(Model.User.IsInRole("Applicant")))){
+        debugger;
+            document.getElementById('.btnApply').style('block');*@
+    if (@Model.User.IsInRole("HiringManager").ToString().ToLower() == true){
+        debugger;
+        document.getElementById('btnApply').style.visibility = 'hidden';
+        document.getElementById('btnApply').style.display = 'none';
+}
 </script>
