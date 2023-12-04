@@ -19,16 +19,14 @@ namespace FSD08_AppDev2Project.Pages
             this.signInManager = signInManager;
             this.logger = logger;
         }
-        public async Task<IActionResult> OnGetAsync()
+        public IActionResult OnGetAsync()
         {
+            signInManager.SignOutAsync();
             TempData["AlertMessage"] = "Logout successful!";
             if (signInManager.IsSignedIn(User)) {
                 logger.LogInformation($"User {User.Identity.Name} logged out");
             }
-            await signInManager.SignOutAsync();
-
-            return Page();
-
+            return RedirectToPage("Login");
         }
     }
 }
