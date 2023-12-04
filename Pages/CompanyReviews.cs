@@ -34,7 +34,7 @@ namespace FSD08_AppDev2Project.Pages
             public float aveRating { get; set; }
         }
 
-        public int aveRating {get; set;}
+        public double aveRating {get; set;}
         public List<Review> Reviews { get; set; }
 
         public List<CompanyModel> companysModel { get; set; } = new List<CompanyModel>();
@@ -56,7 +56,7 @@ namespace FSD08_AppDev2Project.Pages
                     foreach(var review in Reviews){
                         sum += review.Stars;
                     }
-                    aveRating = sum / Reviews.Count;
+                    aveRating = Math.Round(((double)sum / Reviews.Count),2);
                 }
                 else aveRating = -1;
             }

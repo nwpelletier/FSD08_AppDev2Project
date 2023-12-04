@@ -28,7 +28,7 @@ namespace FSD08_AppDev2Project.Pages
             [Required(ErrorMessage = "Please provide reviews.")]
             public string Reviews { get; set; }
 
-            [Required(ErrorMessage = "Please provide stars.")]
+            [Required(ErrorMessage = "Please provide stars."), Range(1,5)]
             public int Stars { get; set; }
 
         }
